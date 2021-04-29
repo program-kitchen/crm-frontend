@@ -22,6 +22,15 @@
         >
           GitHub
         </a>
+        <br>
+        <a
+          href="/test/machida"
+          rel="noopener noreferrer"
+          class="button--green"
+          style="margin-top: 20px;"
+        >
+          テストページ
+        </a>
       </div>
     </div>
   </div>
