@@ -1,0 +1,83 @@
+<template>
+  <div class="contents-buttom">
+    <button
+      class="contents-buttom__button"
+      v-show="sendDeleteData.length == 0"
+    >
+      削除できません
+    </button>
+    <button 
+      class="contents-buttom__button" 
+      @click="confirmDelete" v-show="sendDeleteData.length >= 1"
+    >
+      チェック項目を消去
+    </button>
+    <p>該当件数：{{sendDeleteData.length}} 件</p>
+  </div>
+</template>
+
+
+<script>
+export default {
+  props: {
+    sendDeleteData: {
+      type: Array
+    },
+    pageInfo: {
+      type: String
+    }
+  },
+  mounted() {
+    console.log(this.sendDeleteData); 
+  },
+  methods: {
+    confirmDelete() {
+      if(window.confirm('削除します。よろしいでしょうか？')) {
+        console.log(this.sendDeleteData);
+        this.selectedDeleteUsers();
+      }
+    },
+    // 削除API処理
+    async selectedDeleteUsers() {
+      await axios
+        .post(`api.coachtech-crm.com/${this.pageInfo}/delete`, {
+           "uuid" : this.sendDeleteData,
+           "loginUuId" : this.$store.state.userID
+        })
+        .then((res) => {
+          console.log(res);
+           this.$emit('fetchData')
+        })
+        .catch(() => this.$router.push('/error'))
+    }
+
+  }
+}
+</script>
+
+<style scoped>
+.contents-buttom {
+  display: flex;
+}
+
+/* Chckedユーザ削除部 */
+.contents-buttom {
+  padding: 1rem 0;
+  align-items: center;
+}
+.contents-buttom__button {
+  background: #FF5561;
+  border: none;
+  border-radius: 27px;
+  color: #FFFCFC;
+  font-weight: bold;
+  margin-right: 2rem;
+  height: 2rem;
+  padding: 0 1.2rem;
+}
+.contents-buttom__button:hover {
+  cursor: pointer;
+  transition:  0.3s 0s ease-in;
+  background: #f8717a;
+}
+</style>

@@ -8,12 +8,12 @@
         </li>
       </nuxt-link>
       <nuxt-link class="menu__link" to="/users" >
-        <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path == '/users' }">
+        <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path.startsWith('/users') }">
           ユーザ
         </li>
       </nuxt-link>
       <nuxt-link class="menu__link" to="/cources" >
-        <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path == '/cources' }">
+        <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path.startsWith('/cources') }">
           コース
         </li>
       </nuxt-link>
@@ -25,7 +25,7 @@
 nav {
   top: 0px;
   left: 0px;
-  width: 15%;
+  width: 17%;
   height: 100vh;
   background: #04C6C6;
   opacity: 1;

@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <p>コース編集画面</p>
-  </div>
+  <Cource :sendTitle="title"/>
 </template>
 
 <script>
 export default {
-  
+  middleware: 'redirect',
+  data() {
+    return {
+      title: "編集"
+    }
+  },
 }
 </script>
-
-<style scoped>
-
-</style>
