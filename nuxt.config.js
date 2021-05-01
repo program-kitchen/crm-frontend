@@ -41,14 +41,23 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/auth-next',
+    '@nuxtjs/auth',
+    '@nuxtjs/vuetify',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    credentials: true,
+    // proxy: true,
     baseUrl: process.env.BASE_URL || 'http://localhost:8000',
   },
+  /*
+  proxy: {
+    '/api': {
+      target: 'https://localhost:8000',
+      pathRewrite: { '^/api': '/' }
+    }
+  },
+  */
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
   },
@@ -61,10 +70,22 @@ export default {
   },
   auth: {
     strategies: {
-      laravelSanctum: {
-        provider: 'laravel/sanctum',
+      'laravelJWT': {
+        provider: 'laravel/jwt',
         url: 'http://localhost:8000',
-      },
+        endpoints: {
+          login: { url: '/api/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/api/logout', method: 'post' },
+          user: { url: '/api/user/index', method: 'get', propertyName: 'user'}
+        },
+        token: {
+          property: 'access_token',
+          maxAge: 60 * 60
+        },
+        refreshToken: {
+          maxAge: 20160 * 60
+        },
+      }
     },
   },
 }

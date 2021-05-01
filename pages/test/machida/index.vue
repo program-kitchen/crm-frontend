@@ -37,13 +37,13 @@ export default {
     methods: {
         async getUuid () {
 
-            const res = await this.$axios.$get('http://localhost:8000/user/index/100');
-            this.uuid = res.text;
+            const res = await this.$axios.$get('http://localhost:8000/api/token');
+            this.uuid = res;
             // this.token = res.token;
             // document.cookie = `X-CSRF-TOKEN=${res.token}`
         },
         async syncData () {
-            const res = await this.$axios.$post('http://localhost:8000/user/regist', {
+            const res = await this.$axios.$post('http://localhost:8000/api/login', {
                 // _token: this.token,
                 test_value: this.testValue
             })
