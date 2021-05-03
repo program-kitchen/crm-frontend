@@ -1,21 +1,23 @@
 <template>
   <div class="login">
     <div class="login-modal">
-      <h2 class="login-modal__title">ログイン</h2>
+      <h1 class="login-modal__title">ログイン</h1>
       <div class="login-modal__form">
-        <p class="login-modal__label">メールアドレス</p>
+        <label for="email" class="login-modal__label">メールアドレス</label>
         <input
-          v-model="email"
+          id="email"
           type="text"
           class="login-modal__input crm__input"
+          v-model="email"
         />
       </div>
       <div class="login-modal__form">
-        <p class="login-modal__label">パスワード</p>
+        <label for="password" class="login-modal__label">パスワード</label>
         <input
-          v-model="password"
+          id="password"
           type="password"
           class="login-modal__input crm__input"
+          v-model="password"
         />
       </div>
       <button @click="submit" class="login-modal__button crm-modal__button">
