@@ -51,7 +51,7 @@ export default {
 .login-modal__title {
   margin-top: 110px;
   margin-bottom: 86px;
-  font: italic normal bold 32px/48px Meiryo;
+  font: normal bold 32px/48px Meiryo;
   font-style: bold;
   letter-spacing: 0px;
   font-size: 32px;
