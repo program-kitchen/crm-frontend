@@ -8,7 +8,7 @@
       </div>
       <div class="login-modal__form">
         <p class="login-modal__label">パスワード</p>
-        <input v-model="password" type="text" class="login-modal__input" />
+        <input v-model="password" type="password" class="login-modal__input" />
       </div>
       <button @click="submit" class="login-modal__button">ログイン</button>
     </div>
