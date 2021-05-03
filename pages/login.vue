@@ -93,10 +93,4 @@ export default {
   width: 24.5rem;
   margin-top: 6rem;
 }
-
-.login-modal__button:hover {
-  cursor: pointer;
-  transition: 0.5s;
-  background: transparent linear-gradient(270deg, #2bb8f8 0%, #41de9d 100%);
-}
 </style>
