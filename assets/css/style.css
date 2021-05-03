@@ -3,23 +3,23 @@ html {
 }
 
 .crm__input {
-  height: 65px;
-  padding-left: 10px;
-  border: 4px solid #f2f2f2;
-  border-radius: 12px;
+  height: 6.5rem;
+  padding-left: 1rem;
+  border: 0.4rem solid #f2f2f2;
+  border-radius: 1.2rem;
   opacity: 1;
   outline: none;
   font-family: Meiryo;
-  font-size: 18px;
+  font-size: 1.8rem;
   color: #000000;
 }
 
 .crm-modal__button {
   background: transparent linear-gradient(270deg, #41de9d 0%, #2bb8f8 100%);
   border: none;
-  border-radius: 36px;
+  border-radius: 3.6rem;
   opacity: 1;
-  font: normal normal normal 28px/42px Meiryo;
+  font: normal normal normal 2.8rem/4.2rem Meiryo;
   text-align: center;
   color: #ffffff;
   font-weight: bold;
