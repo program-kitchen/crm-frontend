@@ -4,13 +4,23 @@
       <h2 class="login-modal__title">ログイン</h2>
       <div class="login-modal__form">
         <p class="login-modal__label">メールアドレス</p>
-        <input v-model="email" type="text" class="login-modal__input" />
+        <input
+          v-model="email"
+          type="text"
+          class="login-modal__input crm__input"
+        />
       </div>
       <div class="login-modal__form">
         <p class="login-modal__label">パスワード</p>
-        <input v-model="password" type="password" class="login-modal__input" />
+        <input
+          v-model="password"
+          type="password"
+          class="login-modal__input crm__input"
+        />
       </div>
-      <button @click="submit" class="login-modal__button">ログイン</button>
+      <button @click="submit" class="login-modal__button crm-modal__button">
+        ログイン
+      </button>
     </div>
   </div>
 </template>
@@ -37,62 +47,49 @@ export default {
 }
 
 .login-modal {
-  width: 940px;
-  height: 671px;
-  margin: 205px auto 0;
+  width: 94rem;
+  height: 67rem;
+  margin: 20.5rem auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #ffffff 0% 0% no-repeat padding-box;
-  box-shadow: 0px 16px 54px #89bdbd80;
+  box-shadow: 0px 1.6rem 5.4rem #89bdbd80;
   border-radius: 10px;
 }
 
 .login-modal__title {
-  margin-top: 110px;
-  margin-bottom: 86px;
-  font: normal bold 32px/48px Meiryo;
+  margin-top: 11rem;
+  margin-bottom: 8.6rem;
+  font: normal bold 3.2rem/4.8rem Meiryo;
   font-style: bold;
-  letter-spacing: 0px;
-  font-size: 32px;
+  letter-spacing: 0rem;
+  font-size: 3.2rem;
   color: #707070;
   opacity: 1;
 }
 
 .login-modal__form {
-  width: 609px;
-  margin-bottom: 28px;
+  width: 61rem;
+  margin-bottom: 2.8rem;
 }
 
 .login-modal__label {
   text-align: left;
-  font: normal normal normal 20px/30px Meiryo;
+  font: normal normal normal 2rem/3rem Meiryo;
   letter-spacing: 0px;
-  font-size: 20px;
+  font-size: 2rem;
   color: #707070;
   opacity: 1;
 }
 
 .login-modal__input {
   width: 100%;
-  height: 65px;
-  border: 4px solid #f2f2f2;
-  border-radius: 12px;
-  opacity: 1;
 }
 
 .login-modal__button {
-  width: 247px;
-  height: 72px;
-  margin-top: 60px;
-  background: transparent linear-gradient(270deg, #41de9d 0%, #2bb8f8 100%);
-  border: none;
-  border-radius: 36px;
-  opacity: 1;
-  font: normal normal normal 28px/42px Meiryo;
-  text-align: center;
-  color: #ffffff;
-  font-weight: bold;
+  width: 24.5rem;
+  margin-top: 6rem;
 }
 
 .login-modal__button:hover {
