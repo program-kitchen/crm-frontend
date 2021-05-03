@@ -15,6 +15,7 @@ html {
 }
 
 .crm-modal__button {
+  height: 7.2rem;
   background: transparent linear-gradient(270deg, #41de9d 0%, #2bb8f8 100%);
   padding: 0.7rem 1.5em;
   border: none;
