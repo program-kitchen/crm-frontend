@@ -16,13 +16,13 @@ html {
 
 .crm-modal__button {
   background: transparent linear-gradient(270deg, #41de9d 0%, #2bb8f8 100%);
+  padding: 0.7rem 1.5em;
   border: none;
   border-radius: 3.6rem;
   opacity: 1;
   font: normal normal normal 2.8rem/4.2rem Meiryo;
   text-align: center;
   color: #ffffff;
-  font-weight: bold;
 }
 
 .crm-modal__button:hover {
