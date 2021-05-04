@@ -26,6 +26,8 @@ export default {
   plugins: [
     "~/plugins/vue-pagenate.js",
     "~/plugins/axios.js",
+    "~/plugins/localStorage.js",
+    "@plugins/vee-validate"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -44,5 +46,7 @@ export default {
   axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    transpile: ["vee-validate/dist/rules"]
+  }
 };

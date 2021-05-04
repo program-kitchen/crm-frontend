@@ -66,12 +66,7 @@
             </tbody>
           </table>
         </div>
-        <SelectedDeleteButton :sendDeleteData="checkNames" :pageInfo="pageInfo" @fetchData='fetchUserData(1)'/> 
-        <!-- ここはコンポーネント化してるが、一応残す -->
-        <!-- <div class="contents-buttom">
-          <button class="contents-buttom__button" @click="selectedDeleteUsers">チェックしたユーザを消去</button>
-          <p>該当件数：{{checkNames.length}} 件</p>
-        </div> -->
+        <SelectedDeleteButton :sendDeleteData="checkNames" :pageInfo="pageInfo" @fetchData='fetchUserData(1)'/>
         <div class="contents-pagination">
           <paginate v-if="(getPageCount > 1)"
             :page-count="getPageCount"
@@ -142,10 +137,11 @@ export default {
       ],
      parPage: 5,
      currentPage: 1,
+     getPageCount: 0
     }
   },
-
   created() {
+    console.log(this.searchUserData.length)
     this.fetchUserData(1);
   },
   methods: {
@@ -154,7 +150,10 @@ export default {
       await
         axios
           .get(`api.coachtech-crm.com/user/index`,{ "pageIndex" : pageNo})
-          .then((res) => this.users = res.data) // 必要なのはid,name,email,role
+          .then((res) => {
+            this.users = res.data;          // 必要なのはid,name,email,role
+            this.getPageCount = res.count;
+          })
           .catch(() => this.$router.push('/error'))
     },
     // 取得API
@@ -165,18 +164,17 @@ export default {
             "filterName" : this.name,
             "filterAuth" : this.role,
             "filterEmail" : this.email,
-            "filterDeleted" : "0", // 削除フラグは0
+            "filterDeleted" : "1", // 削除フラグは1
           })
           .then((res) => {
             // データを初期化後、検索結果を格納
-            this.users = [];
-            this.users = res.data
             this.searchUserData = res.data 
           })
           .catch(() => this.$router.push('/error'))
     },
     clickViewPage(pageNo) {
-       this.currentPage = Number(pageNo);
+      this.currentPage = Number(pageNo);
+      this.fetchUserData(this.currentPage);
     },
     confirmDelete(userId) {
       if(window.confirm('ユーザーを削除します。よろしいでしょうか？')) {
@@ -210,25 +208,16 @@ export default {
         return true;
       } 
     },
-
-    // コンポーネント化できそうなメソッド
-    // selectedDeleteUsers() {
-    //   if(window.confirm('ユーザーを削除します。よろしいでしょうか？')) {
-    //     console.log(this.checkNames);  // チェックされたユーザーIDを確認
-    //     // 削除API処理を実行
-    //   } 
-    // }
   },
   computed: {
-    // 見ているページ番号のユーザ情報を表示
+
+    // 見ているページ番号のユーザ情報を表示(１ページずつAPIで取得する)
     getUsers() {
-      let current = this.currentPage * this.parPage;
-      let start = current - this.parPage;
-      return this.users.slice(start, current);
-    },
-    // データからページ数を算出
-    getPageCount() {
-      return Math.ceil(this.users.length / this.parPage);
+      if(this.searchUserData.length > 0) {
+        return searchUserData;
+      } else {
+        return this.users;
+      }
     },
     // チェックボックス処理
     selectAll: {
@@ -280,7 +269,7 @@ export default {
 
 .contents-search input,
 .contents-search select {
-  width: 170px;
+  width: 15rem;
   padding: 0.3rem;
   margin-right: 2rem;
   box-sizing:border-box;
@@ -438,27 +427,6 @@ export default {
   background-color: #04C6C6;
   border: none;
 }
-
-/* Chckedユーザ削除部はコンポーネント化できそうなので保留
-.contents-buttom {
-  padding: 1rem 0;
-  align-items: center;
-}
-.contents-buttom__button {
-  background: #FF5561;
-  border: none;
-  border-radius: 27px;
-  color: #FFFCFC;
-  font-weight: bold;
-  margin-right: 2rem;
-  height: 2rem;
-  padding: 0 1.2rem;
-}
-.contents-buttom__button:hover {
-  cursor: pointer;
-  transition:  0.3s 0s ease-in;
-  background: #f8717a;
-} */
 </style>
 
 

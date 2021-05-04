@@ -3,7 +3,7 @@
     <SideBar />
     <div class="main">
       <div class="main-term">
-        <h1 class="main-term__title">ターム登録</h1>
+        <h1 class="main-term__title">ターム編集</h1>
         <label for="name">
           コース名
         </label>
@@ -20,7 +20,7 @@
           概要
         </label>
         <input id="description" type="text" class="main-term__textbox" name="description" v-model="description">
-        <button class="main-term__button-auth" @click="termRegist">登録</button>
+        <button class="main-term__button-auth" @click="termEdit">編集</button>
         <div class="main-term__button-return" @click="returnCource">
           戻る
         </div>
@@ -43,7 +43,15 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$store.state.cource.name);
+    setTimeout(() => {
+      console.log(this.$store.state.cource.name);
+      this.name = this.$store.state.cource.name;
+      const term = this.$store.state.term[this.id];
+      this.term = term.name;
+      this.period = term.period;
+      this.description = term.description;
+    }, 50);
+
   },
   // 取得APIのため、コメントアウト
   async created() {
@@ -59,9 +67,10 @@ export default {
   },
   methods: {
     // 更新APIのためコメントアウト
-    termRegist() {
+    termEdit() {
       this.btnClickFlag = true;
-      this.$store.commit("addTerm", {
+      this.$store.commit("editTermInfo", {
+        id: this.id,
         term: this.term,
         period: this.period,
         description: this.description

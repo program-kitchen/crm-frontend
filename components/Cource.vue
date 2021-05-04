@@ -1,13 +1,14 @@
 <template>
+<!-- 要検討 -->
   <div class="cource-area">
     <SideBar />
     <div class="main">
       <div class="main-cource">
-        <h1 class="main-cource__title">コース{{sendTitle}}</h1>
+        <h1 class="main-cource__title">コース登録</h1>
         <label for="name">コース名</label>
-        <input id="name" type="text" class="main-cource__name" name="name" value="tesuto" v-model="name">
+        <input id="name" type="text" class="main-cource__name" name="name"  v-model="name">
         <label for="period">期間</label>
-        <input id="period" type="text" class="main-cource__period" name="period">
+        <input id="period" type="number" class="main-cource__period" name="period" v-model="sumPeriod" disabled="disabled">
         <label for="description">概要</label>
         <input id="description" type="text" class="main-cource__description" name="description" v-model="description">
         <label class="main-cource__table">ターム</label>
@@ -48,31 +49,68 @@
 
 <script>
 export default {
-  props: {
-    sendTitle: {
-      type: String
-    }
-  },
+  middleware: 'redirect',
   data() {
     return {
       name: '',
-      period: '',
+      period: 0,
       description: '',
       number: 4
     }
+  },
+  mounted() {
+    console.log(this.period);
   },
   methods: {
     returnList() {
       this.$router.push('/cources');
     },
-    newCourceRegist() {
-      console.log('こんにちは')
+    async newCourceRegist() {
+      await
+        axios
+          .get('api.coachtech-crm.com/course/register', {
+            "name" : this.name,
+            "term" : this.period,
+            "summary" : this.description,
+            "termInfo" : [
+              { "name" : "[ターム名]", "term" : "[期間]", "summary" : "[ターム概要]" },
+              { "name" : "[ターム名]", "term" : "[期間]", "summary" : "[ターム概要]" },
+            ],
+            "loginUuId" : this.$store.state.user.UuId
+          })
+      
     },
   // change(e) {
   //   console.log(e.target.value);
   // },
     sendTerm() {
       this.$router.push({name: "term", params: { pageName: '登録' }})
+    }
+  },
+  computed: {
+    sumPeriod() {
+      // タームの期間合計処理を入れる
+      return 4;
+    }
+  },
+  // ナビゲーションガード
+  // 編集中のページ遷移で確認させる
+  beforeRouteLeave (to, from, next) {
+    const existData = this.usersData[0];
+    const sameJudge = (
+      this.name === existData.name ||
+      this.role === existData.role || 
+      this.email === existData.email
+    );
+    if(sameJudge || this.btnClickFlag) {
+      next()
+    } else {
+      let answer = window.confirm("ページが変わりますがよろしいでしょうか？");
+      if (answer) {
+        next()
+      } else {
+        next(false)
+      }
     }
   },
 }

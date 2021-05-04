@@ -38,7 +38,7 @@ export default {
       id: this.$route.params.id, // URLパラメータで渡ってきたid(ユーザのid)
       userRole: '管理者', // 一旦管理者にする(this.$store.state.user.role)
       name: '田中太郎',
-      role: 'コーチ',
+      role: 'バックオフィス',
       email: 'test1@test.com',
       usersData: [{name: 'なおき', role: 'コーチ', email: 'test@test.com'}], // ユーザ一覧から取得したデータ格納用とする
       selectRoleLists: ['管理者','バックオフィス','コーチ'],
@@ -68,8 +68,12 @@ export default {
         })
   },
   methods: {
-    userPassReset() {
+    async userPassReset() {
       this.btnClickFlag = true
+      const fetchResetMail = axios.get('メール送信URL');
+
+      await fetchResetMail
+
       window.confirm('リセットメールを送信しました');
     },
     // 更新API

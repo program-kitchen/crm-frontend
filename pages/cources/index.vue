@@ -14,15 +14,15 @@
                     <span class="contents-table__head-check_exist"></span>
                   </label>
                 </th>
-                <th>コース名</th>
-                <th>期間</th>
+                <th class="contents-table__header-term">コース名</th>
+                <th class="contents-table__header-period">期間</th>
                 <th>概要</th>
                 <th class="contents-table__header-button"></th>
                 <th class="contents-table__header-button"></th>
               </tr>
             </thead>
             <tbody class="contents-table__record">
-              <tr v-for="(cource , index) in getCources" :key="index">
+              <tr v-for="(cource , index) in cources" :key="index">
                 <td>
                   <label>
                     <input type="checkbox" v-model="checkCources" v-bind:value="cource.id" class="contents-table__head-check">
@@ -41,7 +41,7 @@
                 <td class="contents-table__record-button">
                   <button
                     class="contents-table__record-button--delete"
-                    @click="courcesDelete(cource.id)"
+                    @click="confirmDelete(cource.id)"
                   >
                     削除
                   </button>
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       // loginUserRole: this.$store.state.user.role,
-      loginUserRole: 'オーナー',
+      loginUserRole: 'コーチ',
       sendText: {title:"コース管理", url:"cources"}, // トップ部のコンポーネントへ渡すデータ
       pageInfo: 'course',
       checkCources: [],
@@ -97,18 +97,22 @@ export default {
           { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
       ],
      parPage: 30,
-     currentPage: 1
+     currentPage: 1,
+     getPageCount: 0
     }
   },
   created() {
-    this.getCourceInfo(1);
+    this.fetchCourceInfo(1);
   },
   methods: {
-    async getCourceInfo(pageNo) {
+    async fetchCourceInfo(pageNo) {
       await
         axios
           .get(`api.coachtech-crm.com/course/index`, {"pageIndex" : pageNo })
-          .then((res) => this.cources = res.data)
+          .then((res) => {
+            this.cources = res.data;
+            this.getPageCount = res.count;
+          })
           .catch(errorMsg => {
             console.log(errorMsg);
             this.$router.push('/error');
@@ -116,8 +120,9 @@ export default {
     },
     clickViewPage(pageNum) {
        this.currentPage = Number(pageNum);
+       this.fetchCourceInfo(this.currentPage);
     },
-    deleteConfirm(courceId) {
+    confirmDelete(courceId) {
       if(window.confirm('コースを削除します。よろしいでしょうか？')) {
         this.courcesDelete();
       }
@@ -129,30 +134,14 @@ export default {
               "id" : courceId,
               "loginUuId" : this.$store.state.user.id
           })
-          .then(() => console.log('削除成功'))
-          .catch(errorMsg => console.log(errorMsg))
+          .then(() => {
+            console.log('削除成功')
+            this.fetchCourceInfo(1); //再度コースデータ取得
+          })
+          .catch(errorMsg => this.$router.push('/error'))
     }
   },
-  // ナビゲーションガード
-  // 権限によってリダイレクト処理
-  // beforeRouteEnter (to, from, next) {
-  //   const role = '管理者';
-  //   const canPathUser = ['オーナー','管理者'];
-  //   if(canPathUser.includes(role)) {
-  //     next()
-  //   } else {
-  //     next('/');
-  //   }
-  // }
   computed: {
-    getCources() {
-      let current = this.currentPage * this.parPage;
-      let start = current - this.parPage;
-      return this.cources.slice(start , current);
-    },
-    getPageCount() {
-      return Math.ceil(this.cources.length / this.parPage);
-    },
     selectAll: {
       get() {
         if(this.checkCources.length == this.cources.length) {
@@ -164,7 +153,7 @@ export default {
       set(value) {
         let checkArray = [];
         if(value) {
-          this.getCources.forEach(function (cource) {
+          this.cources.forEach(function (cource) {
             checkArray.push(cource.id);
           });
         }
@@ -177,8 +166,7 @@ export default {
 
 <style scoped>
 .cources {
-  background: #EEF2F2 0% 0% no-repeat padding-box;
-
+  background: #EEF2F2;
 }
 
 .main,
@@ -191,15 +179,12 @@ export default {
   padding-left: 2.5rem;
 }
 
-
-
-
 /* テーブルCSS */
 .contents-table {
   height: 70%;
   border-collapse: collapse;
   /* border-spacing: 0; */
-  background: #FFFFFF 0% 0% no-repeat padding-box;
+  background: #FFFFFF;
   box-shadow: 0px 16px 54px #89BDBD80;
   border-radius: 6px;
   opacity: 1;
@@ -212,12 +197,11 @@ export default {
   width: 100%;
   table-layout: fixed;
   overflow: auto;
-  
 }
 
 
 .contents-table__header {
-  background: linear-gradient(270deg, #41DE9D 0%, #2BB8F8 100%) 0% 0% ;
+  background: linear-gradient(270deg, #41DE9D 0%, #2BB8F8 100%);
   color: #FFFFFF;
 }
 
@@ -232,8 +216,6 @@ export default {
   width: 5rem;
 }
 
-
-
 .contents-table__record tr {
   border-bottom: 1px solid #E3E3E3;
 }
@@ -247,6 +229,14 @@ export default {
 
 
 /* 2ボタン共通スタイル */
+
+.contents-table__header-term {
+  width: 16rem;
+}
+.contents-table__header-period {
+  width: 8rem;
+}
+
 .contents-table__header-button {
   width: 6.5rem;
   padding-left: 10rem;
@@ -279,12 +269,12 @@ export default {
 }
 
 .contents-table__record-button--edit {
-  background: #04C6C6 0% 0% no-repeat padding-box;
+  background: #04C6C6;
   border: 1px solid #04C6C6;
 }
 
 .contents-table__record-button--delete {
-  background: #FF5561 0% 0% no-repeat padding-box;
+  background: #FF5561;
   border: 1px solid #FF5561;
 
 }
@@ -332,32 +322,11 @@ export default {
   background-color: #04C6C6;
   border: none;
 }
-
-
-/* チェックユーザ削除部 */
-/* .contents-buttom {
-  padding: 1rem 0;
-}
-
-.contents-buttom button{
-  background: #FF5561 0% 0% no-repeat padding-box;
-  border: none;
-  border-radius: 27px;
-  color: #FFFCFC;
-  font-weight: bold;
-  margin-right: 2rem;
-  height: 2rem;
-}
-
-.contents-buttom button:hover {
-  cursor: pointer;
-  transition:  0.3s 0s ease-in;
-  background: #f8717a;
-} */
 </style>
 
 <style>
 /* ページネーション */
+/* scopeを入れると反映されないため、別タグで切り出し */
 .pagination {
   list-style: none;
   display: flex;
