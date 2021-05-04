@@ -3,26 +3,34 @@
     <SideBar />
     <div class="register-modal">
       <h1 class="register-modal__title">ユーザー登録</h1>
-      <div class="register-modal__form">
-        <label for="email" class="register-modal__label">メールアドレス</label>
-        <input
-          id="email"
-          name="email"
-          type="text"
-          class="register-modal__input crm__input"
-          v-model="email"
-        />
-      </div>
-      <div class="register-modal__form">
-        <label for="name" class="register-modal__label">名前</label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          class="register-modal__input crm__input"
-          v-model="name"
-        />
-      </div>
+      <ValidationObserver class="register-modal__form" ref="email">
+        <validation-provider v-slot="{ errors }" rules="email|required">
+          <label for="email" class="register-modal__label"
+            >メールアドレス</label
+          >
+          <input
+            id="email"
+            name="email"
+            type="text"
+            class="register-modal__input crm__input"
+            v-model="email"
+          />
+          <span class="crm__error">{{ errors[0] }}</span>
+        </validation-provider>
+      </ValidationObserver>
+      <ValidationObserver class="register-modal__form" ref="name">
+        <validation-provider v-slot="{ errors }" rules="required">
+          <label for="name" class="register-modal__label">名前</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            class="register-modal__input crm__input"
+            v-model="name"
+          />
+          <span class="crm__error">{{ errors[0] }}</span>
+        </validation-provider>
+      </ValidationObserver>
       <div class="register-modal__form">
         <label for="position" class="register-modal__label">権限</label>
         <select
@@ -53,7 +61,9 @@ export default {
   },
   methods: {
     submit() {
-      // 認証メールAPI処理を実行
+      //バリデーション
+      if (!this.$refs.name.validate() || !this.$refs.email.validate()) return;
+      // TODO 認証処理を実行
     }
   }
 };

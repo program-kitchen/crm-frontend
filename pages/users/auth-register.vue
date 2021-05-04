@@ -3,16 +3,19 @@
     <SideBar />
     <div class="register-modal">
       <h1 class="register-modal__title">ユーザー情報有効</h1>
-      <div class="register-modal__form">
-        <label for="name" class="register-modal__label">名前 </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          class="register-modal__input crm__input"
-          v-model="name"
-        />
-      </div>
+      <ValidationObserver class="register-modal__form" ref="name">
+        <validation-provider v-slot="{ errors }" rules="required">
+          <label for="name" class="register-modal__label">名前 </label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            class="register-modal__input crm__input"
+            v-model="name"
+          />
+          <span class="crm__error">{{ errors[0] }}</span>
+        </validation-provider>
+      </ValidationObserver>
       <div class="register-modal__form">
         <label for="position" class="register-modal__label">権限</label>
         <input
@@ -20,19 +23,26 @@
           name="position"
           type="text"
           class="register-modal__input crm__input"
-          v-model="position"
+          value="axiosで表示時に値を取得"
+          disabled
         />
       </div>
-      <div class="register-modal__form">
-        <label for="password" class="register-modal__label">パスワード</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          class="register-modal__input crm__input"
-          v-model="password"
-        />
-      </div>
+      <ValidationObserver class="register-modal__form" ref="password">
+        <validation-provider
+          v-slot="{ errors }"
+          rules="required|password|min:8|max:15"
+        >
+          <label for="password" class="register-modal__label">パスワード</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            class="register-modal__input crm__input"
+            v-model="password"
+          />
+          <span class="crm__error">{{ errors[0] }}</span>
+        </validation-provider>
+      </ValidationObserver>
 
       <button @click="submit" class="register-modal__button crm-modal__button">
         登録
@@ -49,9 +59,14 @@ export default {
       password: ""
     };
   },
+  // TODO 画面読み込み時に権限を表示時に取得する
+
   methods: {
     submit() {
-      // ログインAPI処理を実行
+      //バリデーション
+      if (!this.$refs.name.validate() || !this.$refs.password.validate())
+        return;
+      // TODO 認証処理を実行
     }
   }
 };

@@ -31,3 +31,8 @@ html {
   transition: 0.5s;
   background: transparent linear-gradient(270deg, #2bb8f8 0%, #41de9d 100%);
 }
+
+.crm__error {
+  color: red;
+  font-size: 1.4rem;
+}

@@ -20,14 +20,13 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    '@/assets/css/style.css',
-  ],
+  css: ["@/assets/css/style.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     "~/plugins/vue-pagenate.js",
     "~/plugins/axios.js",
+    "~/plugins/vee-validate"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -46,5 +45,5 @@ export default {
   axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: { transpile: ["vee-validate/dist/rules"] }
 };
