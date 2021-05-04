@@ -30,7 +30,7 @@
       <ValidationObserver class="register-modal__form" ref="password">
         <validation-provider
           v-slot="{ errors }"
-          rules="required|password|min:8|max:15"
+          rules="required|password|password_range"
         >
           <label for="password" class="register-modal__label">パスワード</label>
           <input

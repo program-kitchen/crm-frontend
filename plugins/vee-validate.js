@@ -41,6 +41,15 @@ extend("password", {
   }
 });
 
+extend("password_range", {
+  message: "8文字以上15文字以下で入力してください",
+  validate(value) {
+    if (value.match(/^[a-zA-Z0-9!#%&( )+,-./;<=>?@\[\]^_{|}~]{8,15}$/)) {
+      return true;
+    }
+  }
+});
+
 localize("ja", ja);
 
 Vue.component("ValidationProvider", ValidationProvider);
