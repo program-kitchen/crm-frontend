@@ -41,6 +41,7 @@ extend("password", {
   }
 });
 
+//パスワードの文字数をチェックするルールを作成
 extend("password_range", {
   message: "8文字以上15文字以下で入力してください",
   validate(value) {
