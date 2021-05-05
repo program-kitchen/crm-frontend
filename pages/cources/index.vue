@@ -11,7 +11,7 @@
                 <th class="contents-table__header-check-list">   
                   <label>
                     <input type="checkbox" v-model="selectAll" class="contents-table__head-check">
-                    <span class="contents-table__head-check_exist"></span>
+                    <span class="contents-table__head-check--checked"></span>
                   </label>
                 </th>
                 <th class="contents-table__header-term">コース名</th>
@@ -25,8 +25,13 @@
               <tr v-for="(cource , index) in cources" :key="index">
                 <td>
                   <label>
-                    <input type="checkbox" v-model="checkCources" v-bind:value="cource.id" class="contents-table__head-check">
-                    <span class="contents-table__head-check_exist"></span>
+                    <input
+                      type="checkbox"
+                      v-model="checkCources"
+                      v-bind:value="cource.id"
+                      class="contents-table__head-check"
+                    >
+                    <span class="contents-table__head-check--checked"></span>
                   </label>
                 </td>
 
@@ -34,7 +39,10 @@
                 <td>{{cource.period}}</td>
                 <td>{{cource.description}}</td>
                 <td class="contents-table__record-button">
-                  <button class="contents-table__record-button--edit" @click="$router.push(`/cources/${cource.id}/edit`)">
+                  <button
+                    class="contents-table__record-button--edit"
+                    @click="$router.push(`/cources/${cource.id}/edit`)"
+                  >
                     編集
                   </button>
                 </td>
@@ -51,11 +59,6 @@
           </table>
         </div>
         <SelectedDeleteButton :sendDeleteData="checkCources" :pageInfo="pageInfo"/> 
-        <!-- <div class="contents-buttom">
-          <button @click="selectedDeleteCources">チェックしたコースを消去</button>
-          <p>該当件数：{{checkCources.length}}件</p>
-        </div> -->
-        <!-- <pagination :parentText="sendText" /> -->
         <div class="contents-pagination">
           <paginate v-if="(getPageCount > 1)"
             :page-count="getPageCount"
@@ -90,6 +93,19 @@ export default {
           { id: 2, name: 'フリーランスコースだよ' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
           { id: 3, name: 'たぶんスキルアップコース' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
           { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
           { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
           { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
           { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
@@ -167,6 +183,7 @@ export default {
 <style scoped>
 .cources {
   background: #EEF2F2;
+  font-size: 1.6rem;
 }
 
 .main,
@@ -180,183 +197,11 @@ export default {
 }
 
 /* テーブルCSS */
-.contents-table {
-  height: 70%;
-  border-collapse: collapse;
-  /* border-spacing: 0; */
-  background: #FFFFFF;
-  box-shadow: 0px 16px 54px #89BDBD80;
-  border-radius: 6px;
-  opacity: 1;
-  width: 95%;
-  overflow: auto;
-}
-
-.contents-table table {
-  border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
-  overflow: auto;
-}
-
-
-.contents-table__header {
-  background: linear-gradient(270deg, #41DE9D 0%, #2BB8F8 100%);
-  color: #FFFFFF;
-}
-
-.contents-table__header th {
-  padding: 0.9rem 0;
-  text-align: left;
-  font-size: 1.2rem;
-  /* width: 11rem; */
-}
-
-.contents-table__header-check-list {
-  width: 5rem;
-}
-
-.contents-table__record tr {
-  border-bottom: 1px solid #E3E3E3;
-}
-
-.contents-table__record td {
-  color: #707070;
-  opacity: 1;
-  padding: 0.6rem 0;
-  /* width: 100px; */
-}
-
-
-/* 2ボタン共通スタイル */
-
 .contents-table__header-term {
-  width: 16rem;
+  width: 30rem;
 }
 .contents-table__header-period {
-  width: 8rem;
+  width: 13rem;
 }
 
-.contents-table__header-button {
-  width: 6.5rem;
-  padding-left: 10rem;
-}
-
-.contents-table__record-button {
-  text-align: center;
-}
-.contents-table__record-button--edit,
-.contents-table__record-button--delete {
-  border: none;
-  border-radius: 20px;
-  color: #FFFFFF;
-  padding: 0 0.7rem;
-  height: 1.9rem;
-}
-
-.contents-table__record-button--edit:hover,
-.contents-table__record-button--delete:hover {
-  cursor: pointer;
-  transition:  0.5s;
-}
-
-.contents-table__record-button--edit p,
-.contents-table__record-button--delete p {
-  font: normal normal normal 20px/30px Meiryo;
-  letter-spacing: 0px;
-  color: #FFFFFF;
-  opacity: 1;
-}
-
-.contents-table__record-button--edit {
-  background: #04C6C6;
-  border: 1px solid #04C6C6;
-}
-
-.contents-table__record-button--delete {
-  background: #FF5561;
-  border: 1px solid #FF5561;
-
-}
-
-.contents-table__record-button--edit:hover {
-  background: #40dada;
-}
-.contents-table__record-button--delete:hover {
-  background: #f8717a;
-}
-
-/* チェックボックスデザイン */
-.contents-table__head-check{
-  display: none;
-}
-.contents-table__head-check_exist {
-  position:relative;
-  
-}
-
-.contents-table__head-check_exist::before{
-  content: "";
-  display: block;
-  position: absolute;
-  top: -5px;
-  left: 30px;
-  width: 18px;
-  height: 18px;
-  border: 1px solid #999;
-  background-color: #ffffff;
-}
-.contents-table__head-check:checked + .contents-table__head-check_exist::after{
-  content: "";
-  display: block;
-  position: absolute;
-  top: -5px;
-  left: 35px;
-  width: 7px;
-  height: 14px;
-  transform: rotate(40deg);
-  border-bottom: 2px solid white;
-  border-right: 2px solid white;
-}
-.contents-table__head-check:checked + .contents-table__head-check_exist::before{
-  background-color: #04C6C6;
-  border: none;
-}
-</style>
-
-<style>
-/* ページネーション */
-/* scopeを入れると反映されないため、別タグで切り出し */
-.pagination {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-
-}
-.pagination-li {
-  margin: 0 6px;
-  
-}
-.pagination-a {
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  padding: 0.3rem 0.5rem;
-  margin: 0 0.1rem;
-  border-radius: 3px;
-  color: #55BBBB;
-}
-
-.pagination-a:hover {
-  background: #04C6C6 0% 0% no-repeat padding-box;
-  padding: 0.3rem 0.5rem;
-  margin: 0 0.1rem;
-  border-radius: 3px;
-  color: #FFFFFF;
-  transition:  0.3s 0s ease-in;
-  cursor: pointer;
-}
-.pagination-active a {
-  background: #04C6C6 0% 0% no-repeat padding-box;
-  color: #FFFFFF;
-}
 </style>

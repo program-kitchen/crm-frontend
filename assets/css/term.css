@@ -1,0 +1,65 @@
+/* ターム登録とターム編集画面のCSS共通 */
+.term-area {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  color: #707070;
+  font-size: 1.6rem;
+}
+
+.term-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 16px 54px #89BDBD80;
+  border-radius: 10px;
+  opacity: 1;
+  width: 60%;
+  height: 85%;
+  margin: 0 auto;
+}
+
+.main-term {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.main-term__title {
+  padding-bottom: 1.5rem;
+  text-align: center;
+}
+
+.main-term label {
+  display: block;
+  margin: 0 auto;
+  padding-top: 2.5rem;
+  padding-bottom: 5px;
+}
+
+.main-term__textbox {
+  box-sizing:border-box;
+  width: 100%;
+}
+
+select {
+  display: block;
+}
+
+
+.main-term__button-auth {
+  display: block;
+  margin: 2rem auto;
+}
+
+.main-term__button-return {
+  text-align: center;
+  margin: 0 auto;
+  color: #567DFF;
+  padding: 0.7rem 0;
+  width: 20%;
+}
+.main-term__button-return:hover {
+  cursor: pointer;
+}
+/* ここまで */

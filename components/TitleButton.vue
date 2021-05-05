@@ -30,6 +30,7 @@ export default {
   padding-right: 2.5rem;
   color: #707070;
   font-weight: bold;
+  font-size: 2.8rem;
 }
 
 .contents-head__button {
@@ -38,7 +39,7 @@ export default {
   padding: 0 1.2rem;
   border-radius: 27px;
   opacity: 1;
-  font-size: 1.1rem;
+  font-size: 2rem;
   text-align: center;
   color: #FFFFFF;
   font-weight: bold;

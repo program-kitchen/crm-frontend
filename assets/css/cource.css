@@ -1,0 +1,177 @@
+/* コース登録とコース編集の共通CSS */
+.cource-area {
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.6rem;
+}
+
+.cource-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555454;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0px 16px 54px #89BDBD80;
+  border-radius: 10px;
+  opacity: 1;
+  width: 60%;
+  height: 85%;
+  margin: 0 auto;
+}
+
+.main-cource {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.main-cource__title {
+  padding-bottom: 1.5rem;
+  text-align: center;
+}
+
+.main-cource label{
+  display: block;
+  margin: 0 auto;
+  padding-top: 2rem;
+  padding-bottom: 5px;
+}
+
+.main-cource__name,
+.main-cource__period,
+.main-cource__description,
+.main-cource-term__table {
+  box-sizing:border-box;
+  width: 100%;
+}
+
+select {
+  display: block;
+}
+
+/* ターム表示テーブルのcss */
+.main-cource-term__table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 1.5rem;
+  border: 0.4rem solid #f2f2f2;
+  text-align: left;
+}
+
+.main-cource-term__table th {
+  border-bottom: 4px solid #F2F2F2;
+  padding: 10px;
+}
+.main-cource-term__table td {
+  border-bottom: 1px solid #F2F2F2;
+  padding: 5px 10px;
+  height: 4rem;
+}
+
+.main-cource-term__table-data--space {
+  height: 4rem;
+}
+
+.main-cource__table {
+  padding: 0;
+}
+
+/* ここまで */
+.main-cource__button-auth {
+  display: block;
+  margin: 0.5rem auto;
+}
+
+.main-cource__button-return {
+  text-align: center;
+  margin: 0 auto;
+  color: #567DFF;
+  padding: 0.7rem 0;
+  width: 20%;
+}
+
+.main-cource__button-return:hover {
+  cursor: pointer;
+}
+
+
+/* CSSでボタンデザイン自作 */
+/* 円ボタン共通 */
+.main-cource-term__table-button-new,
+.main-cource-term__table-data-button-remove {
+  text-align: right;
+	font-size: 2rem;
+	position: relative;
+	width: 2.5rem;
+	height: 2.5rem;
+  border-radius: 100%;
+  transition:  0.5s;
+}
+
+/* 追加円ボタン共通 */
+.main-cource-term__table-button-new {
+	border: 0.1rem solid #04C6C6;
+  background-color: #04C6C6;
+}
+
+.main-cource-term__table-button-new:hover {
+  cursor: pointer;
+	border: 0.1rem solid #84f8f8;
+  background-color: #84f8f8;
+  transition:  0.5s;
+}
+
+/* 削除円ボタン */
+.main-cource-term__table-data-button-remove {
+	border: 0.1rem solid #FF5561;
+  background-color: #FF5561;
+  
+}
+.main-cource-term__table-data-button-remove:hover {
+  cursor: pointer;
+  border: 0.1rem solid #f7979e;
+  background-color: #f7979e;
+  transition:  0.5s;
+}
+
+.main-cource-term__table-button-new::before,
+.main-cource-term__table-data-button-remove::before {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	width: 2rem;
+	height: 0.1rem;
+	content: "";
+	background-color: white;
+  transform: translate(-50%, -50%);
+}
+
+.main-cource-term__table-button-new::after {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	width: 2rem;
+	height: 0.1rem;
+	content: "";
+	background-color: white;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+
+/* 左線 */
+.main-cource-term__table-data-button-remove::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* 右線 */
+.main-cource-term__table-data-button-remove::after {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	width: 2rem;
+	height: 0.1rem;
+	content: "";
+	background-color: white;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+/* ここまで */

@@ -12,6 +12,7 @@
     "@nuxtjs/axios": "^5.13.1",
     "core-js": "^3.9.1",
     "nuxt": "^2.15.3",
+    "nuxt-client-init-module": "^0.3.0",
     "vee-validate": "^3.4.5",
     "vue-paginate": "^3.6.0",
     "vuejs-paginate": "^2.1.0",

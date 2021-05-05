@@ -7,20 +7,21 @@
         <div class="contents-search">
           <input type="text" placeholder="ユーザ名" v-model="name">
           <input type="mail" placeholder="メールアドレス" v-model="email">
-          <select v-model="role">
-            <option disabled value="">権限選択</option>
+          <select v-model="role" class="contents-search__select">
+            <option value="">権限選択</option>
             <option>管理者</option>
             <option>バックオフィス</option>
             <option>コーチ</option>
           </select>
           <button class="contents-search__button" @click="userSearch">検索</button>
-          <p>検索結果：{{searchUserData.length}}件</p>
+          <p v-if="searchUserData.length === 0">検索結果：該当なし</p>
+          <p v-else>検索結果：{{searchUserData.length}}件</p>
         </div>
         <div class="contents-table">
           <table>
-            <thead class="contents-table__head">
+            <thead class="contents-table__header">
               <tr>
-                <th>
+                <th class="contents-table__header-check-list">
                   <label>
                     <input type="checkbox" v-model="selectAll" class="contents-table__head-check">
                     <span class="contents-table__head-check--checked"></span>
@@ -29,13 +30,13 @@
                 <th>名前</th>
                 <th>メールアドレス</th>
                 <th>権限</th>
-                <th></th>
-                <th></th>
+                <th class="contents-table__header-button"></th>
+                <th class="contents-table__header-button"></th>
               </tr>
             </thead>
             <tbody class="contents-table__record">
               <tr v-for="(user, index) in getUsers" :key="index">
-                <td>
+                <td class="contents-table__header-check-list">
                   <label>
                     <input type="checkbox" v-model="checkNames" v-bind:value="user.id" class="contents-table__head-check">
                     <span class="contents-table__head-check--checked"></span>
@@ -44,7 +45,7 @@
                 <td>{{user.name}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
-                <td>
+                <td class="contents-table__record-button">
                   <button
                     class="contents-table__record-button--edit" 
                     @click="$router.push(`/users/${user.id}/edit`)" 
@@ -99,7 +100,7 @@ export default {
       // ログイン情報はstoreに本来は保存
       userRole: "バックオフィス", 
 
-      sendText: {title:"ユーザ", url:"users"},
+      sendText: {title:"ユーザー", url:"users"},
       pageInfo: 'user',
       checkNames: [],
       users: [
@@ -135,7 +136,7 @@ export default {
           { id: 30, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
           { id: 31, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
       ],
-     parPage: 5,
+     parPage: 10,
      currentPage: 1,
      getPageCount: 0
     }
@@ -152,11 +153,11 @@ export default {
           .get(`api.coachtech-crm.com/user/index`,{ "pageIndex" : pageNo})
           .then((res) => {
             this.users = res.data;          // 必要なのはid,name,email,role
-            this.getPageCount = res.count;
+            this.getPageCount = res.count;  // 全データの件数を取得する
           })
           .catch(() => this.$router.push('/error'))
     },
-    // 取得API
+    // 検索API
     async userSearch() {
       await
         this.$axios
@@ -168,13 +169,16 @@ export default {
           })
           .then((res) => {
             // データを初期化後、検索結果を格納
-            this.searchUserData = res.data 
+            this.searchUserData = res.data;
+            this.getPageCount = res.count;  // 全データの件数を取得する
           })
           .catch(() => this.$router.push('/error'))
     },
     clickViewPage(pageNo) {
       this.currentPage = Number(pageNo);
-      this.fetchUserData(this.currentPage);
+      if(this.searchUserData.length === 0) {
+        this.fetchUserData(this.currentPage);
+      }
     },
     confirmDelete(userId) {
       if(window.confirm('ユーザーを削除します。よろしいでしょうか？')) {
@@ -210,7 +214,6 @@ export default {
     },
   },
   computed: {
-
     // 見ているページ番号のユーザ情報を表示(１ページずつAPIで取得する)
     getUsers() {
       if(this.searchUserData.length > 0) {
@@ -246,6 +249,10 @@ export default {
 </script>
 
 <style scoped>
+.users {
+  font-size: 1.6rem;
+}
+
 .main,
 .contents-search,
 .contents-buttom {
@@ -263,17 +270,18 @@ export default {
 }
 
 .contents-search {
-  padding: 0.5rem 0;
+  padding: 1rem 0;
   align-items: center;
 }
 
 .contents-search input,
 .contents-search select {
-  width: 15rem;
-  padding: 0.3rem;
+  width: 20rem;
+  padding: 0.5rem;
   margin-right: 2rem;
   box-sizing:border-box;
-  height: 2rem;
+  height: 3.5rem;
+  outline: none;
 }
 
 .contents-search__button {
@@ -283,7 +291,6 @@ export default {
   margin-right: 1rem;
   border-radius: 27px;
   opacity: 1;
-  font-size: 1.1rem;
   text-align: center;
   color: #FFFFFF;
   font-weight: bold;
@@ -294,182 +301,6 @@ export default {
   transition:  0.3s 0s ease-in;
   background: #40dada;
 }
-
-/* テーブルCSS */
-.contents-table {
-  height: 70vh;
-  border-collapse: collapse;
-  border-spacing: 0;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  box-shadow: 0px 16px 54px #89BDBD80;
-  border-radius: 6px;
-  opacity: 1;
-  width: 95%;
-  overflow: auto;
-}
-
-.contents-table table {
-  border-collapse: collapse;
-  width: 100%;
-	border-spacing: 0;
-}
-
-.contents-table__head {
-  background: linear-gradient(270deg, #41DE9D 0%, #2BB8F8 100%);
-  color: #FFFFFF;
-}
-
-.contents-table__head th {
-  padding: 0.9rem 0;
-  text-align: left;
-  font-size: 1.2rem;
-}
-
-
-.contents-table input[type="checkbox"] {
-  width: 4rem;
-  text-align: center;
-}
-
-.contents-table__record tr {
-  border-bottom: 1px solid #E3E3E3;
-}
-
-.contents-table__record td {
-  letter-spacing: 0px;
-  color: #707070;
-  opacity: 1;
-  padding: 0.6rem 0;
-}
-
-
-/* 削除・編集ボタンスタイル */
-.contents-table__record-button--edit,
-.contents-table__record-button--delete {
-  border: none;
-  border-radius: 20px;
-  color: #FFFFFF;
-  padding: 0 0.7rem;
-  height: 1.9rem;
-  transition:  0.5s;
-}
-
-.contents-table__record-button--edit p,
-.contents-table__record-button--delete p {
-  font: normal normal normal 20px/30px Meiryo;
-  letter-spacing: 0px;
-  color: #FFFFFF;
-  opacity: 1;
-}
-
-.contents-table__record-button--edit {
-  background: #04C6C6;
-  border: 1px solid #04C6C6;
-}
-
-.contents-table__record-button--delete {
-  background: #FF5561;
-  border: 1px solid #FF5561;
-}
-
-.contents-table__record-button--edit:hover,
-.contents-table__record-button--delete:hover {
-  cursor: pointer;
-  transition:  0.5s;
-}
-
-.contents-table__record-button--edit:hover {
-  background: #40dada;
-}
-
-.contents-table__record-button--delete:hover {
-  background: #f8717a;
-}
-
-
-/* チェックボックスデザイン */
-.contents-table__head-check{
-  display: none;
-}
-
-.contents-table__head-check--checked {
-  padding-left: 20px;
-  position:relative;
-  margin-right: 20px;
-}
-
-.contents-table__head-check--checked::before{
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 20px;
-  width: 18px;
-  height: 18px;
-  border: 1px solid #999;
-  background-color: #ffffff;
-}
-
-.contents-table__head-check:checked + .contents-table__head-check--checked::after{
-  content: "";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 25px;
-  width: 7px;
-  height: 14px;
-  transform: rotate(40deg);
-  border-bottom: 2px solid #ffffff;
-  border-right: 2px solid #ffffff;
-}
-
-.contents-table__head-check:checked + .contents-table__head-check--checked::before{
-  background-color: #04C6C6;
-  border: none;
-}
 </style>
 
 
-<style>
-/* ページネーションスタイル */
-/* scopedでは適用されないため */
-.contents-pagination {
-  margin: 0 auto;
-  padding-left: 0;
-
-}
-
-.pagination {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-}
-
-.pagination-li {
-  margin: 0 6px;
-}
-
-.pagination-a {
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  padding: 0.3rem 0.5rem;
-  margin: 0 0.1rem;
-  border-radius: 3px;
-  color: #55BBBB;
-}
-
-.pagination-a:hover {
-  background: #04C6C6 0% 0% no-repeat padding-box;
-  padding: 0.3rem 0.5rem;
-  margin: 0 0.1rem;
-  border-radius: 3px;
-  color: #FFFFFF;
-  transition:  0.3s 0s ease-in;
-  cursor: pointer;
-}
-
-.pagination-active a {
-  background: #04C6C6 0% 0% no-repeat padding-box;
-  color: #FFFFFF;
-}
-</style>

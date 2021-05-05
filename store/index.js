@@ -7,6 +7,9 @@ export const mutations = {
   addCource(state , value) {
     state.cource = value;
   },
+  viewTerm(state, value) {
+    state.term = value
+  },
   addTerm(state , {term,period,description}) {
     state.term.push({
       name: term,
@@ -37,9 +40,12 @@ export const mutations = {
   }
 }
 
-// export const actions = {
-//   addCource(context, value) {
-//     // コミットすることで状態変更が反映される
-//     context.commit("add", value);
-//   }
-// };
+export const actions = {
+  nuxtClientInit({ commit }, context) {
+    let data = JSON.parse(sessionStorage.getItem("cource-info")) || [];
+    if (data.length !== 0) {
+      commit("addCource", data.cource);
+      commit("viewTerm", data.term);
+    }
+  }
+};

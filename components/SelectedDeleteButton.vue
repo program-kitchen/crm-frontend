@@ -1,7 +1,7 @@
 <template>
   <div class="contents-buttom">
     <button
-      class="contents-buttom__button"
+      class="contents-buttom__button--enable"
       v-show="sendDeleteData.length == 0"
     >
       削除できません
@@ -27,13 +27,9 @@ export default {
       type: String
     }
   },
-  mounted() {
-    console.log(this.sendDeleteData); 
-  },
   methods: {
     confirmDelete() {
       if(window.confirm('削除します。よろしいでしょうか？')) {
-        console.log(this.sendDeleteData);
         this.selectedDeleteUsers();
       }
     },
@@ -45,7 +41,6 @@ export default {
            "loginUuId" : this.$store.state.userID
         })
         .then((res) => {
-          console.log(res);
            this.$emit('fetchData')
         })
         .catch(() => this.$router.push('/error'))
@@ -72,12 +67,23 @@ export default {
   color: #FFFCFC;
   font-weight: bold;
   margin-right: 2rem;
-  height: 2rem;
+  height: 3rem;
   padding: 0 1.2rem;
 }
 .contents-buttom__button:hover {
   cursor: pointer;
   transition:  0.3s 0s ease-in;
   background: #f8717a;
+}
+
+.contents-buttom__button--enable {
+  background: #b8b3b3;
+  border: none;
+  border-radius: 27px;
+  color: #FFFCFC;
+  font-weight: bold;
+  margin-right: 2rem;
+  height: 3rem;
+  padding: 0 1.2rem;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <img class="logo" src="../assets/coachtech-crm_logo.svg">
+    <img class="logo" src="@/assets/images/coachtech-crm_logo.svg">
     <ul class="menu">
       <nuxt-link class="menu__link" to="/" >
         <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path == '/' }">
@@ -32,7 +32,7 @@ nav {
 }
 .logo {
   margin: 0 auto;
-  padding: 2rem 0;
+  padding: 2.5rem 0;
   width: 90%;
 }
 .menu {
@@ -48,10 +48,11 @@ nav {
 
 .menu__link-title {
   list-style: none;
-  padding: 0.8rem 0;
-  padding-left: 1.5rem;
+  padding: 1.5rem 0;
+  padding-left: 2.5rem;
   opacity: 0.64;
   transition: 0.5s;
+  font-size: 1.7rem;
 }
 
 .menu__link-title:hover {

@@ -21,7 +21,10 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
-    '@/assets/css/style.css',
+    "@/assets/css/style.css",
+    "@/assets/css/cource.css",
+    "@/assets/css/list.css",
+    "@/assets/css/term.css",
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -29,7 +32,9 @@ export default {
     "~/plugins/vue-pagenate.js",
     "~/plugins/axios.js",
     "~/plugins/localStorage.js",
-    "@plugins/vee-validate"
+    "@plugins/vee-validate",
+    '@/plugins/dragDrop.js',
+    '@/plugins/cource.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -41,7 +46,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    "@nuxtjs/axios"
+    "@nuxtjs/axios",
+    "nuxt-client-init-module"
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
