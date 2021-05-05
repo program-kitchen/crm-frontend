@@ -26,6 +26,12 @@ html {
   color: #ffffff;
 }
 
+.crm-modal__button:disabled,
+.crm-modal__button:disabled:hover {
+  background: #d3d5d6;
+  cursor: default;
+}
+
 .crm-modal__button:hover {
   cursor: pointer;
   transition: 0.5s;
