@@ -2,7 +2,7 @@
   <div class="register">
     <SideBar />
 
-    <ValidationObserver class="register-modal" v-slot="{ invalid }">
+    <ValidationObserver class="crm-modal" v-slot="{ invalid }">
       <h1 class="register-modal__title">ユーザー登録</h1>
       <validation-provider
         class="register-modal__form"
