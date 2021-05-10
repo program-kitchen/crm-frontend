@@ -18,6 +18,9 @@ export default {
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
+  router: {
+    middleware: ["auth"]
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["@/assets/css/style.css", "@/assets/css/users.css"],
@@ -38,12 +41,34 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    "@nuxtjs/axios"
+    "@nuxtjs/axios",
+    "@nuxtjs/auth"
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: { transpile: ["vee-validate/dist/rules"] }
+  build: {
+    transpile: ["vee-validate/dist/rules"]
+  },
+  auth: {
+    redirect: {
+      login: "/login", // 未ログイン時に認証ルートへアクセスした際のリダイレクトURL
+      logout: "/login", // ログアウト時のリダイレクトURL
+      callback: false, // Oauth認証等で必要となる コールバックルート
+      home: "/" // ログイン後のリダイレクトURL
+    },
+    strategies: {
+      laravelJWT: {
+        provider: "laravel/jwt",
+        url: "http://localhost:8000",
+        endpoints: {
+          login: { url: "/api/login", method: "post", propertyName: "token" },
+          logout: { url: "/api/logout", method: "post" },
+          user: { url: "/api/user/index", method: "get", propertyName: "user" }
+        }
+      }
+    }
+  }
 };
