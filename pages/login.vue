@@ -36,8 +36,23 @@ export default {
     };
   },
   methods: {
-    submit() {
-      // ログインAPI処理を実行
+    async submit() {
+      await this.$auth
+        .loginWith("laravelJWT", {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(
+          response => {
+            console.log(response);
+            return response;
+          },
+          error => {
+            return error;
+          }
+        );
     }
   }
 };
@@ -47,7 +62,6 @@ export default {
 .login {
   height: 100vh;
 }
-
 .login-modal {
   width: 94rem;
   height: 67rem;
@@ -59,7 +73,6 @@ export default {
   box-shadow: 0px 1.6rem 5.4rem #89bdbd80;
   border-radius: 10px;
 }
-
 .login-modal__title {
   margin-top: 11rem;
   margin-bottom: 8.6rem;
@@ -70,12 +83,10 @@ export default {
   color: #707070;
   opacity: 1;
 }
-
 .login-modal__form {
   width: 61rem;
   margin-bottom: 2.8rem;
 }
-
 .login-modal__label {
   text-align: left;
   font: normal normal normal 2rem/3rem Meiryo;
@@ -84,11 +95,9 @@ export default {
   color: #707070;
   opacity: 1;
 }
-
 .login-modal__input {
   width: 100%;
 }
-
 .login-modal__button {
   width: 24.5rem;
   margin-top: 6rem;

@@ -1,21 +1,26 @@
 <template>
   <div class="users">
+    <button @click="$router.push('/users/login')">ログイン</button>
+    <button @click="$router.push('/users/logout')">ログアウト</button>
+    <button @click="$router.push('/cources/register')">コース登録</button>
+    <button @click="$router.push(`/cources/1/edit`)">コース登録</button>
     <div class="main">
       <SideBar />
       <div class="contents">
         <TitleButton :urlText="sendText"/>
+        <p class="contents-error">{{authMessage}}</p>
         <div class="contents-search">
           <input type="text" placeholder="ユーザ名" v-model="name">
           <input type="mail" placeholder="メールアドレス" v-model="email">
           <select v-model="role" class="contents-search__select">
             <option value="">権限選択</option>
-            <option>管理者</option>
-            <option>バックオフィス</option>
-            <option>コーチ</option>
+            <option value="3">管理者</option>
+            <option value="2">バックオフィス</option>
+            <option value="1">コーチ</option>
           </select>
           <button class="contents-search__button" @click="userSearch">検索</button>
-          <p v-if="searchUserData.length === 0">検索結果：該当なし</p>
-          <p v-else>検索結果：{{searchUserData.length}}件</p>
+          <p v-if="pageCount === 0">検索結果：該当なし</p>
+          <p v-else>表示件数：{{pageCount}}件</p>
         </div>
         <div class="contents-table">
           <table>
@@ -35,16 +40,19 @@
               </tr>
             </thead>
             <tbody class="contents-table__record">
-              <tr v-for="(user, index) in getUsers" :key="index">
+              <tr v-for="(user, index) in users" :key="index">
                 <td class="contents-table__header-check-list">
                   <label>
-                    <input type="checkbox" v-model="checkNames" v-bind:value="user.id" class="contents-table__head-check">
+                    <input type="checkbox" v-model="checkNames" v-bind:value="user.uuid" class="contents-table__head-check">
                     <span class="contents-table__head-check--checked"></span>
                   </label>
                 </td>
                 <td>{{user.name}}</td>
                 <td>{{user.email}}</td>
-                <td>{{user.role}}</td>
+                <td v-if="user.role=='4'">オーナー</td>
+                <td v-if="user.role=='3'">管理者</td>
+                <td v-if="user.role=='2'">バックオフィス</td>
+                <td v-if="user.role=='1'">コーチ</td>
                 <td class="contents-table__record-button">
                   <button
                     class="contents-table__record-button--edit" 
@@ -57,7 +65,7 @@
                 <td>
                   <button
                     class="contents-table__record-button--delete"
-                    @click="confirmDelete(user.id)" 
+                    @click="confirmDelete(user.uuid)" 
                     v-show="canEdit(user.role,userRole)"
                   >
                     削除
@@ -94,139 +102,139 @@ export default {
       name: '',
       email: '',
       role: '',
-      searchUserData: [],
-
-      // 一旦ログインユーザはバックオフィスの人と仮定
-      // ログイン情報はstoreに本来は保存
-      userRole: "バックオフィス", 
-
+      // 一旦ログインユーザの権限を取得
+      userRole: this.$store.state.auth_user.role,
       sendText: {title:"ユーザー", url:"users"},
       pageInfo: 'user',
       checkNames: [],
       users: [
-          { id: 1, name: '田中太郎' , email: "test1@test.com", role: "コーチ"},
-          { id: 2, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 3, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 4, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
-          { id: 5, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
-          { id: 6, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 7, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 8, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
-          { id: 9, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
-          { id: 10, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 11, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 12, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
-          { id: 13, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
-          { id: 14, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 15, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 16, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
-          { id: 17, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 18, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 19, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
-          { id: 20, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
-          { id: 21, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 22, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 23, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
-          { id: 24, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
-          { id: 25, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 26, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 27, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
-          { id: 28, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
-          { id: 29, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
-          { id: 30, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
-          { id: 31, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 1, name: '田中太郎' , email: "test1@test.com", role: "コーチ"},
+          // { id: 2, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 3, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 4, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 5, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
+          // { id: 6, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 7, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 8, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 9, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
+          // { id: 10, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 11, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 12, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 13, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
+          // { id: 14, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 15, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 16, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 17, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 18, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 19, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 20, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
+          // { id: 21, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 22, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 23, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 24, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
+          // { id: 25, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 26, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 27, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
+          // { id: 28, name: '斉藤二郎' , email: "test5@test.com", role: "管理者"},
+          // { id: 29, name: '斉藤一朗' , email: "test2@test.com", role: "コーチ"},
+          // { id: 30, name: '中村絵梨子' , email: "test3@test.com", role: "バックオフィス"},
+          // { id: 31, name: '田中一郎' , email: "test4@test.com", role: "コーチ"},
       ],
-     parPage: 10,
-     currentPage: 1,
-     getPageCount: 0
+      parPage: 5,
+      currentPage: 1,
+      pageCount: 0,
+      authMessage: ""
     }
   },
   created() {
-    console.log(this.searchUserData.length)
     this.fetchUserData(1);
   },
   methods: {
     // 取得API
     async fetchUserData(pageNo) {
       await
-        axios
-          .get(`api.coachtech-crm.com/user/index`,{ "pageIndex" : pageNo})
+        this.$axios
+          .get(`http://localhost:8000/api/user`,{params: {"page" : pageNo}})
           .then((res) => {
-            this.users = res.data;          // 必要なのはid,name,email,role
-            this.getPageCount = res.count;  // 全データの件数を取得する
+            this.users = res.data.data;
+            this.currentPage = res.data.current_page; 
+            this.pageCount = res.data.total;
           })
-          .catch(() => this.$router.push('/error'))
+          .catch((error) => {
+            const code = parseInt(error.response && error.response.status);
+            if(code === 401 ){
+              this.authMessage = "アクセストークンが失効しております"
+            }
+          })
     },
     // 検索API
     async userSearch() {
       await
         this.$axios
-          .get(`api.coachtech-crm.com/user/index/`,{
-            "filterName" : this.name,
-            "filterAuth" : this.role,
-            "filterEmail" : this.email,
-            "filterDeleted" : "1", // 削除フラグは1
+          .get(`http://localhost:8000/api/user`,{
+            params: {
+              "name": this.name,
+              "email": this.email,
+              "role": this.role,
+              "withDeleted" : 1,
+              "page" : 1
+            }
           })
           .then((res) => {
             // データを初期化後、検索結果を格納
-            this.searchUserData = res.data;
-            this.getPageCount = res.count;  // 全データの件数を取得する
+            this.users = res.data.data;
+            this.currentPage = res.data.current_page;
+            this.pageCount = res.data.total;
           })
           .catch(() => this.$router.push('/error'))
     },
+    // 削除API
+    async userDelete(userId) {
+      await
+        this.$axios
+          .post(`http://localhost:8000/api/user/delete`, {
+            "uuid": userId,
+          })
+          .then(() => {
+            console.log('成功');
+            this.fetchUserData(1); //再度ユーザデータ取得
+          })
+          .catch((error) => {
+            const code = parseInt(error.response && error.response.status);
+            if(code === 401 ){
+              this.authMessage = "アクセストークンが失効しております"
+            }
+          })
+    },
     clickViewPage(pageNo) {
-      this.currentPage = Number(pageNo);
-      if(this.searchUserData.length === 0) {
-        this.fetchUserData(this.currentPage);
-      }
+      this.fetchUserData(pageNo);
     },
     confirmDelete(userId) {
       if(window.confirm('ユーザーを削除します。よろしいでしょうか？')) {
         this.userDelete(userId); // 削除API処理を実行
       }
     },
-    // 削除API
-    async userDelete(userId) {
-      await
-        this.$axios
-          .post(`api.coachtech-crm.com/user/delete`, {
-            "uuid": userId,
-            "loginUuid": this.$store.state.id
-          })
-          .then(() => {
-            console.log('成功');
-            this.fetchUserData(1); //再度ユーザデータ取得
-          })
-          .catch(err => {
-            this.$router.push('/error');
-          })
-    },
     // ログインする権限に応じてボタン表示を変更
     canEdit(role,userRole) {
-      const roleName = ["管理者","バックオフィス","コーチ"];
-      if(userRole == "オーナー" && roleName.includes(role)) {
+      const roleNo = [4, 3, 2, 1];
+      if(userRole == "4" && roleNo.slice(1).includes(role)) {
         return true;
-      } else if(userRole == "管理者" && roleName.slice(1).includes(role)){
+      } else if(userRole == "3" && roleNo.slice(2).includes(role)){
         return true;
-      } else if(userRole == "バックオフィス" && roleName.slice(2).includes(role)) {
+      } else if(userRole == "2" && roleNo.slice(3).includes(role)) {
         return true;
       } 
     },
   },
   computed: {
-    // 見ているページ番号のユーザ情報を表示(１ページずつAPIで取得する)
-    getUsers() {
-      if(this.searchUserData.length > 0) {
-        return searchUserData;
-      } else {
-        return this.users;
-      }
+    getPageCount() {
+      return Math.ceil(this.pageCount / this.parPage)
     },
     // チェックボックス処理
     selectAll: {
       get() {
         //ボックスにすべてチェックが入ったか判定
-        if (this.checkNames.length == this.users.length) {
+        if (this.checkNames.length == this.users.length && this.users.length !== 0 ) {
           return true;
         } else {
           return false;
@@ -237,8 +245,8 @@ export default {
         //空の配列を用意
         let checkArray = [];
         if (value) {
-          this.getUsers.forEach((user) => {
-            checkArray.push(user.id);
+          this.users.forEach((user) => {
+            checkArray.push(user.uuid);
           });
         }
         this.checkNames = checkArray;

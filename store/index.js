@@ -1,9 +1,13 @@
 export const state = () => ({
   cource: '',
-  term: []
+  term: [],
+  auth_user: []
 });
 
 export const mutations = {
+  addAuthUser(state, value) {
+    state.auth_user = value;
+  },
   addCource(state , value) {
     state.cource = value;
   },
@@ -13,8 +17,8 @@ export const mutations = {
   addTerm(state , {term,period,description}) {
     state.term.push({
       name: term,
-      period: period,
-      description: description
+      term: period,
+      summary: description
     });
   },
   delAllInfo(state) {
@@ -27,15 +31,15 @@ export const mutations = {
   editTermInfo(state, {id,term,period,description}) {
     state.term.splice(id, 1, {
       name: term,
-      period: period,
-      description: description
+      term: period,
+      summary: description
     })
   },
   editDragInfo(state, {dropIndex,deleteList}) {
     state.term.splice(dropIndex, 0, {
       name: deleteList.name,
-      period: deleteList.period,
-      description: deleteList.description
+      term: deleteList.term,
+      summary: deleteList.summary
     });
   }
 }
@@ -46,6 +50,7 @@ export const actions = {
     if (data.length !== 0) {
       commit("addCource", data.cource);
       commit("viewTerm", data.term);
+      commit("addAuthUser", data.auth_user);
     }
   }
 };

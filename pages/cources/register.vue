@@ -16,15 +16,18 @@
             >
             <span class="crm__error">{{ errors[0] }}</span>
           </validation-provider>
-          <label for="period">期間</label>
-          <input
-            id="period"
-            type="text"
-            class="main-cource__period crm__input"
-            name="period"
-            v-model="sumPeriod"
-            disabled="disabled"
-          >
+          <validation-provider v-slot="{ errors }" name="コース名" immediate rules="min_value:1|max_value:53">
+            <label for="period">期間(月単位)</label>
+            <input
+              id="period"
+              type="text"
+              class="main-cource__period crm__input"
+              name="period"
+              v-model="sumPeriod"
+              disabled="disabled"
+            >
+            <span class="crm__error">{{ errors[0] }}</span>
+          </validation-provider>
           <label for="description">概要</label>
           <input
             id="description"
@@ -67,8 +70,8 @@
               @dragenter.prevent
             >
               <td>{{term.name}}</td>
-              <td>{{term.period}}週</td>
-              <td>{{term.description}}</td>
+              <td>{{term.term}}週</td>
+              <td>{{term.summary}}</td>
               <td>
                 <button
                   class="contents-table__record-button--edit"
@@ -104,53 +107,49 @@
 
 <script>
 export default {
-  middleware: 'redirect',
+  // middleware: 'redirect',
   data() {
     return {
       name: this.$store.state.cource.name,
-      description: this.$store.state.cource.description,
+      description: this.$store.state.cource.summary,
       btnClickFlag: false,
       terms: this.$store.state.term
     }
   },
   methods: {
-    test() {
-      test()
-    },
     returnList() {
       this.$router.push('/cources');
     },
     // 登録API
-    // async newCourceRegist() {
-    //   await
-    //     axios
-    //       .post('api.coachtech-crm.com/course/register', {
-    //         "name" : this.name,
-    //         "term" : this.sumPeriod,
-    //         "summary" : this.description,
-    //         "termInfo" : this.term,
-    //         "loginUuId" : this.$store.state.user.UuId
-    //       })
-    //       .then(() => {
-    //         window.alert('成功しました');
-    //         this.$store.commit("delCourceInfo");
-    //       })
-    //       .catch(res => this.$router.push('/error'))
-    // },
-
-    // axios導入までの代わりの処理
-    newCourceRegist() {
+    async newCourceRegist() {
       this.btnClickFlag = true;
-      this.$store.commit("delAllInfo");
-      window.alert('登録しました');
-      this.$router.push("/cources");
+      await
+        this.$axios
+          .post('http://localhost:8000/api/course/register', {
+            "id": 0,
+            "name" : this.name,
+            "term" : this.sumPeriod,
+            "summary" : this.description,
+            "termInfo" : this.terms,
+          })
+          .then(() => {
+            window.alert('成功しました');
+            this.$store.commit("delAllInfo");
+            this.$router.push('/');
+          })
+          .catch((error) => {
+            const code = parseInt(error.response && error.response.status);
+            if(code === 401 ){
+              this.authMessage = "アクセストークンが失効しております"
+            }
+          })
     },
     sendTerm() {
       this.btnClickFlag = true;
       this.$store.commit("addCource", {
         name: this.name,
-        period: this.sumPeriod,
-        description: this.description
+        term: this.sumPeriod,
+        summary: this.description
       });
       this.$router.push({name: "term"})
     },
@@ -203,9 +202,3 @@ export default {
   },
 }
 </script>
-
-<style scoped>
-/* .contents-table__record-button--edit {
-  width: 5rem;
-} */
-</style>

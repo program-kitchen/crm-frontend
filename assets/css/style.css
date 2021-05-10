@@ -40,3 +40,10 @@ html {
   color: red;
   font-size: 1.4rem;
 }
+
+.contents-error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  font-size: 2rem;
+}

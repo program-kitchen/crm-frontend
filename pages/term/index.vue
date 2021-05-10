@@ -32,7 +32,7 @@
           <label for="period">
             ターム期間(週単位)
           </label>
-          <validation-provider v-slot="{ errors }" name="ターム期間" rules="required|min_value:1|max_value:53">
+          <validation-provider v-slot="{ errors }" name="ターム期間" rules="required|min_value:1|max_value:26">
             <input
               id="period"
               type="number"

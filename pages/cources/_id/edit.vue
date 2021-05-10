@@ -105,7 +105,7 @@
 <script>
 import { mapMutations } from 'vuex';
 export default {
-  middleware: 'redirect',
+  // middleware: 'redirect',
   data() {
     return {
       id: this.$route.params.id,
@@ -117,10 +117,11 @@ export default {
     }
   },
   // APIで取得したデータは一度Vuexに格納
-  async creted() {
-    axios
-      .get(`api.coachtech-crm.com/course/index/${this.id}`)
+  async created() {
+    await this.$axios
+      .get(`http://localhost:8000/api/course/${this.id}`)
       .then((res) => {
+        console.log(res);
         this.name = res.data.name;
         this.description = res.data.description;
         this.terms = res.data.terms;

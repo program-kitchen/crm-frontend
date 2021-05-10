@@ -4,6 +4,7 @@
       <SideBar />
       <div class="contents">
         <TitleButton :urlText="sendText"/>
+        <p class="contents-error">{{authMessage}}</p>
         <div class="contents-table">
           <table>
             <thead class="contents-table__header">
@@ -112,9 +113,9 @@ export default {
           { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
           { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
       ],
-     parPage: 30,
-     currentPage: 1,
-     getPageCount: 0
+      parPage: 30,
+      currentPage: 1,
+      getPageCount: 0
     }
   },
   created() {
@@ -123,24 +124,26 @@ export default {
   methods: {
     async fetchCourceInfo(pageNo) {
       await
-        axios
-          .get(`api.coachtech-crm.com/course/index`, {"pageIndex" : pageNo })
+        this.$axios
+          .get(`http://localhost:8000/api/course`,{parms: {"pageIndex" : pageNo }})
           .then((res) => {
-            this.cources = res.data;
-            this.getPageCount = res.count;
+            this.cources = res.data.data;
+            this.currentPage = res.data.current_page;
+            this.getPageCount = res.data.total;
           })
-          .catch(errorMsg => {
-            console.log(errorMsg);
-            this.$router.push('/error');
+          .catch((error) => {
+            const code = parseInt(error.response && error.response.status);
+            if(code === 401 ){
+              this.authMessage = "アクセストークンが失効しております"
+            }
           })
     },
     clickViewPage(pageNum) {
-       this.currentPage = Number(pageNum);
-       this.fetchCourceInfo(this.currentPage);
+      this.fetchCourceInfo(pageNum);
     },
     confirmDelete(courceId) {
       if(window.confirm('コースを削除します。よろしいでしょうか？')) {
-        this.courcesDelete();
+        this.courcesDelete(courceId);
       }
     },
     async courcesDelete(courceId) {
@@ -158,14 +161,19 @@ export default {
     }
   },
   computed: {
+    getPageCount() {
+      return Math.ceil(this.pageCount / this.parPage)
+    },
+    // チェックボックス処理
     selectAll: {
       get() {
-        if(this.checkCources.length == this.cources.length) {
+        if(this.checkCources.length == this.cources.length && this.cources.length !== 0 ) {
           return true
         } else {
           return false
         }
       },
+      // 全選択のチェックボックスを操作した場合(checkedはtrue)
       set(value) {
         let checkArray = [];
         if(value) {

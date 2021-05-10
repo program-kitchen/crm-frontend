@@ -11,9 +11,6 @@ export default {
     urlText: {
       type: Object
     }
-  },
-  mounted() {
-    console.log(this.urlText);
   }
 }
 </script>
