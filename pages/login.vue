@@ -36,8 +36,23 @@ export default {
     };
   },
   methods: {
-    submit() {
-      // ログインAPI処理を実行
+    async submit() {
+      await this.$auth
+        .loginWith("laravelJWT", {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(
+          response => {
+            console.log(response);
+            return response;
+          },
+          error => {
+            return error;
+          }
+        );
     }
   }
 };
