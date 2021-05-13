@@ -14,7 +14,8 @@
           name="name"
           type="text"
           class="register-modal__input crm__input"
-          v-model="name"
+          value="axiosで表示時に値を取得"
+          disabled
         />
         <span class="crm__error">{{ errors[0] }}</span>
       </validation-provider>
@@ -68,7 +69,22 @@ export default {
 
   methods: {
     submit() {
-      // TODO 認証処理を実行
+      this.$axios
+        .post(
+          "localhost:8000/api/user/register",
+          {
+            uuid: "",
+            password: ""
+          },
+          {
+            headers: {
+              Authorization: this.$auth.strategy.token.get()
+            }
+          }
+        )
+        .then(response => {
+          console.log(response);
+        });
     }
   }
 };
