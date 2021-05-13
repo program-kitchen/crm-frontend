@@ -39,16 +39,20 @@
         v-slot="{ errors }"
         rules="required"
       >
-        <label for="position" class="register-modal__label">権限</label>
+        <label for="role" class="register-modal__label">権限</label>
         <select
-          id="position"
-          name="position"
+          id="role"
+          name="role"
           class="register-modal__select register-modal__input crm__input"
-          v-model="position"
+          v-model="role"
         >
-          <option value="admin">管理者</option>
-          <option value="back-office">バックオフィス</option>
-          <option value="coach">コーチ</option>
+          <option
+            v-for="option in options"
+            v-bind:value="option.name"
+            v-bind:key="option.id"
+          >
+            {{ option.name }}
+          </option>
         </select>
         <span class="crm__error">{{ errors[0] }}</span>
       </validation-provider>
@@ -68,12 +72,41 @@ export default {
     return {
       email: "",
       name: "",
-      position: ""
+      role: "",
+      options: [],
+      loginUser: {}
     };
+  },
+  mounted() {
+    this.loginUser = this.$auth.user;
+    const options = [
+      { id: 1, name: "コーチ" },
+      { id: 2, name: "バックオフィス " },
+      { id: 3, name: "管理者" }
+    ];
+    for (let i = 0; i < this.loginUser["role"] - 1; i++) {
+      console.log(i);
+      this.options.push(options[i]);
+    }
   },
   methods: {
     submit() {
-      // TODO 認証処理を実行
+      this.$axios
+        .post(
+          "localhost:8000/api/user/register",
+          {
+            uuid: "",
+            name: this.name,
+            email: this.email,
+            role: this.role
+          },
+          {
+            headers: {
+              Authorization: this.$auth.strategy.token.get()
+            }
+          }
+        )
+        .then(response => {});
     }
   }
 };
