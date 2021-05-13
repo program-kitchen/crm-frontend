@@ -106,7 +106,9 @@ export default {
             }
           }
         )
-        .then(response => {});
+        .then(response => {
+          console.log(response);
+        });
     }
   }
 };
