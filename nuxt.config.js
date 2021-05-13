@@ -33,8 +33,8 @@ export default {
     "~/plugins/axios.js",
     "~/plugins/localStorage.js",
     "@plugins/vee-validate",
-    '@/plugins/dragDrop.js',
-    '@/plugins/cource.js',
+    "@/plugins/dragDrop.js",
+    "@/plugins/cource.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -48,12 +48,12 @@ export default {
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
     "nuxt-client-init-module",
-    '@nuxtjs/auth-next'
+    "@nuxtjs/auth-next"
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http:localhost:8000'
+    baseURL: "http:localhost:8000"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -76,14 +76,17 @@ export default {
         endpoints: {
           login: { url: '/api/login', method: 'post', propertyName: 'token' },
           logout: { url: '/api/logout', method: 'post' },
-          user: { url: '/api/user', method: 'get', propertyName: 'user'}
+          refresh: { url: '/api/user-profile', method: 'post' },
+          user: { url: '/api/user-profile', method: 'get', propertyName: 'user'}
         },
         token: {
           property: 'access_token',
           maxAge: 60 * 60
         },
         refreshToken: {
-          maxAge: 20160 * 60
+          property: 'refresh_token',
+          data: 'refresh_token',
+          maxAge: 60 * 60 * 24 * 30
         },
       }
     },

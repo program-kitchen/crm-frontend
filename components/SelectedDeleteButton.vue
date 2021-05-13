@@ -35,15 +35,19 @@ export default {
     },
     // 削除API処理
     async selectedDeleteUsers() {
-      await axios
-        .post(`api.coachtech-crm.com/${this.pageInfo}/delete`, {
-           "uuid" : this.sendDeleteData,
-           "loginUuId" : this.$store.state.userID
-        })
-        .then((res) => {
-           this.$emit('fetchData')
-        })
-        .catch(() => this.$router.push('/error'))
+      const deleteData = [];
+      this.sendDeleteData.forEach(elem => {
+        deleteData.push(elem)
+      });
+      await
+        this.$axios
+          .post(`http://localhost:8000/api/${this.pageInfo}/delete`, {
+            "uuid" : deleteData
+          })
+          .then((res) => {
+            this.$emit('fetchData')
+          })
+          .catch(() => this.$router.push('/error'))
     }
 
   }

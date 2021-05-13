@@ -23,7 +23,7 @@
               </tr>
             </thead>
             <tbody class="contents-table__record">
-              <tr v-for="(cource , index) in cources" :key="index">
+              <tr v-for="(cource , index) in getCources" :key="index">
                 <td>
                   <label>
                     <input
@@ -37,8 +37,8 @@
                 </td>
 
                 <td>{{cource.name}}</td>
-                <td>{{cource.period}}</td>
-                <td>{{cource.description}}</td>
+                <td>{{cource.term}}ヶ月</td>
+                <td>{{cource.summary}}</td>
                 <td class="contents-table__record-button">
                   <button
                     class="contents-table__record-button--edit"
@@ -90,46 +90,45 @@ export default {
       pageInfo: 'course',
       checkCources: [],
       cources: [
-          { id: 1, name: 'スキルアップコースです' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 2, name: 'フリーランスコースだよ' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 3, name: 'たぶんスキルアップコース' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 1, name: 'スキルアップコースです' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 2, name: 'フリーランスコースだよ' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 3, name: 'たぶんスキルアップコース' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
+          // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
+          // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
       ],
-      parPage: 30,
+      parPage: 2,
       currentPage: 1,
-      getPageCount: 0
+      authMessage: ""
     }
   },
   created() {
-    this.fetchCourceInfo(1);
+    this.fetchCourceInfo();
   },
   methods: {
-    async fetchCourceInfo(pageNo) {
+    async fetchCourceInfo() {
       await
         this.$axios
-          .get(`http://localhost:8000/api/course`,{parms: {"pageIndex" : pageNo }})
+          .get(`http://localhost:8000/api/course`)
           .then((res) => {
-            this.cources = res.data.data;
-            this.currentPage = res.data.current_page;
-            this.getPageCount = res.data.total;
+            console.log(res);
+            this.cources = res.data;
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
@@ -138,8 +137,9 @@ export default {
             }
           })
     },
-    clickViewPage(pageNum) {
-      this.fetchCourceInfo(pageNum);
+    clickViewPage(pageNo) {
+      this.selectAll = false; // 全選択チェックボックスは外す
+      this.currentPage = Number(pageNo);
     },
     confirmDelete(courceId) {
       if(window.confirm('コースを削除します。よろしいでしょうか？')) {
@@ -148,26 +148,29 @@ export default {
     },
     async courcesDelete(courceId) {
       await
-        axios
-          .post('api.coachtech-crm.com/course/delete', {
-              "id" : courceId,
-              "loginUuId" : this.$store.state.user.id
-          })
+        this.$axios
+          .post('http://localhost:8000/api/course/delete', {"id" : courceId,})
           .then(() => {
-            console.log('削除成功')
-            this.fetchCourceInfo(1); //再度コースデータ取得
+            window.alert('削除成功')
+            this.fetchCourceInfo(); //再度コースデータ取得
+            this.currentPage = 1
           })
           .catch(errorMsg => this.$router.push('/error'))
     }
   },
   computed: {
+    getCources() {
+      let current = this.currentPage * this.parPage;
+      let start = current - this.parPage;
+      return this.cources.slice(start, current);
+    },
     getPageCount() {
-      return Math.ceil(this.pageCount / this.parPage)
+      return Math.ceil(this.cources.length / this.parPage)
     },
     // チェックボックス処理
     selectAll: {
       get() {
-        if(this.checkCources.length == this.cources.length && this.cources.length !== 0 ) {
+        if(this.checkCources.length == this.getCources.length) {
           return true
         } else {
           return false
@@ -177,7 +180,7 @@ export default {
       set(value) {
         let checkArray = [];
         if(value) {
-          this.cources.forEach(function (cource) {
+          this.getCources.forEach(function (cource) {
             checkArray.push(cource.id);
           });
         }
@@ -211,5 +214,4 @@ export default {
 .contents-table__header-period {
   width: 13rem;
 }
-
 </style>

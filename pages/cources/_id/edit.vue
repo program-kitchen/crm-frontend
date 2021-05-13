@@ -67,8 +67,8 @@
               @dragenter.prevent
             >
               <td>{{term.name}}</td>
-              <td>{{term.period}}週</td>
-              <td>{{term.description}}</td>
+              <td>{{term.term}}週</td>
+              <td>{{term.summary}}</td>
               <td>
                 <button
                   class="contents-table__record-button--edit"
@@ -110,8 +110,7 @@ export default {
     return {
       id: this.$route.params.id,
       name: this.$store.state.cource.name,
-      // period: 0,
-      description: this.$store.state.cource.description,
+      description: this.$store.state.cource.summary,
       terms: this.$store.state.term,
       btnClickFlag: false
     }
@@ -119,22 +118,28 @@ export default {
   // APIで取得したデータは一度Vuexに格納
   async created() {
     await this.$axios
-      .get(`http://localhost:8000/api/course/${this.id}`)
+      .get(`http://localhost:8000/api/course/${this.id}`, {
+        params: {
+          "id": this.id
+        }
+      })
       .then((res) => {
-        console.log(res);
+        console.log(res.data.termInfo[0]);
         this.name = res.data.name;
-        this.description = res.data.description;
-        this.terms = res.data.terms;
+        this.description = res.data.summary;
+        this.terms = res.data.term;
         // その後Vuexに入れる？
         this.$store.commit("addCource", {
           name: res.data.name,
-          period: res.data.terms,
-          description: res.data.description
+          term: res.data.term,
+          summary: res.data.summary
         });
-        this.$store.commit("addTerm", {
-          term: res.data.terms.term,
-          period: res.data.terms.period,
-          description: res.data.terms.description
+        res.data.termInfo.forEach(element => { 
+          this.$store.commit("addTerm", {
+            term: element.name,
+            period: element.term,
+            description: element.summary
+          });
         });
       })
       .catch(error => console.log(error));
@@ -142,7 +147,6 @@ export default {
   methods: {
     returnList() {
       this.$router.push('/cources');
-      this.$store.commit("delAllInfo");
     },
     // 登録API
     // async newCourceRegist() {

@@ -16,7 +16,7 @@
             >
             <span class="crm__error">{{ errors[0] }}</span>
           </validation-provider>
-          <validation-provider v-slot="{ errors }" name="コース名" immediate rules="min_value:1|max_value:53">
+          <validation-provider v-slot="{ errors }" name="ターム" immediate rules="termCheck|max_value:53">
             <label for="period">期間(月単位)</label>
             <input
               id="period"

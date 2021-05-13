@@ -44,6 +44,8 @@ export const mutations = {
   }
 }
 
+// リロードでの取得ができるように設定
+// nuxt-client-init-moduleを利用
 export const actions = {
   nuxtClientInit({ commit }, context) {
     let data = JSON.parse(sessionStorage.getItem("cource-info")) || [];

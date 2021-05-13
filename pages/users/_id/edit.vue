@@ -53,21 +53,22 @@
 export default {
   data() {
     return {
-      id: this.$route.params.id, // URLパラメータで渡ってきたid(ユーザのid)
-      userRole: '管理者', // 一旦管理者にする(this.$store.state.user.role)
-      name: 'なおd',
-      role: 'コーチ',
-      email: 'test@test.com',
-      usersData: [{name: 'なおき', role: 'コーチ', email: 'test@test.com'}], // ユーザ一覧から取得したデータ格納用とする
+      id: this.$route.params.id, // URLパラメータで渡ってきたid(ユーザのuuid)
+      userRole: this.$auth.user.role, // 一旦管理者にする(this.$store.state.user.role)
+      name: '',
+      role: '',
+      email: '',
+      // usersData: [{name: 'なおき', role: 'コーチ', email: 'test@test.com'}], // ユーザ一覧から取得したデータ格納用とする
+      usersData: [], // ユーザ一覧から取得したデータ格納用とする
       selectRoleLists: ['管理者','バックオフィス','コーチ'],
       btnClickFlag: true,
       resetErrorMessage: ''
     }
   },
   created() {
-    const role = '管理者'; // storeからデータを取得するようにする
-    const canPathUser = ['オーナー', '管理者', 'バックオフィス'];
-    if (canPathUser.includes(role)) {
+    // const canPathUser = ['オーナー', '管理者', 'バックオフィス'];
+    const canPathUser = [4, 3, 2, 1];
+    if (canPathUser.includes(this.userRole)) {
       this.btnClickFlag = false
       this.fetchUserData();
     } else {
@@ -75,9 +76,9 @@ export default {
     }
   },
   mounted() {
-    if(this.userRole == '管理者') {
+    if(this.userRole === 3) {
       this.selectRoleLists = this.selectRoleLists.slice(1);
-    } else if(this.userRole == 'バックオフィス') {
+    } else if(this.userRole === 2 ) {
       this.selectRoleLists = this.selectRoleLists.slice(2);
     }
   },
@@ -85,12 +86,13 @@ export default {
     async fetchUserData() {
       await
         this.$axios // ※仮指定
-          .get(`api.coachtech-crm.com/user/index/${this.id}`)
+          .get(`http://localhost:8000/api/user/${this.id}`)
           .then((res) => {
+            console.log(res);
             this.usersData = res.data;
-            // this.name = res.name;
-            // this.role = res.role;
-            // this.email = res.email;
+            this.name = res.data.name;
+            this.role = res.data.role;
+            this.email = res.data.email;
           })
           .catch(error => {
             console.log(error.response);
@@ -133,7 +135,7 @@ export default {
   // ナビゲーションガード
   // 編集中のページ遷移で確認させる
   beforeRouteLeave (to, from, next) {
-    const existData = this.usersData[0];
+    const existData = this.usersData;
     const sameJudge = (
       this.name === existData.name &&
       this.role === existData.role && 

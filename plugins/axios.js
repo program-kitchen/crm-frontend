@@ -1,13 +1,9 @@
+// レスポンスエラーコード毎の対応処理を追加
 export default function ({ $axios, redirect }) {
   $axios.onRequest((config) => {
     console.log('Making request to ' + config.url )
   })
   $axios.onError((error) => {
-    // const code = parseInt(error.response && error.response.status)
-    // console.log(code);
-    // if (code === 400) {
-    //   redirect('/400')
-    // }
     const code = parseInt(error.response && error.response.status)
     if(code === 422 ){
       window.alert('予期せぬエラーが発生しました');
