@@ -50,6 +50,7 @@ export default {
             return response;
           },
           error => {
+            console.log(error);
             return error;
           }
         );

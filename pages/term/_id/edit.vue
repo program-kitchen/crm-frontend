@@ -3,7 +3,7 @@
     <SideBar />
     <div class="term-main">
       <div class="main-term">
-        <h1 class="main-term__title">ターム登録</h1>
+        <h1 class="main-term__title">ターム編集</h1>
         <validation-observer ref="courceForm" v-slot="{invalid}">
           <label for="name">
             コース名
@@ -30,7 +30,7 @@
             <span class="crm__error">{{ errors[0] }}</span>
           </validation-provider>
           <label for="period">
-            ターム期間(週単位)
+            ターム(週単位)
           </label>
           <validation-provider v-slot="{ errors }" name="ターム期間" rules="required|min_value:1|max_value:26">
             <input
@@ -54,10 +54,10 @@
           >
           <button
             class="main-term__button-auth crm-modal__button"
-            @click="termRegist"
+            @click="termEdit"
             :disabled="invalid"
           >
-            登録
+            編集
           </button>
           <div class="main-term__button-return" @click="returnCource">
             戻る
@@ -73,25 +73,32 @@ export default {
   middleware: 'redirect',
   data() {
     return {
+      id: this.$route.params.id,
       name: this.$store.state.cource.name,
       term: '',
       period: '',
       description: '',
+      termData: [], // Vuexから取得したデータ格納用とする
       btnClickFlag: false
     }
   },
   mounted() {
-    console.log(this.$store.state.cource.name);
+    const term = this.$store.state.term[this.id];
+    this.termData = term
+    this.term = term.name;
+    this.period = term.term;
+    this.description = term.summary;
   },
   methods: {
-    termRegist() {
+    termEdit() {
       this.btnClickFlag = true;
-      this.$store.commit("addTerm", {
+      this.$store.commit("editTermInfo", {
+        id: this.id,
         term: this.term,
         period: this.period,
         description: this.description
       });
-      window.alert('コース登録が完了しました！');
+      window.confirm('ターム編集が完了しました');
       this.$router.go(-1);
 
     },
@@ -102,13 +109,16 @@ export default {
   // ナビゲーションガード
   // 編集中のページ遷移で確認させる
   beforeRouteLeave (to, from, next) {
-    const inputCheck = (
-      !this.term && !this.period && !this.description
+    const existData = this.termData;
+    const sameJudge = (
+      this.term === existData.name &&
+      this.period === existData.term && 
+      this.description === existData.summary
     );
-    if(this.btnClickFlag || inputCheck) {
+    if(this.btnClickFlag || sameJudge) {
       next()
     } else {
-      let answer = window.confirm("今まで入力していた情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
+      let answer = window.confirm("編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
       if (answer) {
         next()
       } else {

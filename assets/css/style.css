@@ -32,7 +32,7 @@ html {
 .crm-modal__button {
   height: 7.2rem;
   background: transparent linear-gradient(270deg, #41de9d 0%, #2bb8f8 100%);
-  padding: 0.7rem 1.5rem;
+  padding: 0.7rem 3.5rem;
   border: none;
   border-radius: 3.6rem;
   opacity: 1;
@@ -53,7 +53,18 @@ html {
   background: transparent linear-gradient(270deg, #2bb8f8 0%, #41de9d 100%);
 }
 
+.crm-modal__button:disabled {
+  background: #d3d5d6;
+}
+
 .crm__error {
   color: red;
   font-size: 1.4rem;
+}
+
+.contents-error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  font-size: 2rem;
 }

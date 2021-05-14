@@ -20,13 +20,22 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["@/assets/css/style.css", "@/assets/css/users.css"],
+  css: [
+    "@/assets/css/style.css",
+    "@/assets/css/users.css",
+    "@/assets/css/cource.css",
+    "@/assets/css/list.css",
+    "@/assets/css/term.css"
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     "~/plugins/vue-pagenate.js",
     "~/plugins/axios.js",
-    "~/plugins/vee-validate"
+    "~/plugins/localStorage.js",
+    "@plugins/vee-validate",
+    "@/plugins/dragDrop.js",
+    "@/plugins/cource.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -39,6 +48,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     "@nuxtjs/axios",
+    "nuxt-client-init-module",
     "@nuxtjs/auth-next"
   ],
 
@@ -50,9 +60,6 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: ["vee-validate/dist/rules"]
-  },
-  router: {
-    middleware: ["auth"]
   },
   auth: {
     cookie: false,
@@ -81,9 +88,14 @@ export default {
           maxAge: 60 * 60
         },
         refreshToken: {
-          maxAge: 20160 * 60
+          property: "refresh_token",
+          data: "refresh_token",
+          maxAge: 60 * 60 * 24 * 30
         }
       }
     }
+  },
+  router: {
+    middleware: ["auth"]
   }
 };

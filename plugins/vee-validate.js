@@ -51,6 +51,18 @@ extend("password_range", {
   }
 });
 
+// カスタムルールの設定
+// コース期間のところに独自メッセージを表示
+extend("termCheck", {
+  // エラーメッセージを設定する
+  message: "ターム登録は必須です",
+  validate(value) {
+    if (value >= 1) {
+      return true;
+    }
+  }
+});
+
 localize("ja", ja);
 
 Vue.component("ValidationProvider", ValidationProvider);
