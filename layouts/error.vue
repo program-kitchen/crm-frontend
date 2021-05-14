@@ -1,6 +1,7 @@
 <template>
   <div class="error">
     <SideBar />
+
     <div class="error-modal">
       <div class="error-modal__message-box">
         <p class="error-modal__message">大変申し訳ございません。</p>
@@ -23,6 +24,7 @@ export default {};
   align-items: center;
   height: 100vh;
 }
+
 .error-modal {
   display: flex;
   align-items: center;
@@ -48,6 +50,7 @@ export default {};
   color: #707070;
   opacity: 1;
 }
+
 .error-modal__button {
   width: 27rem;
 }

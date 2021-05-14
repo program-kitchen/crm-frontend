@@ -14,6 +14,21 @@ html {
   color: #000000;
 }
 
+.crm-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #555454;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0rem 1.6rem 5.4rem #89bdbd80;
+  border-radius: 1rem;
+  opacity: 1;
+  width: 60%;
+  height: 85%;
+  margin: 0 auto;
+}
+
 .crm-modal__button {
   height: 7.2rem;
   background: transparent linear-gradient(270deg, #41de9d 0%, #2bb8f8 100%);
@@ -24,6 +39,12 @@ html {
   font: normal normal normal 2.8rem/4.2rem Meiryo;
   text-align: center;
   color: #ffffff;
+}
+
+.crm-modal__button:disabled,
+.crm-modal__button:disabled:hover {
+  background: #d3d5d6;
+  cursor: default;
 }
 
 .crm-modal__button:hover {

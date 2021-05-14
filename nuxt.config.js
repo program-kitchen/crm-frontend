@@ -22,9 +22,10 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     "@/assets/css/style.css",
+    "@/assets/css/users.css",
     "@/assets/css/cource.css",
     "@/assets/css/list.css",
-    "@/assets/css/term.css",
+    "@/assets/css/term.css"
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -34,7 +35,7 @@ export default {
     "~/plugins/localStorage.js",
     "@plugins/vee-validate",
     "@/plugins/dragDrop.js",
-    "@/plugins/cource.js",
+    "@/plugins/cource.js"
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -60,38 +61,41 @@ export default {
   build: {
     transpile: ["vee-validate/dist/rules"]
   },
-
   auth: {
     cookie: false,
     redirect: {
-      login: '/login', 
-      logout: '/login',
+      login: "/login",
+      logout: "/login",
       callback: false,
-      home: '/'
+      home: "/"
     },
     strategies: {
-      'laravelJWT': {
-        provider: 'laravel/jwt',
-        url: 'http://localhost:8000',
+      laravelJWT: {
+        provider: "laravel/jwt",
+        url: "http://localhost:8000",
         endpoints: {
-          login: { url: '/api/login', method: 'post', propertyName: 'token' },
-          logout: { url: '/api/logout', method: 'post' },
-          refresh: { url: '/api/user-profile', method: 'post' },
-          user: { url: '/api/user-profile', method: 'get', propertyName: 'user'}
+          login: { url: "/api/login", method: "post", propertyName: "token" },
+          logout: { url: "/api/logout", method: "post" },
+          refresh: { url: "/api/refresh", method: "post" },
+          user: {
+            url: "/api/user-profile",
+            method: "get",
+            propertyName: "user"
+          }
         },
         token: {
-          property: 'access_token',
+          property: "access_token",
           maxAge: 60 * 60
         },
         refreshToken: {
-          property: 'refresh_token',
-          data: 'refresh_token',
+          property: "refresh_token",
+          data: "refresh_token",
           maxAge: 60 * 60 * 24 * 30
-        },
+        }
       }
-    },
+    }
   },
   router: {
-    middleware: ['auth']
-  },
+    middleware: ["auth"]
+  }
 };
