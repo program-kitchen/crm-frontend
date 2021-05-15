@@ -97,5 +97,9 @@ export default {
   },
   router: {
     middleware: ["auth"]
+  },
+  loading: {
+    color: 'blue',
+    height: '5px'
   }
 };
