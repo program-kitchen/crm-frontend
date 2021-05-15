@@ -35,16 +35,14 @@ export default {
     },
     // 削除API処理
     async selectedDeleteUsers() {
-      const deleteData = [];
-      this.sendDeleteData.forEach(elem => {
-        deleteData.push(elem)
-      });
+      const userData = this.sendDeleteData.join(',');
       await
         this.$axios
           .post(`http://localhost:8000/api/${this.pageInfo}/delete`, {
-            "uuid" : deleteData
+            "uuid" : userData
           })
-          .then((res) => {
+          .then(() => {
+            window.alert('削除しました')
             this.$emit('fetchData')
           })
           .catch(() => this.$router.push('/error'))

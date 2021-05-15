@@ -107,7 +107,7 @@
 
 <script>
 export default {
-  // middleware: 'redirect',
+  middleware: 'courceRedirect',
   data() {
     return {
       name: this.$store.state.cource.name,
@@ -135,7 +135,7 @@ export default {
           .then(() => {
             window.alert('成功しました');
             this.$store.commit("delAllInfo");
-            this.$router.push('/');
+            this.$router.push('/cources');
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);

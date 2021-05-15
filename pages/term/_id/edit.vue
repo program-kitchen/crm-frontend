@@ -70,7 +70,7 @@
 
 <script>
 export default {
-  middleware: 'redirect',
+  middleware: 'courceRedirect',
   data() {
     return {
       id: this.$route.params.id,
@@ -98,7 +98,7 @@ export default {
         period: this.period,
         description: this.description
       });
-      window.confirm('ターム編集が完了しました');
+      window.alert('ターム編集が完了しました');
       this.$router.go(-1);
 
     },

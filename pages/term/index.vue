@@ -70,7 +70,7 @@
 
 <script>
 export default {
-  middleware: 'redirect',
+  middleware: 'courceRedirect',
   data() {
     return {
       name: this.$store.state.cource.name,
@@ -79,9 +79,6 @@ export default {
       description: '',
       btnClickFlag: false
     }
-  },
-  mounted() {
-    console.log(this.$store.state.cource.name);
   },
   methods: {
     termRegist() {
