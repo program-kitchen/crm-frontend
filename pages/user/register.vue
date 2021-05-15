@@ -68,6 +68,7 @@
 </template>
 <script>
 export default {
+  middleware: 'userRedirect',
   data() {
     return {
       email: "",
@@ -76,11 +77,6 @@ export default {
       options: [],
       loginUser: {}
     };
-  },
-  beforeCreate: function() {
-    if (this.$auth.user["role"] == 1) {
-      this.$router.push("/");
-    }
   },
   mounted() {
     this.loginUser = this.$auth.user;
@@ -98,7 +94,7 @@ export default {
     submit() {
       this.$axios
         .post(
-          "http://localhost:8000/api/user/register",
+          "https://api.coachtech-crm.com/api/user/register",
           {
             uuid: "",
             name: this.name,

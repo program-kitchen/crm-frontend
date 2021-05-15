@@ -91,6 +91,7 @@
 
 <script>
 export default {
+  middleware: 'userRedirect',
   data() {
     return {
       // 検索用
@@ -102,39 +103,7 @@ export default {
       sendText: {title:"ユーザー", url:"user"},
       pageInfo: 'user',
       checkNames: [],
-      users: [
-          // { uuid: 1, name: '田中太郎' , email: "test1@test.com", role: "4"},
-          // { uuid: 2, name: '斉藤一朗' , email: "test2@test.com", role: "4"},
-          // { uuid: 3, name: '中村絵梨子' , email: "test3@test.com", role: "3"},
-          // { uuid: 4, name: '田中一郎' , email: "test4@test.com", role: "4"},
-          // { uuid: 5, name: '斉藤二郎' , email: "test5@test.com", role: "2"},
-          // { uuid: 6, name: '斉藤一朗' , email: "test2@test.com", role: "2"},
-          // { uuid: 7, name: '中村絵梨子' , email: "test3@test.com", role: "3"},
-          // { uuid: 8, name: '田中一郎' , email: "test4@test.com", role: "1"},
-          // { uuid: 9, name: '斉藤二郎' , email: "test5@test.com", role: "2"},
-          // { uuid: 10, name: '斉藤一朗' , email: "test2@test.com", role: "3"},
-          // { uuid: 11, name: '中村絵梨子' , email: "test3@test.com", role: "3"},
-          // { uuid: 12, name: '田中一郎' , email: "test4@test.com", role: "4"},
-          // { uuid: 13, name: '斉藤二郎' , email: "test5@test.com", role: "4"},
-          // { uuid: 14, name: '斉藤一朗' , email: "test2@test.com", role: "4"},
-          // { uuid: 15, name: '中村絵梨子' , email: "test3@test.com", role: "2"},
-          // { uuid: 16, name: '田中一郎' , email: "test4@test.com", role: "4"},
-          // { uuid: 17, name: '斉藤一朗' , email: "test2@test.com", role: "3"},
-          // { uuid: 18, name: '中村絵梨子' , email: "test3@test.com", role: "2"},
-          // { uuid: 19, name: '田中一郎' , email: "test4@test.com", role: "3"},
-          // { uuid: 20, name: '斉藤二郎' , email: "test5@test.com", role: "4"},
-          // { uuid: 21, name: '斉藤一朗' , email: "test2@test.com", role: "4"},
-          // { uuid: 22, name: '中村絵梨子' , email: "test3@test.com", role: "4"},
-          // { uuid: 23, name: '田中一郎' , email: "test4@test.com", role: "3"},
-          // { uuid: 24, name: '斉藤二郎' , email: "test5@test.com", role: "1"},
-          // { uuid: 25, name: '斉藤一朗' , email: "test2@test.com", role: "1"},
-          // { uuid: 26, name: '中村絵梨子' , email: "test3@test.com", role: "2"},
-          // { uuid: 27, name: '田中一郎' , email: "test4@test.com", role: "3"},
-          // { uuid: 28, name: '斉藤二郎' , email: "test5@test.com", role: "3"},
-          // { uuid: 29, name: '斉藤一朗' , email: "test2@test.com", role: "3"},
-          // { uuid: 30, name: '中村絵梨子' , email: "test3@test.com", role: "4"},
-          // { uuid: 31, name: '田中一郎' , email: "test4@test.com", role: "4"},
-      ],
+      users: [],
       parPage: 5,
       currentPage: 1,
       authMessage: "",
@@ -148,9 +117,8 @@ export default {
     async fetchUserData() {
       await
         this.$axios
-          .get(`http://localhost:8000/api/user`)
+          .get(`https://api.coachtech-crm.com/api/user`)
           .then((res) => {
-            console.log(res);
             this.users = res.data;
             this.currentPage = 1
           })
@@ -165,7 +133,7 @@ export default {
     async userSearch() {
       await
         this.$axios
-          .get(`http://localhost:8000/api/user`,{
+          .get(`https://api.coachtech-crm.com/api/user`,{
             params: {
               "name": this.name,
               "email": this.email,
@@ -175,7 +143,6 @@ export default {
             }
           })
           .then((res) => {
-            console.log(res);
             this.selectAll = false; // 全選択チェックボックスは外す
             this.users = res.data;
             // this.currentPage = res.data.current_page;
@@ -192,11 +159,10 @@ export default {
     async userDelete(userId) {
       await
         this.$axios
-          .post(`http://localhost:8000/api/user/delete`, {
+          .post(`https://api.coachtech-crm.com/api/user/delete`, {
             "uuid": userId,
           })
           .then(() => {
-            console.log('成功');
             this.fetchUserData(); //再度ユーザデータ取得
           })
           .catch((error) => {
@@ -266,7 +232,6 @@ export default {
           });
         }
         this.checkNames = checkArray;
-        console.log(this.checkNames)
       }
     },
   }

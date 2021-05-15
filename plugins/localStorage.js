@@ -1,6 +1,6 @@
 import createPersistedState from "vuex-persistedstate";
 
-// storeはセッションストレージに
+// storeはセッションストレージに格納する
 export default ({ store }) => {
   window.onNuxtReady(() => {
     createPersistedState({

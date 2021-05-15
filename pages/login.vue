@@ -29,6 +29,7 @@
 
 <script>
 export default {
+  auth: false,
   data() {
     return {
       email: "",
@@ -37,6 +38,7 @@ export default {
   },
   methods: {
     async submit() {
+      this.$nuxt.$loading.start()
       await this.$auth
         .loginWith("laravelJWT", {
           data: {
@@ -47,6 +49,7 @@ export default {
         .then(
           response => {
             console.log(response);
+            this.$nuxt.$loading.finish()
             return response;
           },
           error => {

@@ -125,7 +125,7 @@ export default {
       this.btnClickFlag = true;
       await
         this.$axios
-          .post('http://localhost:8000/api/course/register', {
+          .post('https://api.coachtech-crm.com/api/course/register', {
             "id": 0,
             "name" : this.name,
             "term" : this.sumPeriod,
@@ -165,9 +165,6 @@ export default {
     },
     dragTermList(event, index) {
       this.$dragTermList(event,index);
-      // event.dataTransfer.effectAllowed = 'move'
-      // event.dataTransfer.dropEffect = 'move'
-      // event.dataTransfer.setData('drag-index',index)
     },
     dropTermList(event, dropIndex) {
       const dragIndex = event.dataTransfer.getData('drag-index');
