@@ -105,7 +105,8 @@ export default {
         )
         .then(response => {
           console.log(response);
-          this.$router.push('/login')
+          alert("登録が完了しました");
+          this.$router.push("/login");
         });
     }
   },
