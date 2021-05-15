@@ -7,8 +7,8 @@
           TOP
         </li>
       </nuxt-link>
-      <nuxt-link class="menu__link" to="/users" >
-        <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path.startsWith('/users') }">
+      <nuxt-link class="menu__link" to="/user" >
+        <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path.startsWith('/user') }">
           ユーザ
         </li>
       </nuxt-link>

@@ -75,7 +75,7 @@ export default {
             console.log(this.btnClickFlag)
           })
           .catch(err => console.log(err));
-      this.$router.push('/users');
+      this.$router.push('/user');
     },
     returnCource() {
       this.$router.go(-1);

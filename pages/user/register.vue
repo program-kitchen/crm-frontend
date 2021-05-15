@@ -48,8 +48,8 @@
         >
           <option
             v-for="option in options"
-            v-bind:value="option.name"
-            v-bind:key="option.id"
+            v-bind:key="option.name"
+            v-bind:value="option.id"
           >
             {{ option.name }}
           </option>
@@ -77,6 +77,11 @@ export default {
       loginUser: {}
     };
   },
+  beforeCreate: function() {
+    if (this.$auth.user["role"] == 1) {
+      this.$router.push("/");
+    }
+  },
   mounted() {
     this.loginUser = this.$auth.user;
     const options = [
@@ -93,7 +98,7 @@ export default {
     submit() {
       this.$axios
         .post(
-          "localhost:8000/api/user/register",
+          "http://localhost:8000/api/user/register",
           {
             uuid: "",
             name: this.name,
@@ -107,6 +112,10 @@ export default {
           }
         )
         .then(response => {
+          console.log(response);
+          this.$router.push("/user");
+        })
+        .catch(({ response }) => {
           console.log(response);
         });
     }

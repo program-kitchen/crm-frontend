@@ -8,25 +8,21 @@
         v-slot="{ errors }"
         rules="required"
       >
-        <label for="name" class="register-modal__label">名前 </label>
+        <label class="register-modal__label">名前 </label>
         <input
-          id="name"
-          name="name"
           type="text"
           class="register-modal__input crm__input"
-          value="axiosで表示時に値を取得"
+          v-bind:value="name"
           disabled
         />
         <span class="crm__error">{{ errors[0] }}</span>
       </validation-provider>
       <div class="register-modal__form">
-        <label for="position" class="register-modal__label">権限</label>
+        <label class="register-modal__label">権限</label>
         <input
-          id="position"
-          name="position"
           type="text"
           class="register-modal__input crm__input"
-          value="axiosで表示時に値を取得"
+          v-bind:value="displayRole"
           disabled
         />
       </div>
@@ -58,23 +54,49 @@
 </template>
 <script>
 export default {
+  auth: false,
   data() {
     return {
       name: "",
-      position: "",
+      role: "",
       password: ""
     };
   },
   // TODO 画面読み込み時に権限を表示時に取得する
+  mounted() {
+    console.log(this.$route.query.token);
 
+    this.$axios
+      .post(
+        "http://localhost:8000/api/user/validate-token",
+        {
+          token: this.$route.query.token
+        },
+        {
+          headers: {
+            Authorization: this.$auth.strategy.token.get()
+          }
+        }
+      )
+      .then(response => {
+        console.log(response["data"]);
+        const data = response["data"];
+        this.name = data["name"];
+        this.role = data["role"];
+        this.uuid = data["uuid"];
+      })
+      .catch(({ response }) => {
+        console.log(response["data"]);
+      });
+  },
   methods: {
     submit() {
       this.$axios
         .post(
-          "localhost:8000/api/user/register",
+          "http://localhost:8000/api/user/activate",
           {
-            uuid: "",
-            password: ""
+            uuid: this.uuid,
+            password: this.password
           },
           {
             headers: {
@@ -84,7 +106,29 @@ export default {
         )
         .then(response => {
           console.log(response);
+          alert("登録が完了しました");
+          this.$router.push("/login");
         });
+    }
+  },
+  computed: {
+    displayRole() {
+      switch (this.role) {
+        case 1:
+          return "コーチ";
+          break;
+        case 2:
+          return "バックオフィス";
+          break;
+        case 3:
+          return "管理者";
+          break;
+        case 4:
+          return "オーナー";
+          break;
+        default:
+          return "";
+      }
     }
   }
 };

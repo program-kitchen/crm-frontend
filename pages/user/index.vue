@@ -51,7 +51,7 @@
                 <td class="contents-table__record-button">
                   <button
                     class="contents-table__record-button--edit" 
-                    @click="$router.push(`/users/${user.uuid}/edit`)" 
+                    @click="$router.push(`/user/${user.uuid}/edit`)" 
                     v-show="canEdit(user.role,userRole)"
                   >
                     編集
@@ -99,7 +99,7 @@ export default {
       role: '',
       // ログインユーザの権限を取得
       userRole: this.$auth.user.role,
-      sendText: {title:"ユーザー", url:"users"},
+      sendText: {title:"ユーザー", url:"user"},
       pageInfo: 'user',
       checkNames: [],
       users: [
