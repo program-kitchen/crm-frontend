@@ -1,11 +1,5 @@
 <template>
   <div class="users">
-    <button @click="$router.push('/login')">ログイン</button>
-    <button @click="$router.push('/user/logout')">ログアウト</button>
-    <button @click="$router.push(`/user/12/edit`)">ユーザ編集</button>
-    <button @click="$router.push('/user/test')">リフレッシュ</button>
-    <button @click="$router.push('/cources/register')">コース登録</button>
-    <button @click="$router.push(`/cources/1/edit`)">コース登録</button>
     <div class="main">
       <SideBar />
       <div class="contents">
@@ -43,9 +37,8 @@
             <tbody class="contents-table__record">
               <tr v-for="(user, index) in getUsers" :key="index">
                 <td class="contents-table__header-check-list">
-                  <label>
+                  <label v-show="canEdit(user.role,userRole)">
                     <input type="checkbox" v-model="checkNames" v-bind:value="user.uuid" class="contents-table__head-check">
-                    <!-- <input type="checkbox" v-model="checkNames" v-bind:value="user.id" class="contents-table__head-check"> -->
                     <span class="contents-table__head-check--checked"></span>
                   </label>
                 </td>
@@ -104,7 +97,7 @@ export default {
       name: '',
       email: '',
       role: '',
-      // 一旦ログインユーザの権限を取得
+      // ログインユーザの権限を取得
       userRole: this.$auth.user.role,
       sendText: {title:"ユーザー", url:"user"},
       pageInfo: 'user',
@@ -144,7 +137,7 @@ export default {
       ],
       parPage: 5,
       currentPage: 1,
-      authMessage: ""
+      authMessage: "",
     }
   },
   created() {
@@ -159,7 +152,7 @@ export default {
           .then((res) => {
             console.log(res);
             this.users = res.data;
-            // this.pageCount = res.data.total;
+            this.currentPage = 1
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
@@ -245,10 +238,17 @@ export default {
     },
     // チェックボックス処理
     selectAll: {
+      // 表示されているユーザに全てチェックが入ったら全選択チェックボックスにチェックを入れる
       get() {
+        let checkUsers = [];
+        this.getUsers.forEach((user) => {
+          // 権限に応じてユーザ数を絞る
+          if(user.role < this.userRole) {
+            checkUsers.push(user.uuid);
+          }
+        });
         //ボックスにすべてチェックが入ったか判定
-        // if (this.checkNames.length == this.getUsers.length && this.getUsers.length !== 0 ) {
-        if (this.checkNames.length == this.getUsers.length) {
+        if (this.checkNames.length == checkUsers.length) {
           return true;
         } else {
           return false;
@@ -260,10 +260,13 @@ export default {
         let checkArray = [];
         if (value) {
           this.getUsers.forEach((user) => {
-            checkArray.push(user.uuid);
+            if(user.role < this.userRole) {
+              checkArray.push(user.uuid);
+            }
           });
         }
         this.checkNames = checkArray;
+        console.log(this.checkNames)
       }
     },
   }

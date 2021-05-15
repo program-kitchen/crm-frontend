@@ -88,7 +88,7 @@
           </table>
           <button
             class="main-cource__button-auth crm-modal__button"
-            @click="newCourceRegist"
+            @click="editCourceRegist"
             :disabled="invalid"
           >
             編集
@@ -103,78 +103,87 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
 export default {
-  // middleware: 'redirect',
+  middleware: 'courceRedirect',
   data() {
     return {
       id: this.$route.params.id,
       name: this.$store.state.cource.name,
-      description: this.$store.state.cource.summary,
+      description: this.$store.state.cource.description,
       terms: this.$store.state.term,
-      btnClickFlag: false
+      btnClickFlag: false,
+      prevRoute: null
     }
   },
-  // APIで取得したデータは一度Vuexに格納
-  async created() {
-    await this.$axios
-      .get(`http://localhost:8000/api/course/${this.id}`, {
-        params: {
-          "id": this.id
-        }
-      })
-      .then((res) => {
-        console.log(res.data.termInfo[0]);
-        this.name = res.data.name;
-        this.description = res.data.summary;
-        this.terms = res.data.term;
-        // その後Vuexに入れる？
-        this.$store.commit("addCource", {
-          name: res.data.name,
-          term: res.data.term,
-          summary: res.data.summary
-        });
-        res.data.termInfo.forEach(element => { 
-          this.$store.commit("addTerm", {
-            term: element.name,
-            period: element.term,
-            description: element.summary
-          });
-        });
-      })
-      .catch(error => console.log(error));
+  mounted() {
+    if(this.prevRoute.fullPath == "/cources") {
+      this.getCourceData()
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.prevRoute = from
+    })
   },
   methods: {
+    // APIで取得したデータは一度Vuexに格納
+    async getCourceData() {
+      await this.$axios
+        .get(`http://localhost:8000/api/course/${this.id}`, {
+          params: {
+            "id": this.id
+          }
+        })
+        .then((res) => {
+          console.log(res)
+          this.name = res.data.name;
+          this.description = res.data.summary;
+          this.terms = res.data.termInfo;
+          // その後Vuexに入れる？
+          this.$store.commit("addCource", {
+            name: res.data.name,
+            term: res.data.term,
+            summary: res.data.summary
+          });
+          res.data.termInfo.forEach(element => { 
+            this.$store.commit("addTerm", {
+              term: element.name,
+              period: element.term,
+              description: element.summary
+            });
+          });
+        })
+        .catch(error => console.log(error));
+    },
     returnList() {
       this.$router.push('/cources');
     },
-    // 登録API
-    // async newCourceRegist() {
-    //   await
-    //     axios
-    //       .post('api.coachtech-crm.com/course/register', {
-    //         "name" : this.name,
-    //         "term" : this.sumPeriod,
-    //         "summary" : this.description,
-    //         "termInfo" : this.term,
-    //         "loginUuId" : this.$store.state.user.UuId
-    //       })
-    //       .then(() => {
-    //         window.alert('成功しました');
-    //         this.$store.commit("delCourceInfo");
-    //       })
-    //       .catch(res => window.alert(res.errorMsg))
-    // },
-
-    // axios導入までの代わりの処理
-    newCourceRegist() {
+    // 更新API
+    async editCourceRegist() {
       this.btnClickFlag = true;
-      this.$store.commit("delCourceInfo");
-      window.alert('編集しました');
-      this.$router.push("/cources");
+      console.log(this.terms)
+      await
+        this.$axios
+          .post('http://localhost:8000/api/course/register', {
+            "id": this.id,
+            "name" : this.name,
+            "term" : this.sumPeriod,
+            "summary" : this.description,
+            "termInfo" : this.terms,
+          })
+          .then(() => {
+            window.alert('更新しました');
+            this.$store.commit("delAllInfo");
+            this.$router.push('/cources');
+          })
+          .catch((error) => {
+            const code = parseInt(error.response && error.response.status);
+            if(code === 401 ){
+              this.authMessage = "アクセストークンが失効しております"
+            }
+          })
     },
     sendTerm() {
-      console.log(this.$store.state.cource);
       this.btnClickFlag = true;
       this.$store.commit("addCource", {
         name: this.name,

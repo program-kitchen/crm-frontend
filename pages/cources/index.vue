@@ -59,7 +59,21 @@
             </tbody>
           </table>
         </div>
-        <SelectedDeleteButton :sendDeleteData="checkCources" :pageInfo="pageInfo"/> 
+        <div class="contents-buttom">
+          <button
+            class="contents-buttom__button--enable"
+            v-show="this.checkCources.length == 0"
+          >
+            削除できません
+          </button>
+          <button 
+            class="contents-buttom__button" 
+            @click="confirmSelectedDelete" v-show="this.checkCources.length >= 1"
+          >
+            チェック項目を消去
+          </button>
+          <p>該当件数：{{this.checkCources.length}} 件</p>
+        </div>
         <div class="contents-pagination">
           <paginate v-if="(getPageCount > 1)"
             :page-count="getPageCount"
@@ -81,11 +95,9 @@
 
 <script>
 export default {
-  middleware: 'redirect',
+  middleware: 'courceRedirect',
   data() {
     return {
-      // loginUserRole: this.$store.state.user.role,
-      loginUserRole: 'コーチ',
       sendText: {title:"コース管理", url:"cources"}, // トップ部のコンポーネントへ渡すデータ
       pageInfo: 'course',
       checkCources: [],
@@ -127,7 +139,6 @@ export default {
         this.$axios
           .get(`http://localhost:8000/api/course`)
           .then((res) => {
-            console.log(res);
             this.cources = res.data;
           })
           .catch((error) => {
@@ -147,15 +158,35 @@ export default {
       }
     },
     async courcesDelete(courceId) {
+      console.log(courceId)
       await
         this.$axios
           .post('http://localhost:8000/api/course/delete', {"id" : courceId,})
           .then(() => {
             window.alert('削除成功')
             this.fetchCourceInfo(); //再度コースデータ取得
-            this.currentPage = 1
           })
-          .catch(errorMsg => this.$router.push('/error'))
+          .catch(() => this.$router.push('/error'))
+    },
+    confirmSelectedDelete() {
+      if(window.confirm('削除します。よろしいでしょうか？')) {
+        this.selectedDeleteCources();
+      }
+    },
+    // 削除API処理
+    async selectedDeleteCources() {
+      const userData = this.checkCources.join(',');
+        await
+          this.$axios
+            .post(`http://localhost:8000/api/course/delete`, {
+              "id" : userData
+            })
+            .then(() => {
+              window.alert('削除しました');
+              this.fetchCourceInfo();
+              this.currentPage = 2
+            })
+            .catch(() => this.$router.push('/error'))
     }
   },
   computed: {
@@ -213,5 +244,41 @@ export default {
 }
 .contents-table__header-period {
   width: 13rem;
+}
+
+.contents-buttom {
+  display: flex;
+}
+
+/* Chckedユーザ削除部 */
+.contents-buttom {
+  padding: 1rem 0;
+  align-items: center;
+}
+.contents-buttom__button {
+  background: #FF5561;
+  border: none;
+  border-radius: 27px;
+  color: #FFFCFC;
+  font-weight: bold;
+  margin-right: 2rem;
+  height: 3rem;
+  padding: 0 1.2rem;
+}
+.contents-buttom__button:hover {
+  cursor: pointer;
+  transition:  0.3s 0s ease-in;
+  background: #f8717a;
+}
+
+.contents-buttom__button--enable {
+  background: #b8b3b3;
+  border: none;
+  border-radius: 27px;
+  color: #FFFCFC;
+  font-weight: bold;
+  margin-right: 2rem;
+  height: 3rem;
+  padding: 0 1.2rem;
 }
 </style>
