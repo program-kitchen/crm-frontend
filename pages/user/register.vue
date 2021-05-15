@@ -79,6 +79,9 @@ export default {
   },
   mounted() {
     this.loginUser = this.$auth.user;
+    if(this.loginUser["role"] == 1 ){
+      this.$router.push('/')
+    }
     const options = [
       { id: 1, name: "コーチ" },
       { id: 2, name: "バックオフィス " },

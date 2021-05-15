@@ -85,6 +85,11 @@ export default {
       loginUser: {}
     };
   },
+  beforeCreate: function() {
+    if (this.$auth.user["role"] == 1) {
+      this.$router.push("/");
+    }
+  },
   mounted() {
     //ユーザー情報取得
     this.$axios
@@ -132,7 +137,7 @@ export default {
         .catch(response => {
           console.log(response);
         });
-        this.$router.push('/user')
+      this.$router.push("/user");
     },
     sendResetMail() {
       //ToDo　リセットを行う
