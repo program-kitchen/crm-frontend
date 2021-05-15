@@ -108,6 +108,7 @@ export default {
         )
         .then(response => {
           console.log(response);
+          this.$router.push('/user');
         })
         .catch(({ response }) => {
           console.log(response);

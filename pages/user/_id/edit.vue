@@ -132,6 +132,7 @@ export default {
         .catch(response => {
           console.log(response);
         });
+        this.$router.push('/user')
     },
     sendResetMail() {
       //ToDo　リセットを行う
