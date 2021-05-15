@@ -47,7 +47,7 @@ export default {
         .then(
           response => {
             console.log(response);
-            return response;
+            this.$router.push("/");
           },
           error => {
             console.log(error);
