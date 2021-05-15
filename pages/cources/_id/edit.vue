@@ -126,20 +126,18 @@ export default {
     })
   },
   methods: {
-    // APIで取得したデータは一度Vuexに格納
+    // APIで取得したデータは一度Vuexに格納する
     async getCourceData() {
       await this.$axios
-        .get(`http://localhost:8000/api/course/${this.id}`, {
+        .get(`https://api.coachtech-crm.com/api/course/${this.id}`, {
           params: {
             "id": this.id
           }
         })
         .then((res) => {
-          console.log(res)
           this.name = res.data.name;
           this.description = res.data.summary;
           this.terms = res.data.termInfo;
-          // その後Vuexに入れる？
           this.$store.commit("addCource", {
             name: res.data.name,
             term: res.data.term,
@@ -161,10 +159,9 @@ export default {
     // 更新API
     async editCourceRegist() {
       this.btnClickFlag = true;
-      console.log(this.terms)
       await
         this.$axios
-          .post('http://localhost:8000/api/course/register', {
+          .post('https://api.coachtech-crm.com/api/course/register', {
             "id": this.id,
             "name" : this.name,
             "term" : this.sumPeriod,
@@ -204,9 +201,6 @@ export default {
     },
     dragTermList(event, index) {
       this.$dragTermList(event,index);
-      // event.dataTransfer.effectAllowed = 'move'
-      // event.dataTransfer.dropEffect = 'move'
-      // event.dataTransfer.setData('drag-index',index)
     },
     dropTermList(event, dropIndex) {
       const dragIndex = event.dataTransfer.getData('drag-index');

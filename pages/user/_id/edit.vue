@@ -74,6 +74,7 @@
 </template>
 <script>
 export default {
+  middleware: 'userRedirect',
   data() {
     return {
       email: "",
@@ -84,11 +85,6 @@ export default {
       options: [],
       loginUser: {}
     };
-  },
-  beforeCreate: function() {
-    if (this.$auth.user["role"] == 1) {
-      this.$router.push("/");
-    }
   },
   mounted() {
     //ユーザー情報取得

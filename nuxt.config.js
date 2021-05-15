@@ -54,7 +54,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: "http:localhost:8000"
+    baseURL: "https://api.coachtech-crm.com"
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -72,7 +72,7 @@ export default {
     strategies: {
       laravelJWT: {
         provider: "laravel/jwt",
-        url: "http://localhost:8000",
+        url: "https://api.coachtech-crm.com",
         endpoints: {
           login: { url: "/api/login", method: "post", propertyName: "token" },
           logout: { url: "/api/logout", method: "post" },

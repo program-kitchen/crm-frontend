@@ -137,7 +137,7 @@ export default {
     async fetchCourceInfo() {
       await
         this.$axios
-          .get(`http://localhost:8000/api/course`)
+          .get(`https://api.coachtech-crm.com/api/course`)
           .then((res) => {
             this.cources = res.data;
           })
@@ -158,10 +158,9 @@ export default {
       }
     },
     async courcesDelete(courceId) {
-      console.log(courceId)
       await
         this.$axios
-          .post('http://localhost:8000/api/course/delete', {"id" : courceId,})
+          .post('https://api.coachtech-crm.com/api/course/delete', {"id" : courceId,})
           .then(() => {
             window.alert('削除成功')
             this.fetchCourceInfo(); //再度コースデータ取得
@@ -178,7 +177,7 @@ export default {
       const userData = this.checkCources.join(',');
         await
           this.$axios
-            .post(`http://localhost:8000/api/course/delete`, {
+            .post(`https://api.coachtech-crm.com/api/course/delete`, {
               "id" : userData
             })
             .then(() => {

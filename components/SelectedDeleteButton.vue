@@ -38,11 +38,11 @@ export default {
       const userData = this.sendDeleteData.join(',');
       await
         this.$axios
-          .post(`http://localhost:8000/api/${this.pageInfo}/delete`, {
+          .post(`https://api.coachtech-crm.com/api/${this.pageInfo}/delete`, {
             "uuid" : userData
           })
           .then(() => {
-            window.alert('削除しました')
+            window.alert('削除完了しました')
             this.$emit('fetchData')
           })
           .catch(() => this.$router.push('/error'))
