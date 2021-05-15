@@ -67,7 +67,7 @@ export default {
       login: "/login",
       logout: "/login",
       callback: false,
-      home: false
+      home: "/"
     },
     strategies: {
       laravelJWT: {
