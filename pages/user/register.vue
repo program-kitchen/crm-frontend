@@ -63,9 +63,6 @@
       >
         認証メールを送信
       </button>
-      <p>{{ role }}</p>
-      <p>{{ typeof role }}</p>
-      <p>{{ $auth.strategy.token.get() }}</p>
     </ValidationObserver>
   </div>
 </template>
