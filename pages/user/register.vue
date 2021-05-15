@@ -77,11 +77,13 @@ export default {
       loginUser: {}
     };
   },
+  beforeCreate: function() {
+    if (this.$auth.user["role"] == 1) {
+      this.$router.push("/");
+    }
+  },
   mounted() {
     this.loginUser = this.$auth.user;
-    if(this.loginUser["role"] == 1 ){
-      this.$router.push('/')
-    }
     const options = [
       { id: 1, name: "コーチ" },
       { id: 2, name: "バックオフィス " },
@@ -111,7 +113,7 @@ export default {
         )
         .then(response => {
           console.log(response);
-          this.$router.push('/user');
+          this.$router.push("/user");
         })
         .catch(({ response }) => {
           console.log(response);
