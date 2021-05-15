@@ -1,9 +1,9 @@
 <template>
   <div class="users">
     <button @click="$router.push('/login')">ログイン</button>
-    <button @click="$router.push('/users/logout')">ログアウト</button>
-    <button @click="$router.push(`/users/12/edit`)">ユーザ編集</button>
-    <button @click="$router.push('/users/test')">リフレッシュ</button>
+    <button @click="$router.push('/user/logout')">ログアウト</button>
+    <button @click="$router.push(`/user/12/edit`)">ユーザ編集</button>
+    <button @click="$router.push('/user/test')">リフレッシュ</button>
     <button @click="$router.push('/cources/register')">コース登録</button>
     <button @click="$router.push(`/cources/1/edit`)">コース登録</button>
     <div class="main">
@@ -58,7 +58,7 @@
                 <td class="contents-table__record-button">
                   <button
                     class="contents-table__record-button--edit" 
-                    @click="$router.push(`/users/${user.uuid}/edit`)" 
+                    @click="$router.push(`/user/${user.uuid}/edit`)" 
                     v-show="canEdit(user.role,userRole)"
                   >
                     編集
@@ -106,7 +106,7 @@ export default {
       role: '',
       // 一旦ログインユーザの権限を取得
       userRole: this.$auth.user.role,
-      sendText: {title:"ユーザー", url:"users"},
+      sendText: {title:"ユーザー", url:"user"},
       pageInfo: 'user',
       checkNames: [],
       users: [
