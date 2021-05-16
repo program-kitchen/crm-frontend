@@ -5,6 +5,12 @@ export default function({ $axios, redirect }) {
   });
   $axios.onError(error => {
     const code = parseInt(error.response && error.response.status);
+    //ログイン時のエラーハンドリング
+    if (this.route.path == "/login") {
+      if ([401, 422].includes(code)) {
+        return;
+      }
+    }
     if (code === 422) {
       window.alert("予期せぬエラーが発生しました");
       redirect("/");

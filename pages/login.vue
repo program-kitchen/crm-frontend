@@ -1,8 +1,12 @@
 <template>
   <div class="login">
-    <div class="login-modal">
+    <ValidationObserver class="login-modal" v-slot="{ invalid }">
       <h1 class="login-modal__title">ログイン</h1>
-      <div class="login-modal__form">
+      <validation-provider
+        class="login-modal__form"
+        v-slot="{ errors }"
+        rules="required"
+      >
         <label for="email" class="login-modal__label">メールアドレス</label>
         <input
           id="email"
@@ -10,8 +14,13 @@
           class="login-modal__input crm__input"
           v-model="email"
         />
-      </div>
-      <div class="login-modal__form">
+        <span class="crm__error">{{ errors[0] }}</span>
+      </validation-provider>
+      <validation-provider
+        class="login-modal__form"
+        v-slot="{ errors }"
+        rules="required"
+      >
         <label for="password" class="login-modal__label">パスワード</label>
         <input
           id="password"
@@ -19,11 +28,17 @@
           class="login-modal__input crm__input"
           v-model="password"
         />
-      </div>
-      <button @click="submit" class="login-modal__button crm-modal__button">
+        <span class="crm__error">{{ errors[0] }}</span>
+      </validation-provider>
+      <button
+        @click="submit"
+        :disabled="invalid"
+        class="login-modal__button crm-modal__button"
+      >
         ログイン
       </button>
-    </div>
+      <span class="crm__error">{{ errorMessage }}</span>
+    </ValidationObserver>
   </div>
 </template>
 
@@ -33,12 +48,13 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      errorMessage: ""
     };
   },
   methods: {
     async submit() {
-      this.$nuxt.$loading.start()
+      this.$nuxt.$loading.start();
       await this.$auth
         .loginWith("laravelJWT", {
           data: {
@@ -49,11 +65,13 @@ export default {
         .then(
           response => {
             console.log(response);
-            this.$nuxt.$loading.finish()
+            this.$nuxt.$loading.finish();
             return response;
           },
           error => {
-            console.log(error);
+            const code = parseInt(error.response && error.response.status);
+            console.log(code);
+            this.errorMessage = "ユーザーID、パスワードが一致しません";
             return error;
           }
         );
