@@ -131,14 +131,12 @@ export default {
     },
     // 検索API
     async userSearch() {
-      console.log(this.role)
       await
         this.$axios
           .get(
             `https://api.coachtech-crm.com/api/user?name=${this.name}&email=${this.email}&role=${this.role}&withDeleted=0`
           )
           .then((res) => {
-            console.log(res)
             this.selectAll = false; // 全選択チェックボックスは外す
             this.users = res.data;
             // this.currentPage = res.data.current_page;
