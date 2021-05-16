@@ -63,12 +63,17 @@
       >
         認証メールを送信
       </button>
+      <p class="register-modal__return">
+        <span class="register-modal__return-inner" @click="back">
+          戻る
+        </span>
+      </p>
     </ValidationObserver>
   </div>
 </template>
 <script>
 export default {
-  middleware: 'userRedirect',
+  middleware: "userRedirect",
   data() {
     return {
       email: "",
@@ -114,11 +119,44 @@ export default {
         .catch(({ response }) => {
           console.log(response);
         });
+    },
+    back() {
+      if (this.email == "" && this.name == "" && this.role == "") {
+        this.$router.push("/user");
+      } else if (
+        window.confirm(
+          "今まで入力していた情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
+        )
+      ) {
+        this.$router.push("/user");
+      }
     }
   }
 };
 </script>
 <style scoped>
+.register-modal__return {
+  text-align: center;
+  font-size: 2rem;
+  padding: 5px 0;
+}
+
+.register-modal__return-inner {
+  transition: 0.5s;
+  color: #567dff;
+}
+
+.register-modal__return-inner:hover {
+  cursor: pointer;
+  color: #042fbb;
+  transition: 0.5s;
+}
+
+.register-modal__return-error {
+  text-align: center;
+  color: #f5172a;
+}
+
 .register-modal__button {
   width: 33rem;
 }
