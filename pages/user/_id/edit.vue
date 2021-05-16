@@ -67,14 +67,19 @@
         :disabled="invalid"
         class="register-modal__button crm-modal__button"
       >
-        登録
+        編集
       </button>
+      <p class="register-modal__return">
+        <span class="register-modal__return-inner" @click="back">
+          戻る
+        </span>
+      </p>
     </ValidationObserver>
   </div>
 </template>
 <script>
 export default {
-  middleware: 'userRedirect',
+  middleware: "userRedirect",
   data() {
     return {
       email: "",
@@ -89,7 +94,7 @@ export default {
   mounted() {
     //ユーザー情報取得
     this.$axios
-      .get(`http://localhost:8000/api/user/${this.$route.params.id}`)
+      .get(`https://api.coachtech-crm.com/api/user/${this.$route.params.id}`)
       .then(response => {
         console.log(response);
         const user = response["data"];
@@ -137,11 +142,44 @@ export default {
     },
     sendResetMail() {
       //ToDo　リセットを行う
+    },
+    back() {
+      if (this.email == "" && this.name == "" && this.role == "") {
+        this.$router.push("/user");
+      } else if (
+        window.confirm(
+          "今まで入力していた情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
+        )
+      ) {
+        this.$router.push("/user");
+      }
     }
   }
 };
 </script>
 <style scoped>
+.register-modal__return {
+  text-align: center;
+  font-size: 2rem;
+  padding: 5px 0;
+}
+
+.register-modal__return-inner {
+  transition: 0.5s;
+  color: #567dff;
+}
+
+.register-modal__return-inner:hover {
+  cursor: pointer;
+  color: #042fbb;
+  transition: 0.5s;
+}
+
+.register-modal__return-error {
+  text-align: center;
+  color: #f5172a;
+}
+
 .register-modal__button {
   width: 20rem;
 }
