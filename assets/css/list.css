@@ -54,7 +54,9 @@
   color: #FFFFFF;
   padding: 0 0.7rem;
   height: 3rem;
+  width: 6rem;
   transition:  0.5s;
+  margin: 0 1rem;
 }
 
 .contents-table__record-button--edit p,
@@ -68,6 +70,7 @@
 .contents-table__record-button--edit {
   background: #04C6C6;
   border: 1px solid #04C6C6;
+  margin-left: 2rem;
 }
 
 .contents-table__record-button--delete {

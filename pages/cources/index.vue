@@ -17,7 +17,7 @@
                 </th>
                 <th class="contents-table__header-term">コース名</th>
                 <th class="contents-table__header-period">期間</th>
-                <th>概要</th>
+                <th class="contents-table__header-summary">概要</th>
                 <th class="contents-table__header-button"></th>
                 <th class="contents-table__header-button"></th>
               </tr>
@@ -36,9 +36,9 @@
                   </label>
                 </td>
 
-                <td>{{cource.name}}</td>
-                <td>{{cource.term}}ヶ月</td>
-                <td>{{cource.summary}}</td>
+                <td class="contents-table__header-term">{{cource.name}}</td>
+                <td class="contents-table__header-period">{{cource.term}}ヶ月</td>
+                <td class="contents-table__header-summary">{{cource.summary}}</td>
                 <td class="contents-table__record-button">
                   <button
                     class="contents-table__record-button--edit"
@@ -239,10 +239,17 @@ export default {
 
 /* テーブルCSS */
 .contents-table__header-term {
-  width: 30rem;
+  width: 25rem;
 }
 .contents-table__header-period {
-  width: 13rem;
+  width: 15rem;
+}
+
+.contents-table__header-summary {
+  width: 40rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .contents-buttom {

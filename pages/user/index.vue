@@ -27,9 +27,9 @@
                     <span class="contents-table__head-check--checked"></span>
                   </label>
                 </th>
-                <th>名前</th>
-                <th>メールアドレス</th>
-                <th>権限</th>
+                <th class="contents-table__header-name">名前</th>
+                <th class="contents-table__header-email">メールアドレス</th>
+                <th class="contents-table__header-role">権限</th>
                 <th class="contents-table__header-button"></th>
                 <th class="contents-table__header-button"></th>
               </tr>
@@ -131,18 +131,14 @@ export default {
     },
     // 検索API
     async userSearch() {
+      console.log(this.role)
       await
         this.$axios
-          .get(`https://api.coachtech-crm.com/api/user`,{
-            params: {
-              "name": this.name,
-              "email": this.email,
-              "role": this.role,
-              "withDeleted" : 1,
-              "page" : 1
-            }
-          })
+          .get(
+            `https://api.coachtech-crm.com/api/user?name=${this.name}&email=${this.email}&role=${this.role}&withDeleted=0`
+          )
           .then((res) => {
+            console.log(res)
             this.selectAll = false; // 全選択チェックボックスは外す
             this.users = res.data;
             // this.currentPage = res.data.current_page;
@@ -290,5 +286,15 @@ export default {
   cursor: pointer;
   transition:  0.3s 0s ease-in;
   background: #40dada;
+}
+
+.contents-table__header-name {
+  width: 15rem;
+}
+.contents-table__header-email {
+  width: 30rem;
+}
+.contents-table__header-role {
+  width: 15rem;
 }
 </style>
