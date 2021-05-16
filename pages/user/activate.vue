@@ -62,32 +62,8 @@ export default {
       password: ""
     };
   },
-  // TODO 画面読み込み時に権限を表示時に取得する
-  mounted() {
-    console.log(this.$route.query.token);
-
-    this.$axios
-      .post(
-        "https://api.coachtech-crm.com/api/user/validate-token",
-        {
-          token: this.$route.query.token
-        },
-        {
-          headers: {
-            Authorization: this.$auth.strategy.token.get()
-          }
-        }
-      )
-      .then(response => {
-        console.log(response["data"]);
-        const data = response["data"];
-        this.name = data["name"];
-        this.role = data["role"];
-        this.uuid = data["uuid"];
-      })
-      .catch(({ response }) => {
-        console.log(response["data"]);
-      });
+  created() {
+    this.fetchUserData();
   },
   methods: {
     submit() {
@@ -108,6 +84,30 @@ export default {
           console.log(response);
           alert("登録が完了しました");
           this.$router.push("/login");
+        });
+    },
+    async fetchUserData() {
+      await this.$axios
+        .post(
+          "https://api.coachtech-crm.com/api/user/validate-token",
+          {
+            token: this.$route.query.token
+          },
+          {
+            headers: {
+              Authorization: this.$auth.strategy.token.get()
+            }
+          }
+        )
+        .then(response => {
+          console.log(response["data"]);
+          const data = response["data"];
+          this.name = data["name"];
+          this.role = data["role"];
+          this.uuid = data["uuid"];
+        })
+        .catch(({ response }) => {
+          console.log(response["data"]);
         });
     }
   },

@@ -90,19 +90,10 @@ export default {
       loginUser: {}
     };
   },
+  created() {
+    this.fetchUserData();
+  },
   mounted() {
-    //ユーザー情報取得
-    this.$axios
-      .get(`https://api.coachtech-crm.com/api/user/${this.$route.params.id}`)
-      .then(response => {
-        console.log(response);
-        const user = response["data"];
-        this.email = user["email"];
-        this.name = user["name"];
-        this.role = user["role"];
-        this.uuid = user["uuid"];
-      });
-
     //プルダウンリストの準備
     this.loginUser = this.$auth.user;
     const options = [
@@ -130,6 +121,18 @@ export default {
           console.log(response);
         });
       this.$router.push("/user");
+    },
+    async fetchUserData() {
+      await this.$axios
+        .get(`https://api.coachtech-crm.com/api/user/${this.$route.params.id}`)
+        .then(response => {
+          console.log(response);
+          const user = response["data"];
+          this.email = user["email"];
+          this.name = user["name"];
+          this.role = user["role"];
+          this.uuid = user["uuid"];
+        });
     },
     sendResetMail() {
       //ToDo　リセットを行う
