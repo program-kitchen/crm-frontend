@@ -86,7 +86,6 @@ export default {
       name: "",
       role: "",
       uuid: "",
-      hoge: "",
       options: [],
       loginUser: {}
     };
