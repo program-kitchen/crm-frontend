@@ -45,6 +45,7 @@
 <script>
 export default {
   auth: false,
+  middleware: "loginRedirect",
   data() {
     return {
       email: "",
@@ -66,6 +67,7 @@ export default {
           response => {
             console.log(response);
             this.$nuxt.$loading.finish();
+            this.$router.push("/");
             return response;
           },
           error => {
