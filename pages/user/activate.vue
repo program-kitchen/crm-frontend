@@ -68,7 +68,7 @@ export default {
 
     this.$axios
       .post(
-        "http://localhost:8000/api/user/validate-token",
+        "https://api.coachtech-crm.com/api/user/validate-token",
         {
           token: this.$route.query.token
         },
@@ -93,7 +93,7 @@ export default {
     submit() {
       this.$axios
         .post(
-          "http://localhost:8000/api/user/activate",
+          "https://api.coachtech-crm.com/api/user/activate",
           {
             uuid: this.uuid,
             password: this.password
