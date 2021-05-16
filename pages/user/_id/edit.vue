@@ -118,20 +118,12 @@ export default {
   methods: {
     submit() {
       this.$axios
-        .post(
-          "http://localhost:8000/api/user/register",
-          {
-            uuid: this.uuid,
-            name: this.name,
-            email: this.email,
-            role: this.role
-          },
-          {
-            headers: {
-              Authorization: this.$auth.strategy.token.get()
-            }
-          }
-        )
+        .post("https://api.coachtech-crm.com/api/user/register", {
+          uuid: this.uuid,
+          name: this.name,
+          email: this.email,
+          role: this.role
+        })
         .then(response => {
           console.log(response);
         })
