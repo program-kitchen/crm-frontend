@@ -39,11 +39,11 @@
           <label class="main-cource__table">ターム</label>
           <table class="main-cource-term__table">
             <tr>
-              <th>ターム名</th>
-              <th>期間</th>
+              <th class="main-cource-term__table-term">ターム名</th>
+              <th class="main-cource-term__table-period">期間</th>
               <th class="main-cource-term__table-column">概要</th>
-              <th></th>
-              <th class="main-cource-term__table-button">
+              <th class="main-cource-term__table-space"></th>
+              <th class="main-cource-term__table-space">
                 <button
                   @click="sendTerm"
                   class="main-cource-term__table-button-new"
@@ -71,8 +71,8 @@
             >
               <td>{{term.name}}</td>
               <td>{{term.term}}週</td>
-              <td>{{term.summary}}</td>
-              <td>
+              <td class="main-cource-term__table-data--over">{{term.summary}}</td>
+              <td class="main-cource-term__table-space">
                 <button
                   class="contents-table__record-button--edit"
                   @click="transitionTerm(index)"
@@ -80,7 +80,7 @@
                   編集
                 </button>
               </td>
-              <td>
+              <td class="main-cource-term__table-space">
                 <button
                   @click="removeTerm(index)"
                   class="main-cource-term__table-data-button-remove"
