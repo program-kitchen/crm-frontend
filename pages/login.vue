@@ -73,6 +73,7 @@ export default {
           error => {
             const code = parseInt(error.response && error.response.status);
             console.log(code);
+            alert("ユーザーID、パスワードが一致しません");
             this.errorMessage = "ユーザーID、パスワードが一致しません";
             return error;
           }
