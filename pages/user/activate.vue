@@ -84,6 +84,9 @@ export default {
           console.log(response);
           alert("登録が完了しました");
           this.$router.push("/login");
+        })
+        .catch(error => {
+          this.$router.push("/error");
         });
     },
     async fetchUserData() {
