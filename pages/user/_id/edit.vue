@@ -117,8 +117,17 @@ export default {
         .then(response => {
           console.log(response);
         })
-        .catch(response => {
-          console.log(response);
+        .catch(error => {
+          const code = parseInt(error.response && error.response.status);
+          if (code == 400) {
+            this.errorMessage = error["errorMsg"];
+          } else if (code == 401) {
+            this.errorMessage = "アクセストークンが失効しています";
+          } else if (code == 403) {
+            this.errorMessage = "権限がありません。";
+          } else if ([405, 500].includes(code)) {
+            this.$router.push("/error");
+          }
         });
       this.$router.push("/user");
     },
@@ -132,6 +141,18 @@ export default {
           this.name = user["name"];
           this.role = user["role"];
           this.uuid = user["uuid"];
+        })
+        .catch(error => {
+          const code = parseInt(error.response && error.response.status);
+          if (code == 400) {
+            this.errorMessage = error["errorMsg"];
+          } else if (code == 401) {
+            this.errorMessage = "アクセストークンが失効しています";
+          } else if (code == 403) {
+            this.errorMessage = "権限がありません。";
+          } else if ([405, 500].includes(code)) {
+            this.$router.push("/error");
+          }
         });
     },
     sendResetMail() {
