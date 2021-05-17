@@ -118,12 +118,14 @@ export default {
         })
         .catch(error => {
           const code = parseInt(error.response && error.response.status);
-          if (code == 401) {
+          if (code == 400) {
+            this.errorMessage = error["errorMsg"];
+          } else if (code == 401) {
             this.errorMessage = "アクセストークンが失効しています";
           } else if (code == 403) {
             this.errorMessage = "権限がありません。";
           } else if ([405, 500].includes(code)) {
-            this.errorMessage = error["errorMsg"];
+            this.$router.push("/error");
           }
         });
     },
