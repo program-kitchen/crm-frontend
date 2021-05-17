@@ -91,7 +91,6 @@
 
 <script>
 export default {
-  middleware: 'userRedirect',
   data() {
     return {
       // 検索用
@@ -104,7 +103,7 @@ export default {
       pageInfo: 'user',
       checkNames: [],
       users: [],
-      parPage: 5,
+      parPage: 30,
       currentPage: 1,
       authMessage: "",
     }
@@ -115,12 +114,14 @@ export default {
   methods: {
     // 取得API
     async fetchUserData() {
+      this.$nuxt.$loading.start();
       await
         this.$axios
           .get(`https://api.coachtech-crm.com/api/user`)
           .then((res) => {
             this.users = res.data;
             this.currentPage = 1
+            this.$nuxt.$loading.fisish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
@@ -131,6 +132,7 @@ export default {
     },
     // 検索API
     async userSearch() {
+      this.$nuxt.$loading.start();
       await
         this.$axios
           .get(
@@ -139,8 +141,7 @@ export default {
           .then((res) => {
             this.selectAll = false; // 全選択チェックボックスは外す
             this.users = res.data;
-            // this.currentPage = res.data.current_page;
-            // this.pageCount = res.data.total;
+            this.$nuxt.$loading.fisish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
@@ -151,6 +152,7 @@ export default {
     },
     // 削除API
     async userDelete(userId) {
+      this.$nuxt.$loading.start();
       await
         this.$axios
           .post(`https://api.coachtech-crm.com/api/user/delete`, {
@@ -158,6 +160,7 @@ export default {
           })
           .then(() => {
             this.fetchUserData(); //再度ユーザデータ取得
+            this.$nuxt.$loading.fisish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
