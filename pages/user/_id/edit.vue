@@ -69,6 +69,7 @@
       >
         編集
       </button>
+      <span class="crm__error">{{ errorMessage }}</span>
       <p class="register-modal__return">
         <span class="register-modal__return-inner" @click="back">
           戻る
@@ -86,6 +87,7 @@ export default {
       name: "",
       role: "",
       uuid: "",
+      errorMessage: "",
       options: [],
       loginUser: {}
     };
@@ -116,20 +118,25 @@ export default {
         })
         .then(response => {
           console.log(response);
+          alert("ユーザ編集が完了しました。");
+          this.$router.push("/user");
         })
         .catch(error => {
           const code = parseInt(error.response && error.response.status);
           if (code == 400) {
             this.errorMessage = error["errorMsg"];
           } else if (code == 401) {
-            this.errorMessage = "アクセストークンが失効しています";
+            this.errorMessage = "ログインセッションが切れました。";
+            this.$router.push("/login");
           } else if (code == 403) {
-            this.errorMessage = "権限がありません。";
+            this.$router.push("/");
+          } else if (code == 422) {
+            this.errorMessage = "予期せぬエラーが発生しました";
+            this.$router.push("/");
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
           }
         });
-      this.$router.push("/user");
     },
     async fetchUserData() {
       await this.$axios
