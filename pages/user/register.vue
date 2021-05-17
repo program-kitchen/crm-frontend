@@ -63,6 +63,7 @@
       >
         認証メールを送信
       </button>
+      <span class="crm__error">{{ errorMessage }}</span>
       <p class="register-modal__return">
         <span class="register-modal__return-inner" @click="back">
           戻る
@@ -79,6 +80,7 @@ export default {
       email: "",
       name: "",
       role: "",
+      errorMessage: "",
       options: [],
       loginUser: {}
     };
@@ -113,6 +115,16 @@ export default {
         )
         .then(response => {
           this.$router.push("/user");
+        })
+        .catch(error => {
+          const code = parseInt(error.response && error.response.status);
+          if (code == 401) {
+            this.errorMessage = "アクセストークンが失効しています";
+          } else if (code == 403) {
+            this.errorMessage = "権限がありません。";
+          } else if ([405, 500].includes(code)) {
+            this.errorMessage = error["errorMsg"];
+          }
         });
     },
     back() {
