@@ -125,7 +125,7 @@ export default {
           // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
           // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
       ],
-      parPage: 2,
+      parPage: 30,
       currentPage: 1,
       authMessage: ""
     }
@@ -135,11 +135,13 @@ export default {
   },
   methods: {
     async fetchCourceInfo() {
+      this.$nuxt.$loading.start();
       await
         this.$axios
           .get(`https://api.coachtech-crm.com/api/course`)
           .then((res) => {
             this.cources = res.data;
+            this.$nuxt.$loading.finish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
@@ -158,14 +160,21 @@ export default {
       }
     },
     async courcesDelete(courceId) {
+      this.$nuxt.$loading.start();
       await
         this.$axios
           .post('https://api.coachtech-crm.com/api/course/delete', {"id" : courceId,})
           .then(() => {
             window.alert('削除成功')
             this.fetchCourceInfo(); //再度コースデータ取得
+            this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
+          .catch(() => {
+            const code = parseInt(error.response && error.response.status);
+            if(code === 401 ){
+              this.authMessage = "アクセストークンが失効しております"
+            }
+          })
     },
     confirmSelectedDelete() {
       if(window.confirm('削除します。よろしいでしょうか？')) {
@@ -174,6 +183,7 @@ export default {
     },
     // 削除API処理
     async selectedDeleteCources() {
+      this.$nuxt.$loading.start();
       const userData = this.checkCources.join(',');
         await
           this.$axios
@@ -183,9 +193,14 @@ export default {
             .then(() => {
               window.alert('削除しました');
               this.fetchCourceInfo();
-              this.currentPage = 2
+              this.$nuxt.$loading.finish();
             })
-            .catch(() => this.$router.push('/error'))
+            .catch(() => {
+              const code = parseInt(error.response && error.response.status);
+              if(code === 401 ){
+                this.authMessage = "アクセストークンが失効しております"
+              }
+            })
     }
   },
   computed: {

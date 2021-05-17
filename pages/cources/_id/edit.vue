@@ -4,6 +4,7 @@
     <div class="cource-main">
       <div class="main-cource">
         <h1 class="main-cource__title">コース編集</h1>
+        <p class="contents-error">{{authMessage}}</p>
         <validation-observer ref="courceForm" v-slot="{invalid}">
           <label for="name">コース名</label>
           <validation-provider v-slot="{ errors }" name="コース名" rules="required">
@@ -112,7 +113,8 @@ export default {
       description: this.$store.state.cource.description,
       terms: this.$store.state.term,
       btnClickFlag: false,
-      prevRoute: null
+      prevRoute: null,
+      authMessage: ""
     }
   },
   mounted() {
@@ -128,6 +130,7 @@ export default {
   methods: {
     // APIで取得したデータは一度Vuexに格納する
     async getCourceData() {
+      this.$nuxt.$loading.start();
       await this.$axios
         .get(`https://api.coachtech-crm.com/api/course/${this.id}`, {
           params: {
@@ -150,6 +153,7 @@ export default {
               description: element.summary
             });
           });
+          this.$nuxt.$loading.finish();
         })
         .catch(error => console.log(error));
     },
@@ -158,6 +162,7 @@ export default {
     },
     // 更新API
     async editCourceRegist() {
+      this.$nuxt.$loading.start();
       this.btnClickFlag = true;
       await
         this.$axios
@@ -172,6 +177,7 @@ export default {
             window.alert('更新しました');
             this.$store.commit("delAllInfo");
             this.$router.push('/cources');
+            this.$nuxt.$loading.finish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);

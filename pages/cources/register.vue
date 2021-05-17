@@ -4,6 +4,7 @@
     <div class="cource-main">
       <div class="main-cource">
         <h1 class="main-cource__title">コース登録</h1>
+        <p class="contents-error">{{authMessage}}</p>
         <validation-observer ref="courceForm" v-slot="{invalid}">
           <label for="name">コース名</label>
           <validation-provider v-slot="{ errors }" name="コース名" rules="required">
@@ -113,7 +114,8 @@ export default {
       name: this.$store.state.cource.name,
       description: this.$store.state.cource.summary,
       btnClickFlag: false,
-      terms: this.$store.state.term
+      terms: this.$store.state.term,
+      authMessage: ""
     }
   },
   methods: {
@@ -122,6 +124,7 @@ export default {
     },
     // 登録API
     async newCourceRegist() {
+      this.$nuxt.$loading.start();
       this.btnClickFlag = true;
       await
         this.$axios
@@ -136,6 +139,7 @@ export default {
             window.alert('成功しました');
             this.$store.commit("delAllInfo");
             this.$router.push('/cources');
+            this.$nuxt.$loading.finish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
