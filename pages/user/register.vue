@@ -91,7 +91,6 @@ export default {
       { id: 3, name: "管理者" }
     ];
     for (let i = 0; i < this.loginUser["role"] - 1; i++) {
-      console.log(i);
       this.options.push(options[i]);
     }
   },
@@ -113,11 +112,7 @@ export default {
           }
         )
         .then(response => {
-          console.log(response);
           this.$router.push("/user");
-        })
-        .catch(({ response }) => {
-          console.log(response);
         });
     },
     back() {
