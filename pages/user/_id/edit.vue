@@ -82,6 +82,9 @@ export default {
   middleware: "userRedirect",
   data() {
     return {
+      initialEmail: "",
+      initialName: "",
+      initialRole: "",
       email: "",
       name: "",
       role: "",
@@ -142,6 +145,9 @@ export default {
         .then(response => {
           console.log(response);
           const user = response["data"];
+          this.initialEmail = user["email"];
+          this.initialName = user["name"];
+          this.initialRole = user["role"];
           this.email = user["email"];
           this.name = user["name"];
           this.role = user["role"];
@@ -164,7 +170,7 @@ export default {
       //ToDo　リセットを行う
     },
     back() {
-      if (this.email == "" && this.name == "" && this.role == "") {
+      if (this.checkChange()) {
         this.$router.push("/user");
       } else if (
         window.confirm(
@@ -173,6 +179,13 @@ export default {
       ) {
         this.$router.push("/user");
       }
+    },
+    checkChange() {
+      return (
+        this.initialEmail == this.email &&
+        this.initialName == this.name &&
+        this.initialRole == this.role
+      );
     }
   }
 };
