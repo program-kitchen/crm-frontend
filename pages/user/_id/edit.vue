@@ -69,7 +69,6 @@
       >
         編集
       </button>
-      <span class="crm__error">{{ errorMessage }}</span>
       <p class="register-modal__return">
         <span class="register-modal__return-inner" @click="back">
           戻る
@@ -87,7 +86,6 @@ export default {
       name: "",
       role: "",
       uuid: "",
-      errorMessage: "",
       options: [],
       loginUser: {}
     };
@@ -124,14 +122,14 @@ export default {
         .catch(error => {
           const code = parseInt(error.response && error.response.status);
           if (code == 400) {
-            this.errorMessage = error["errorMsg"];
+            alert(error["errorMsg"]);
           } else if (code == 401) {
-            this.errorMessage = "ログインセッションが切れました。";
+            alert("ログインセッションが切れました。");
             this.$router.push("/login");
           } else if (code == 403) {
             this.$router.push("/");
           } else if (code == 422) {
-            this.errorMessage = "予期せぬエラーが発生しました";
+            alert("予期せぬエラーが発生しました");
             this.$router.push("/");
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
@@ -152,11 +150,11 @@ export default {
         .catch(error => {
           const code = parseInt(error.response && error.response.status);
           if (code == 400) {
-            this.errorMessage = error["errorMsg"];
+            alert(error["errorMsg"]);
           } else if (code == 401) {
-            this.errorMessage = "アクセストークンが失効しています";
+            alert("アクセストークンが失効しています");
           } else if (code == 403) {
-            this.errorMessage = "権限がありません。";
+            alert("権限がありません。");
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
           }
