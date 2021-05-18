@@ -1,4 +1,160 @@
-/* ターム登録とターム編集画面のCSS共通 */
+/* ターム表示テーブルのcss */
+.main-cource-term__table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 1.5rem;
+  border: 0.4rem solid #f2f2f2;
+  text-align: left;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.main-cource-term__table th {
+  border-bottom: 4px solid #F2F2F2;
+  padding: 0 1rem;
+  color: #707070;
+}
+.main-cource-term__table td {
+  border-bottom: 1px solid #F2F2F2;
+  padding: 0.5rem 1rem;
+  height: 4rem;
+}
+.main-cource-term__table-term {
+  width: 10rem;
+}
+.main-cource-term__table-period {
+  width: 5rem;
+}
+.main-cource-term__table-column {
+  width: 17rem;
+}
+.main-cource-term__table-space {
+  width: 2.5rem;
+}
+
+.main-cource-term__table-data--space {
+  width: 2rem;
+}
+
+.main-cource-term__table-data--over {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.main-cource__table {
+  padding: 0;
+}
+
+/* ここまで */
+
+
+
+.main-cource__button-auth {
+  display: block;
+  margin: 0.5rem auto;
+  width: 20rem;
+}
+
+.main-cource__button-return {
+  text-align: center;
+  margin: 0 auto;
+  color: #567DFF;
+  padding: 0.7rem 0;
+  width: 20%;
+}
+
+.main-cource__button-return:hover {
+  cursor: pointer;
+}
+
+
+/* CSSでボタンデザイン自作 */
+/* 円ボタン共通 */
+.main-cource-term__table-space {
+  width: 6rem;
+  text-align: right;
+}
+
+.main-cource-term__table-button-new,
+.main-cource-term__table-data-button-remove {
+  text-align: right;
+	font-size: 2rem;
+	position: relative;
+	width: 2.5rem;
+	height: 2.5rem;
+  border-radius: 100%;
+  transition:  0.5s;
+  margin-bottom: 5px;
+}
+
+/* 追加円ボタン共通 */
+.main-cource-term__table-button-new {
+	border: 0.1rem solid #04C6C6;
+  background-color: #04C6C6;
+}
+
+.main-cource-term__table-button-new:hover {
+  cursor: pointer;
+	border: 0.1rem solid #84f8f8;
+  background-color: #84f8f8;
+  transition:  0.5s;
+}
+
+/* 削除円ボタン */
+.main-cource-term__table-data-button-remove {
+	border: 0.1rem solid #FF5561;
+  background-color: #FF5561;
+  
+}
+.main-cource-term__table-data-button-remove:hover {
+  cursor: pointer;
+  border: 0.1rem solid #f7979e;
+  background-color: #f7979e;
+  transition:  0.5s;
+}
+
+.main-cource-term__table-button-new::before,
+.main-cource-term__table-data-button-remove::before {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	width: 2rem;
+	height: 0.1rem;
+	content: "";
+	background-color: white;
+  transform: translate(-50%, -50%);
+}
+
+.main-cource-term__table-button-new::after {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	width: 2rem;
+	height: 0.1rem;
+	content: "";
+	background-color: white;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+
+/* 左線 */
+.main-cource-term__table-data-button-remove::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* 右線 */
+.main-cource-term__table-data-button-remove::after {
+	position: absolute;
+  top: 50%;
+  left: 50%;
+	width: 2rem;
+	height: 0.1rem;
+	content: "";
+	background-color: white;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 .term-area {
   display: flex;
   align-items: center;

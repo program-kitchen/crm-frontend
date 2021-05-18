@@ -70,8 +70,8 @@
               @dragover.prevent
               @dragenter.prevent
             >
-              <td>{{term.name}}</td>
-              <td>{{term.term}}週</td>
+              <td class="main-cource-term__table-data--over">{{term.name}}</td>
+              <td class="main-cource-term__table-data--over">{{term.term}}週</td>
               <td class="main-cource-term__table-data--over">{{term.summary}}</td>
               <td class="main-cource-term__table-space">
                 <button
@@ -203,3 +203,10 @@ export default {
   },
 }
 </script>
+
+
+<style scoped>
+.contents-table__record-button--edit {
+  width: 7rem;
+}
+</style>

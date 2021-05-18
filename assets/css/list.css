@@ -1,7 +1,7 @@
 /* 一覧テーブルCSS */
 /* テーブル部 */
 .contents-table {
-  height: 70vh;
+  height: 59vh;
   border-collapse: collapse;
   background: #FFFFFF;
   box-shadow: 0px 16px 54px #89BDBD80;
@@ -24,9 +24,9 @@
 }
 
 .contents-table__header th {
-  padding: 0.9rem 0;
+  padding: 2.5rem 0;
   text-align: left;
-  font-size: 2rem;
+  font-size: 1.9rem;
 }
 
 .main-cource-term__table-column {
@@ -40,10 +40,10 @@
 .contents-table__record td {
   color: #707070;
   opacity: 1;
-  padding: 1.3rem 0;
+  padding: 1.1rem 0;
 }
 .contents-table__header-button {
-  width: 10rem;
+  width: 8rem;
 }
 
 /* 削除・編集ボタンスタイル部 */
@@ -52,11 +52,9 @@
   border: none;
   border-radius: 20px;
   color: #FFFFFF;
-  padding: 0 0.7rem;
-  height: 3rem;
-  width: 6rem;
+  padding: 0.5rem 0.7rem;
+  width: 7rem;
   transition:  0.5s;
-  margin: 0 1rem;
 }
 
 .contents-table__record-button--edit p,
@@ -76,6 +74,7 @@
 .contents-table__record-button--delete {
   background: #FF5561;
   border: 1px solid #FF5561;
+  margin-left: 1rem;
 }
 
 .contents-table__record-button--edit:hover,
@@ -112,21 +111,22 @@
   content: "";
   display: block;
   position: absolute;
-  top: -5px;
-  left: 15px;
-  width: 18px;
-  height: 18px;
+  top: -13px;
+  left: 55px;
+  width: 3rem;
+  height: 3rem;
   border: 1px solid #999;
+  border-radius: 2px;
   background-color: #ffffff;
 }
 .contents-table__head-check:checked + .contents-table__head-check--checked::after{
   content: "";
   display: block;
   position: absolute;
-  top: -5px;
-  left: 20px;
-  width: 7px;
-  height: 14px;
+  top: -10px;
+  left: 65px;
+  width: 10px;
+  height: 20px;
   transform: rotate(40deg);
   border-bottom: 2px solid white;
   border-right: 2px solid white;
@@ -138,6 +138,10 @@
 
 /* ページネーション */
 /* scopeを入れると反映されないため、別タグで切り出し */
+.contents-pagination {
+  padding: 0 15rem 0 0;
+}
+
 .pagination {
   list-style: none;
   display: flex;
@@ -146,20 +150,21 @@
 
 }
 .pagination-li {
-  margin: 0 6px;
+  margin: 0 1rem;
   
 }
 .pagination-a {
   background: #FFFFFF 0% 0% no-repeat padding-box;
-  padding: 0.3rem 0.5rem;
+  padding: 1.5rem;
   margin: 0 0.1rem;
   border-radius: 3px;
   color: #55BBBB;
+  font-size: 1.1em;
 }
 
 .pagination-a:hover {
   background: #04C6C6 0% 0% no-repeat padding-box;
-  padding: 0.3rem 0.5rem;
+  padding: 1.5rem;
   margin: 0 0.1rem;
   border-radius: 3px;
   color: #FFFFFF;
@@ -169,5 +174,11 @@
 .pagination-active a {
   background: #04C6C6 0% 0% no-repeat padding-box;
   color: #FFFFFF;
+  font-size: 1.1em;
+}
+
+.prev-pagination {
+  font-size: 1.1em;
+  color: #555454;
 }
 /* ここまで */

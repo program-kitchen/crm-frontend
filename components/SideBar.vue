@@ -32,8 +32,8 @@ nav {
 }
 .logo {
   margin: 0 auto;
-  padding: 2.5rem 0;
-  width: 90%;
+  padding: 4.5rem 0;
+  width: 80%;
 }
 .menu {
   width: 100%;
@@ -49,10 +49,10 @@ nav {
 .menu__link-title {
   list-style: none;
   padding: 1.5rem 0;
-  padding-left: 2.5rem;
+  padding-left: 4.5rem;
   opacity: 0.64;
   transition: 0.5s;
-  font-size: 1.7rem;
+  font-size: 2rem;
 }
 
 .menu__link-title:hover {

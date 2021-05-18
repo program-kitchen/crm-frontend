@@ -18,6 +18,7 @@ export default {
 <style scoped>
 .contents-head {
   display: flex;
+  align-items: center;
 }
 
 .contents-head {
@@ -27,16 +28,17 @@ export default {
   padding-right: 2.5rem;
   color: #707070;
   font-weight: bold;
-  font-size: 2.8rem;
+  font-size: 3.5rem;
 }
 
 .contents-head__button {
   background: #04C6C6;
   border: none;
-  padding: 0 1.2rem;
+  width: 17rem;
+  height: 5rem;
   border-radius: 27px;
   opacity: 1;
-  font-size: 2rem;
+  font-size: 2.5rem;
   text-align: center;
   color: #FFFFFF;
   font-weight: bold;

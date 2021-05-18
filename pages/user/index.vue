@@ -15,7 +15,7 @@
             <option value="1">コーチ</option>
           </select>
           <button class="contents-search__button" @click="userSearch">検索</button>
-          <p>表示件数：{{users.length}}件</p>
+          <p>検索結果：{{users.length}}件</p>
         </div>
         <div class="contents-table">
           <table>
@@ -63,7 +63,7 @@
                     @click="confirmDelete(user.uuid)" 
                     v-show="canEdit(user.role,userRole)"
                   >
-                    削除
+                    消去
                   </button>
                 </td>
               </tr>
@@ -81,7 +81,9 @@
             :container-class="'pagination'"
             :page-class="'pagination-li'"
             :page-link-class="'pagination-a'"
-            :active-class="'pagination-active'">
+            :active-class="'pagination-active'"
+            :prev-class="'prev-pagination'"
+            :next-class="'prev-pagination'">
           </paginate>
         </div>
       </div>
@@ -103,7 +105,7 @@ export default {
       pageInfo: 'user',
       checkNames: [],
       users: [],
-      parPage: 30,
+      parPage: 2,
       currentPage: 1,
       authMessage: "",
     }
@@ -237,7 +239,7 @@ export default {
 
 <style scoped>
 .users {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
 }
 
 .main,
@@ -247,8 +249,9 @@ export default {
 }
 
 .contents {
+  margin-top: 1rem;
   width: 83%;
-  padding-left: 2.5rem;
+  padding: 2rem 0 0 8rem;
 }
 
 .menu-title-text {
@@ -263,24 +266,25 @@ export default {
 
 .contents-search input,
 .contents-search select {
-  width: 20rem;
+  width: 25rem;
   padding: 0.5rem;
   margin-right: 2rem;
   box-sizing:border-box;
-  height: 3.5rem;
+  height: 4.5rem;
+  border: 1px solid #707070;
+  border-radius: 5px;
   outline: none;
 }
 
 .contents-search__button {
   background: #04C6C6;
   border: none;
-  padding: 0.5rem 1.2rem;
+  padding: 1rem 2.5rem;
   margin-right: 1rem;
   border-radius: 27px;
   opacity: 1;
   text-align: center;
   color: #FFFFFF;
-  font-weight: bold;
 }
 
 .contents-search__button:hover {
