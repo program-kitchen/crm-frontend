@@ -55,7 +55,7 @@
           v-model="name"
         />
         <p class="main-edit__mail--reset">
-          <span class="main-edit__mail--reset-send" @click="sendResetMail">
+          <span class="main-edit__mail--reset-send" @click="confirmSendReset()">
             リセットメール送信
           </span>
         </p>
@@ -166,8 +166,27 @@ export default {
           }
         });
     },
-    sendResetMail() {
-      //ToDo　リセットを行う
+    confirmSendReset() {
+      if(window.confirm('パスワードリセットメールを送信します。よろしいでしょうか？')) {
+        this.sendResetMail();
+      }
+    },
+    async sendResetMail() {
+      this.$nuxt.$loading.start();
+      await
+        this.$axios
+          .post('https://api.coachtech-crm.com/api/user/reset-pass', {"uuid" : this.uuid})
+          .then(() => {
+            window.alert('パスワードリセットメールを送信しました。')
+            this.fetchUserData(); //再度ユーザデータ取得
+            this.$nuxt.$loading.finish();
+          })
+          .catch(() => {
+            const code = parseInt(error.response && error.response.status);
+            if(code === 401 ){
+              this.authMessage = "アクセストークンが失効しております。"
+            }
+          })
     },
     back() {
       if (this.checkChange()) {
@@ -225,6 +244,7 @@ export default {
 .main-edit__mail--reset-send {
   transition: 0.5s;
   color: #567dff;
+  font-size: 2rem;
 }
 
 .main-edit__mail--reset-send:hover {
