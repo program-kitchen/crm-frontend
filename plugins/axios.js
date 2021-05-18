@@ -1,12 +1,13 @@
 // レスポンスエラーコード毎の対応処理を追加
-export default function({ $axios, redirect }) {
+export default function({ $axios, redirect, route }) {
   $axios.onRequest(config => {
     console.log("Making request to " + config.url);
   });
   $axios.onError(error => {
     const code = parseInt(error.response && error.response.status);
+    const path = route.path;
     //ログイン時のエラーハンドリング
-    if (this.route.path == "/login") {
+    if (path.match(/.*(\/login)/)) {
       if ([401, 422].includes(code)) {
         return;
       }
