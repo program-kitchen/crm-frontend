@@ -9,7 +9,7 @@ export default function({ redirect, $auth, route }) {
     return;
   } else {
     //オーナーが編集画面に直接アクセスしようとした場合はエラー画面へ遷移
-    if (path.match(/.*(\/user\/).*(\/edit)/g)) {
+    if (path.match(/.*(\/user\/).*(\/edit)/)) {
       redirect("/error");
     } else {
       redirect("/");
