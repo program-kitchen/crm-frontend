@@ -70,7 +70,7 @@
             class="contents-buttom__button" 
             @click="confirmSelectedDelete" v-show="this.checkCources.length >= 1"
           >
-            チェック項目を消去
+            チェックしたコースを消去
           </button>
           <p>該当件数：{{this.checkCources.length}} 件</p>
         </div>
@@ -84,7 +84,9 @@
             :container-class="'pagination'"
             :page-class="'pagination-li'"
             :page-link-class="'pagination-a'"
-            :active-class="'pagination-active'">
+            :active-class="'pagination-active'"
+            :prev-class="'prev-pagination'"
+            :next-class="'prev-pagination'">
           </paginate>
         </div>
       </div>
@@ -125,7 +127,7 @@ export default {
           // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
           // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
       ],
-      parPage: 30,
+      parPage: 2,
       currentPage: 1,
       authMessage: ""
     }
@@ -248,11 +250,20 @@ export default {
 }
 
 .contents {
+  margin-top: 1rem;
   width: 83%;
-  padding-left: 2.5rem;
+  padding: 2rem 0 0 8rem;
 }
 
 /* テーブルCSS */
+.contents-table {
+  margin-top: 6.5rem;
+}
+
+.contents-table__header-check-list {
+  width: 14rem;
+}
+
 .contents-table__header-term {
   width: 25rem;
 }
@@ -261,10 +272,14 @@ export default {
 }
 
 .contents-table__header-summary {
-  width: 40rem;
+  width: 30rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.contents-table__header-button {
+  width: 10rem;
 }
 
 .contents-buttom {
@@ -274,32 +289,39 @@ export default {
 /* Chckedユーザ削除部 */
 .contents-buttom {
   padding: 1rem 0;
+  margin-top: 1rem;
+  display: flex;
   align-items: center;
 }
+
+.contents-buttom__button--enable,
 .contents-buttom__button {
-  background: #FF5561;
   border: none;
   border-radius: 27px;
   color: #FFFCFC;
   font-weight: bold;
   margin-right: 2rem;
-  height: 3rem;
+  padding-top: 2rem;
+  height: 5rem;
+  width: 28rem;
   padding: 0 1.2rem;
 }
+
+.contents-buttom__button {
+  background: #FF5561;
+}
+
+.contents-buttom__button--enable {
+  background: #b8b3b3;
+}
+
 .contents-buttom__button:hover {
   cursor: pointer;
   transition:  0.3s 0s ease-in;
   background: #f8717a;
 }
 
-.contents-buttom__button--enable {
-  background: #b8b3b3;
-  border: none;
-  border-radius: 27px;
-  color: #FFFCFC;
-  font-weight: bold;
-  margin-right: 2rem;
-  height: 3rem;
-  padding: 0 1.2rem;
+.contents-buttom p {
+  color: #555454;
 }
 </style>
