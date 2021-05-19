@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     confirmDelete() {
-      if(window.confirm('削除します。よろしいでしょうか？')) {
+      if(window.confirm('選択したユーザを削除します。よろしいですか？')) {
         this.selectedDeleteUsers();
       }
     },

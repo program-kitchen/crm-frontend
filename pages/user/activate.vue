@@ -2,7 +2,7 @@
   <div class="register">
     <SideBar />
     <ValidationObserver class="crm-modal" v-slot="{ invalid }">
-      <h1 class="register-modal__title">ユーザー情報有効</h1>
+      <h1 class="register-modal__title">ユーザ情報有効</h1>
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
@@ -82,7 +82,7 @@ export default {
         )
         .then(response => {
           console.log(response);
-          alert("登録が完了しました");
+          alert("登録が完了しました。");
           this.$router.push("/login");
         })
         .catch(error => {

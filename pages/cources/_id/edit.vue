@@ -174,7 +174,7 @@ export default {
             "termInfo" : this.terms,
           })
           .then(() => {
-            window.alert('更新しました');
+            window.alert('コースを更新しました。');
             this.$store.commit("delAllInfo");
             this.$router.push('/cources');
             this.$nuxt.$loading.finish();
@@ -182,7 +182,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております"
+              this.authMessage = "アクセストークンが失効しております。"
             }
           })
     },
@@ -196,9 +196,9 @@ export default {
       this.$router.push({name: "term"})
     },
     removeTerm(index) {
-      if(window.confirm('削除してもよろしいでしょうか？')) {
+      if(window.confirm('タームを削除します。よろしいですか？')) {
         this.$store.commit("delTermInfo", index);
-        window.alert('タームを削除しました');
+        window.alert('タームを削除しました。');
       }
     },
     transitionTerm(index) {
@@ -227,7 +227,7 @@ export default {
     if(this.btnClickFlag) {
       next()
     } else {
-      let answer = window.confirm("これまでの編集情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
+      let answer = window.confirm("編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
       if (answer) {
         this.$store.commit("delAllInfo");
         next()

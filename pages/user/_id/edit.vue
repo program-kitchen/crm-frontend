@@ -3,22 +3,25 @@
     <SideBar />
 
     <ValidationObserver class="crm-modal" v-slot="{ invalid }">
-      <h1 class="register-modal__title">ユーザー編集</h1>
+      <h1 class="register-modal__title">ユーザ編集</h1>
+
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
-        rules="email|required"
+        rules="required"
       >
-        <label for="email" class="register-modal__label">メールアドレス</label>
+        <label for="name" class="register-modal__label">名前</label>
         <input
-          id="email"
-          name="email"
+          id="name"
+          name="name"
           type="text"
           class="register-modal__input crm__input"
-          v-model="email"
+          v-model="name"
         />
+        
         <span class="crm__error">{{ errors[0] }}</span>
       </validation-provider>
+
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
@@ -41,18 +44,19 @@
         </select>
         <span class="crm__error">{{ errors[0] }}</span>
       </validation-provider>
+
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
-        rules="required"
+        rules="email|required"
       >
-        <label for="name" class="register-modal__label">名前</label>
+        <label for="email" class="register-modal__label">メールアドレス</label>
         <input
-          id="name"
-          name="name"
+          id="email"
+          name="email"
           type="text"
           class="register-modal__input crm__input"
-          v-model="name"
+          v-model="email"
         />
         <p class="main-edit__mail--reset">
           <span class="main-edit__mail--reset-send" @click="confirmSendReset()">
@@ -119,7 +123,7 @@ export default {
         })
         .then(response => {
           console.log(response);
-          alert("ユーザ編集が完了しました。");
+          alert("ユーザを編集しました。");
           this.$router.push("/user");
         })
         .catch(error => {
@@ -132,7 +136,7 @@ export default {
           } else if (code == 403) {
             this.$router.push("/");
           } else if (code == 422) {
-            alert("予期せぬエラーが発生しました");
+            alert("予期せぬエラーが発生しました。");
             this.$router.push("/");
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
@@ -158,7 +162,7 @@ export default {
           if (code == 400) {
             alert(error["errorMsg"]);
           } else if (code == 401) {
-            alert("アクセストークンが失効しています");
+            alert("アクセストークンが失効しています。");
           } else if (code == 403) {
             alert("権限がありません。");
           } else if ([405, 500].includes(code)) {
@@ -167,7 +171,7 @@ export default {
         });
     },
     confirmSendReset() {
-      if(window.confirm('パスワードリセットメールを送信します。よろしいでしょうか？')) {
+      if(window.confirm('パスワードリセットメールを送信します。よろしいですか？')) {
         this.sendResetMail();
       }
     },
@@ -193,7 +197,7 @@ export default {
         this.$router.push("/user");
       } else if (
         window.confirm(
-          "今まで入力していた情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
+          "編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
         )
       ) {
         this.$router.push("/user");

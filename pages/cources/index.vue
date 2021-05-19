@@ -103,31 +103,8 @@ export default {
       sendText: {title:"コース管理", url:"cources"}, // トップ部のコンポーネントへ渡すデータ
       pageInfo: 'course',
       checkCources: [],
-      cources: [
-          // { id: 1, name: 'スキルアップコースです' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 2, name: 'フリーランスコースだよ' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 3, name: 'たぶんスキルアップコース' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 4, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 5, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 6, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 7, name: 'きっとフリーランスコース' , period: "6ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-          // { id: 8, name: 'スキルアップコースかも' , period: "4ヶ月", description: "副業で稼ぐスキルを身につけるためのコース"},
-          // { id: 9, name: 'フリーランスコース' , period: "10ヶ月", description: "フリーランスとして稼ぐスキルを身につけるためのコース"},
-      ],
-      parPage: 2,
+      cources: [],
+      parPage: this.$LIST_PAGE_COUNT,
       currentPage: 1,
       authMessage: ""
     }
@@ -148,7 +125,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております"
+              this.authMessage = "アクセストークンが失効しております。"
             }
           })
     },
@@ -157,7 +134,7 @@ export default {
       this.currentPage = Number(pageNo);
     },
     confirmDelete(courceId) {
-      if(window.confirm('コースを削除します。よろしいでしょうか？')) {
+      if(window.confirm('コースを削除します。よろしいですか？')) {
         this.courcesDelete(courceId);
       }
     },
@@ -167,19 +144,19 @@ export default {
         this.$axios
           .post('https://api.coachtech-crm.com/api/course/delete', {"id" : courceId,})
           .then(() => {
-            window.alert('削除成功')
+            window.alert('コースを削除しました。')
             this.fetchCourceInfo(); //再度コースデータ取得
             this.$nuxt.$loading.finish();
           })
           .catch(() => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております"
+              this.authMessage = "アクセストークンが失効しております。"
             }
           })
     },
     confirmSelectedDelete() {
-      if(window.confirm('削除します。よろしいでしょうか？')) {
+      if(window.confirm('選択したコースを削除します。よろしいですか？')) {
         this.selectedDeleteCources();
       }
     },
@@ -193,14 +170,14 @@ export default {
               "id" : userData
             })
             .then(() => {
-              window.alert('削除しました');
+              window.alert('コースを削除しました。');
               this.fetchCourceInfo();
               this.$nuxt.$loading.finish();
             })
             .catch(() => {
               const code = parseInt(error.response && error.response.status);
               if(code === 401 ){
-                this.authMessage = "アクセストークンが失効しております"
+                this.authMessage = "アクセストークンが失効しております。"
               }
             })
     }

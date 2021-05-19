@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <img class="logo" src="@/assets/images/coachtech-crm_logo.svg">
+    <img class="logo" src="@/assets/images/coachtech-crm_logo.png">
     <ul class="menu">
       <nuxt-link class="menu__link" to="/" >
         <li class="menu__link-title" v-bind:class="{ 'menu__link-title-active': this.$route.path == '/' }">

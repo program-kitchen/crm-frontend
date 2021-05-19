@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "crm-frontend",
+    title: "COACHTECH CRM",
     htmlAttrs: {
       lang: "en"
     },
@@ -35,7 +35,8 @@ export default {
     "~/plugins/localStorage.js",
     "@plugins/vee-validate",
     "@/plugins/dragDrop.js",
-    "@/plugins/cource.js"
+    "@/plugins/cource.js",
+    "~/plugins/const.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

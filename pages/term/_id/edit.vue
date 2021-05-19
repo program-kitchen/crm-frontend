@@ -98,7 +98,7 @@ export default {
         period: this.period,
         description: this.description
       });
-      window.alert('ターム編集が完了しました');
+      window.alert('タームを編集しました。');
       this.$router.go(-1);
 
     },

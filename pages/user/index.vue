@@ -101,11 +101,11 @@ export default {
       role: '',
       // ログインユーザの権限を取得
       userRole: this.$auth.user.role,
-      sendText: {title:"ユーザー", url:"user"},
+      sendText: {title:"ユーザ管理", url:"user"},  
       pageInfo: 'user',
       checkNames: [],
       users: [],
-      parPage: 2,
+      parPage: this.$LIST_PAGE_COUNT,
       currentPage: 1,
       authMessage: "",
     }
@@ -128,7 +128,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております"
+              this.authMessage = "アクセストークンが失効しております。"
             }
           })
     },
@@ -148,7 +148,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております"
+              this.authMessage = "アクセストークンが失効しております。"
             }
           })
     },
@@ -161,13 +161,14 @@ export default {
             "uuid": userId,
           })
           .then(() => {
+            window.alert('ユーザを削除しました。');
             this.fetchUserData(); //再度ユーザデータ取得
             this.$nuxt.$loading.fisish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております"
+              this.authMessage = "アクセストークンが失効しております。"
             }
           })
     },
@@ -176,7 +177,7 @@ export default {
       this.currentPage = Number(pageNo);
     },
     confirmDelete(userId) {
-      if(window.confirm('ユーザーを削除します。よろしいでしょうか？')) {
+      if(window.confirm('ユーザを削除します。よろしいですか？')) {
         this.userDelete(userId); // 削除API処理を実行
       }
     },
@@ -293,6 +294,9 @@ export default {
   background: #40dada;
 }
 
+.contents-table__header-check-list {
+  width: 14rem;
+}
 .contents-table__header-name {
   width: 15rem;
 }

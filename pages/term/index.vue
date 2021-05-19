@@ -88,7 +88,7 @@ export default {
         period: this.period,
         description: this.description
       });
-      window.alert('コース登録が完了しました！');
+      window.alert('タームを登録しました。');
       this.$router.go(-1);
 
     },
@@ -105,7 +105,7 @@ export default {
     if(this.btnClickFlag || inputCheck) {
       next()
     } else {
-      let answer = window.confirm("今まで入力していた情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
+      let answer = window.confirm("編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
       if (answer) {
         next()
       } else {

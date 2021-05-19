@@ -13,14 +13,14 @@ export default function({ $axios, redirect, route }) {
       }
     }
     if (code === 422) {
-      window.alert("予期せぬエラーが発生しました");
+      window.alert("予期せぬエラーが発生しました。");
       redirect("/");
     } else if ([404, 405, 500].includes(code)) {
       redirect("/error");
     } else if (code === 403) {
       redirect("/");
     } else {
-      error = "アクセストークンが失効しています";
+      error = "アクセストークンが失効しています。";
     }
   });
 }
