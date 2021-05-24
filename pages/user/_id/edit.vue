@@ -17,6 +17,7 @@
           type="text"
           class="register-modal__input crm__input"
           v-model="name"
+          maxlength="32"
         />
         
         <span class="crm__error">{{ errors[0] }}</span>
@@ -57,6 +58,7 @@
           type="text"
           class="register-modal__input crm__input"
           v-model="email"
+          maxlength="256"
         />
         <p class="main-edit__mail--reset">
           <span class="main-edit__mail--reset-send" @click="confirmSendReset()">
@@ -69,7 +71,7 @@
       <button
         @click="submit"
         :disabled="invalid"
-        class="register-modal__button crm-modal__button"
+        class="crm-modal__submit-button crm-modal__button"
       >
         編集
       </button>

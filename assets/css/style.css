@@ -57,6 +57,12 @@ html {
   background: #d3d5d6;
 }
 
+.crm-modal__submit-button {
+  display: block;
+  margin: 0.5rem auto;
+  width: 20rem;
+}
+
 .crm__error {
   color: red;
   font-size: 1.4rem;

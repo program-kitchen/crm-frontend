@@ -14,6 +14,7 @@
               class="main-cource__name crm__input"
               name="name"
               v-model="name"
+              maxlength="32"
             >
             <span class="crm__error">{{ errors[0] }}</span>
           </validation-provider>
@@ -36,6 +37,7 @@
             class="main-cource__description crm__input"
             name="description"
             v-model="description"
+            maxlength="256"
           >
           <label class="main-cource__table">ターム</label>
           <table class="main-cource-term__table">
@@ -91,7 +93,7 @@
             </tr>
           </table>
           <button
-            class="main-cource__button-auth crm-modal__button"
+            class="crm-modal__submit-button crm-modal__button"
             @click="newCourceRegist"
             :disabled="invalid"
           >
@@ -155,7 +157,7 @@ export default {
         term: this.sumPeriod,
         summary: this.description
       });
-      this.$router.push({name: "term"})
+      this.$router.push('/term/register')
     },
     removeTerm(index) {
       if(window.confirm('タームを削除します。よろしいですか？')) {

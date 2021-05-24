@@ -26,6 +26,7 @@
               class="main-term__textbox crm__input"
               name="term"
               v-model="term"
+              maxlength="32"
             >
             <span class="crm__error">{{ errors[0] }}</span>
           </validation-provider>
@@ -51,9 +52,10 @@
             class="main-term__textbox crm__input"
             name="description"
             v-model="description"
+            maxlength="256"
           >
           <button
-            class="main-term__button-auth crm-modal__button"
+            class="crm-modal__submit-button crm-modal__button"
             @click="termRegist"
             :disabled="invalid"
           >

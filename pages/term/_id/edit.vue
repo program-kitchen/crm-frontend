@@ -26,11 +26,12 @@
               class="main-term__textbox crm__input"
               name="term"
               v-model="term"
+              maxlength="32"
             >
             <span class="crm__error">{{ errors[0] }}</span>
           </validation-provider>
           <label for="period">
-            ターム(週単位)
+            ターム期間(週単位)
           </label>
           <validation-provider v-slot="{ errors }" name="ターム期間" rules="required|min_value:1|max_value:26">
             <input
@@ -51,9 +52,10 @@
             class="main-term__textbox crm__input"
             name="description"
             v-model="description"
+            maxlength="256"
           >
           <button
-            class="main-term__button-auth crm-modal__button"
+            class="crm-modal__submit-button crm-modal__button"
             @click="termEdit"
             :disabled="invalid"
           >

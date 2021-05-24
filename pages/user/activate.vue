@@ -38,6 +38,7 @@
           type="password"
           class="register-modal__input crm__input"
           v-model="password"
+          maxlength="32"
         />
         <span class="crm__error">{{ errors[0] }}</span>
       </validation-provider>
@@ -45,7 +46,7 @@
       <button
         @click="submit"
         :disabled="invalid"
-        class="register-modal__button crm-modal__button"
+        class="crm-modal__submit-button crm-modal__button"
       >
         登録
       </button>

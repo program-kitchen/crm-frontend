@@ -1,91 +1,107 @@
 <template>
-  <div class="users">
-    <div class="main">
-      <SideBar />
-      <div class="contents">
-        <TitleButton :urlText="sendText"/>
-        <p class="contents-error">{{authMessage}}</p>
-        <div class="contents-search">
-          <input type="text" placeholder="ユーザ名" v-model="name">
-          <input type="mail" placeholder="メールアドレス" v-model="email">
-          <select v-model="role" class="contents-search__select">
-            <option value="">権限選択</option>
-            <option value="3">管理者</option>
-            <option value="2">バックオフィス</option>
-            <option value="1">コーチ</option>
-          </select>
-          <button class="contents-search__button" @click="userSearch">検索</button>
-          <p>検索結果：{{users.length}}件</p>
+  <div class="main">
+    <SideBar />
+    <div class="contents">
+      <TitleButton :urlText="sendText"/>
+      <p class="contents-error">{{authMessage}}</p>
+      <div class="contents-search">
+        <input type="text" placeholder="ユーザ名" v-model="name">
+        <input type="mail" placeholder="メールアドレス" v-model="email">
+        <select v-model="role" class="contents-search__select">
+          <option value="">権限選択</option>
+          <option value="3">管理者</option>
+          <option value="2">バックオフィス</option>
+          <option value="1">コーチ</option>
+        </select>
+        <button class="contents-search__button" @click="userSearch">検索</button>
+        <p>検索結果：{{users.length}}件</p>
+      </div>
+      <div class="contents-table">
+        <table>
+          <thead class="contents-table__header">
+            <tr>
+              <th class="contents-table__header-check-list">
+                <label>
+                  <input type="checkbox" v-model="selectAll" class="contents-table__head-check">
+                  <span class="contents-table__head-check--checked"></span>
+                </label>
+              </th>
+              <th class="contents-table__header-name">名前</th>
+              <th class="contents-table__header-email">メールアドレス</th>
+              <th class="contents-table__header-role">権限</th>
+              <th class="contents-table__header-button"></th>
+              <th class="contents-table__header-button"></th>
+            </tr>
+          </thead>
+          <tbody class="contents-table__record">
+            <tr v-for="(user, index) in getUsers" :key="index">
+              <td class="contents-table__header-check-list">
+                <label v-show="canEdit(user.role,userRole)">
+                  <input type="checkbox" v-model="checkNames" v-bind:value="user.uuid" class="contents-table__head-check">
+                  <span class="contents-table__head-check--checked"></span>
+                </label>
+              </td>
+              <td class="contents-table__header-name">{{user.name}}</td>
+              <td class="contents-table__header-email">{{user.email}}</td>
+              <td class="contents-table__header-role" v-if="user.role=='4'">オーナー</td>
+              <td class="contents-table__header-role" v-if="user.role=='3'">管理者</td>
+              <td class="contents-table__header-role" v-if="user.role=='2'">バックオフィス</td>
+              <td class="contents-table__header-role" v-if="user.role=='1'">コーチ</td>
+              <td class="contents-table__record-button">
+                <button
+                  class="contents-table__record-button--edit" 
+                  @click="$router.push(`/user/${user.uuid}/edit`)" 
+                  v-show="canEdit(user.role,userRole)"
+                >
+                  編集
+                </button>
+              </td>
+              <td>
+                <button
+                  class="contents-table__record-button--delete"
+                  @click="confirmDelete(user.uuid)" 
+                  v-show="canEdit(user.role,userRole)"
+                >
+                  削除
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="contents-buttom">
+        <div>
+          <button
+            class="contents-buttom__button--enable"
+            v-show="checkNames.length == 0"
+          >
+            削除できません
+          </button>
+          <button 
+            class="contents-buttom__button" 
+            @click="confirmDelete" v-show="checkNames.length >= 1"
+          >
+            チェックしたユーザを削除
+          </button>
         </div>
-        <div class="contents-table">
-          <table>
-            <thead class="contents-table__header">
-              <tr>
-                <th class="contents-table__header-check-list">
-                  <label>
-                    <input type="checkbox" v-model="selectAll" class="contents-table__head-check">
-                    <span class="contents-table__head-check--checked"></span>
-                  </label>
-                </th>
-                <th class="contents-table__header-name">名前</th>
-                <th class="contents-table__header-email">メールアドレス</th>
-                <th class="contents-table__header-role">権限</th>
-                <th class="contents-table__header-button"></th>
-                <th class="contents-table__header-button"></th>
-              </tr>
-            </thead>
-            <tbody class="contents-table__record">
-              <tr v-for="(user, index) in getUsers" :key="index">
-                <td class="contents-table__header-check-list">
-                  <label v-show="canEdit(user.role,userRole)">
-                    <input type="checkbox" v-model="checkNames" v-bind:value="user.uuid" class="contents-table__head-check">
-                    <span class="contents-table__head-check--checked"></span>
-                  </label>
-                </td>
-                <td>{{user.name}}</td>
-                <td>{{user.email}}</td>
-                <td v-if="user.role=='4'">オーナー</td>
-                <td v-if="user.role=='3'">管理者</td>
-                <td v-if="user.role=='2'">バックオフィス</td>
-                <td v-if="user.role=='1'">コーチ</td>
-                <td class="contents-table__record-button">
-                  <button
-                    class="contents-table__record-button--edit" 
-                    @click="$router.push(`/user/${user.uuid}/edit`)" 
-                    v-show="canEdit(user.role,userRole)"
-                  >
-                    編集
-                  </button>
-                </td>
-                <td>
-                  <button
-                    class="contents-table__record-button--delete"
-                    @click="confirmDelete(user.uuid)" 
-                    v-show="canEdit(user.role,userRole)"
-                  >
-                    消去
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <SelectedDeleteButton :sendDeleteData="checkNames" :pageInfo="pageInfo" @fetchData='fetchUserData(1)'/>
-        <div class="contents-pagination">
-          <paginate v-if="(getPageCount > 1)"
-            :page-count="getPageCount"
-            :page-range="3"
-            :click-handler="clickViewPage"
-            :prev-text="'＜'"
-            :next-text="'＞'"
-            :container-class="'pagination'"
-            :page-class="'pagination-li'"
-            :page-link-class="'pagination-a'"
-            :active-class="'pagination-active'"
-            :prev-class="'prev-pagination'"
-            :next-class="'prev-pagination'">
-          </paginate>
-        </div>
+        <p class="contents-buttom__check-count">該当件数：{{checkNames.length}} 件</p>
+      </div>
+      
+      <div class="contents-pagination">
+        <paginate v-if="(getPageCount > 1)"
+          :page-count="getPageCount"
+          :page-range="3"
+          :click-handler="clickViewPage"
+          :prev-text="'＜'"
+          :next-text="'＞'"
+          :container-class="'pagination'"
+          :page-class="'pagination-li'"
+          :page-link-class="'pagination-a'"
+          :active-class="'pagination-active'"
+          :prev-class="'prev-pagination'"
+          :next-class="'prev-pagination'">
+        </paginate>
       </div>
     </div>
   </div>
@@ -192,6 +208,25 @@ export default {
         return true;
       } 
     },
+    confirmDelete() {
+      if(window.confirm('選択したユーザを削除します。よろしいですか？')) {
+        this.deleteSelectedRow();
+      }
+    },
+    // 削除API処理
+    async deleteSelectedRow() {
+      const userData = this.checkNames.join(',');
+      await
+        this.$axios
+          .post(`https://api.coachtech-crm.com/api/${this.pageInfo}/delete`, {
+            "uuid" : userData
+          })
+          .then(() => {
+            window.alert('ユーザを削除しました。')
+            this.$emit('fetchData')
+          })
+          .catch(() => this.$router.push('/error'))
+    },
   },
   computed: {
     getUsers() {
@@ -239,10 +274,6 @@ export default {
 </script>
 
 <style scoped>
-.users {
-  font-size: 1.8rem;
-}
-
 .main,
 .contents-search,
 .contents-buttom {
@@ -299,9 +330,15 @@ export default {
 }
 .contents-table__header-name {
   width: 15rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .contents-table__header-email {
   width: 30rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .contents-table__header-role {
   width: 15rem;
