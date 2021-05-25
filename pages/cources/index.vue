@@ -36,7 +36,7 @@
               </td>
               
               <td class="contents-table__header-term">{{cource.name}}</td>
-              <td class="contents-table__header-period">{{cource.term}}ヶ月</td>
+              <td class="contents-table__header-period">{{termToString(cource.term)}}</td>
               <td class="contents-table__header-summary">{{cource.summary}}</td>
               <td class="contents-table__record-button">
                 <button
@@ -74,7 +74,8 @@
         <p class="contents-buttom__check-count">該当件数：{{this.checkCources.length}} 件</p>
       </div>
       <div class="contents-pagination">
-        <paginate v-if="(getPageCount > 1)"
+        <paginate v-if="(getPageCount > 0)"
+          v-model="currentPage"
           :page-count="getPageCount"
           :page-range="3"
           :click-handler="clickViewPage"
@@ -118,6 +119,7 @@ export default {
           .get(`https://api.coachtech-crm.com/api/course`)
           .then((res) => {
             this.cources = res.data;
+            this.clickViewPage(1);
             this.$nuxt.$loading.finish();
           })
           .catch((error) => {
@@ -178,6 +180,20 @@ export default {
                 this.authMessage = "アクセストークンが失効しております。"
               }
             })
+    },
+    // 期間を表示文字列に変換
+    termToString(term) {
+      let month = Math.floor(term / 4);
+      let week = term % 4;
+      let termStr = '';
+      if (month > 0) {
+        termStr += month + 'ヶ月';
+      }
+      if (week > 0) {
+        termStr += week + '週間';
+      }
+
+      return termStr;
     }
   },
   computed: {

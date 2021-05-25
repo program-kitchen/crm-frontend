@@ -7,6 +7,7 @@
   text-align: left;
   table-layout: fixed;
   width: 100%;
+  margin-bottom: 3rem;
 }
 
 .main-cource-term__table th {
@@ -47,19 +48,6 @@
 }
 
 /* ここまで */
-
-
-.main-cource__button-return {
-  text-align: center;
-  margin: 0 auto;
-  color: #567DFF;
-  padding: 0.7rem 0;
-  width: 20%;
-}
-
-.main-cource__button-return:hover {
-  cursor: pointer;
-}
 
 
 /* CSSでボタンデザイン自作 */
@@ -174,11 +162,6 @@
   margin: 0 auto;
 }
 
-.main-term__title {
-  padding-bottom: 1.5rem;
-  text-align: center;
-}
-
 .main-term label {
   display: block;
   margin: 0 auto;
@@ -199,16 +182,5 @@ select {
 .main-term__button-auth {
   display: block;
   margin: 2rem auto;
-}
-
-.main-term__button-return {
-  text-align: center;
-  margin: 0 auto;
-  color: #567DFF;
-  padding: 0.7rem 0;
-  width: 20%;
-}
-.main-term__button-return:hover {
-  cursor: pointer;
 }
 /* ここまで */

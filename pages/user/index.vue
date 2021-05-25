@@ -80,7 +80,7 @@
           </button>
           <button 
             class="contents-buttom__button" 
-            @click="confirmDelete" v-show="checkNames.length >= 1"
+            @click="confirmDeleteSelected" v-show="checkNames.length >= 1"
           >
             チェックしたユーザを削除
           </button>
@@ -89,7 +89,8 @@
       </div>
       
       <div class="contents-pagination">
-        <paginate v-if="(getPageCount > 1)"
+        <paginate v-if="(getPageCount > 0)"
+          v-model="currentPage"
           :page-count="getPageCount"
           :page-range="3"
           :click-handler="clickViewPage"
@@ -138,7 +139,7 @@ export default {
           .get(`https://api.coachtech-crm.com/api/user`)
           .then((res) => {
             this.users = res.data;
-            this.currentPage = 1
+            this.clickViewPage(1);
             this.$nuxt.$loading.fisish();
           })
           .catch((error) => {
@@ -157,8 +158,8 @@ export default {
             `https://api.coachtech-crm.com/api/user?name=${this.name}&email=${this.email}&role=${this.role}&withDeleted=0`
           )
           .then((res) => {
-            this.selectAll = false; // 全選択チェックボックスは外す
             this.users = res.data;
+            this.clickViewPage(1);
             this.$nuxt.$loading.fisish();
           })
           .catch((error) => {
@@ -208,7 +209,7 @@ export default {
         return true;
       } 
     },
-    confirmDelete() {
+    confirmDeleteSelected() {
       if(window.confirm('選択したユーザを削除します。よろしいですか？')) {
         this.deleteSelectedRow();
       }
@@ -222,8 +223,8 @@ export default {
             "uuid" : userData
           })
           .then(() => {
-            window.alert('ユーザを削除しました。')
-            this.$emit('fetchData')
+            window.alert('ユーザを削除しました。');
+            this.fetchUserData(); //再度ユーザデータ取得
           })
           .catch(() => this.$router.push('/error'))
     },

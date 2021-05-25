@@ -3,10 +3,10 @@
     <SideBar />
     <div class="cource-main">
       <div class="main-cource">
-        <h1 class="main-cource__title">コース編集</h1>
+        <h1 class="crm-modal__title">コース編集</h1>
         <p class="contents-error">{{authMessage}}</p>
         <validation-observer ref="courceForm" v-slot="{invalid}">
-          <label for="name">コース名</label>
+          <label for="name" class="crm-modal__label">コース名</label>
           <validation-provider v-slot="{ errors }" name="コース名" rules="required">
             <input
               id="name"
@@ -16,9 +16,11 @@
               v-model="name"
               maxlength="32"
             >
-            <span class="crm__error">{{ errors[0] }}</span>
+            <div class="crm__error-area">
+              {{ errors[0] }}
+            </div>
           </validation-provider>
-          <label for="period">期間</label>
+          <label for="period" class="crm-modal__label">期間(週単位)</label>
           <input
             id="period"
             type="text"
@@ -27,7 +29,8 @@
             v-model="sumPeriod"
             disabled="disabled"
           >
-          <label for="description">概要</label>
+          <div class="crm__error-area" />
+          <label for="description" class="crm-modal__label">概要</label>
           <input
             id="description"
             type="text"
@@ -96,8 +99,8 @@
           >
             編集
           </button>
-          <div class="main-cource__button-return" @click="returnList">
-            <a>戻る</a>
+          <div class="crm-modal__return" @click="returnList">
+            戻る
           </div>
         </validation-observer>
       </div>
