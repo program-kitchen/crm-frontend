@@ -179,7 +179,7 @@ export default {
             "termInfo" : this.terms,
           })
           .then(() => {
-            window.alert('コースを更新しました。');
+            window.alert(this.$MSG_EDIT_COURSE);
             this.$store.commit("delAllInfo");
             this.$router.push('/cources');
             this.$nuxt.$loading.finish();
@@ -187,7 +187,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -201,9 +201,9 @@ export default {
       this.$router.push('/term/register')
     },
     removeTerm(index) {
-      if(window.confirm('タームを削除します。よろしいですか？')) {
+      if(window.confirm(this.$MSG_CONF_DEL_TERM)) {
         this.$store.commit("delTermInfo", index);
-        window.alert('タームを削除しました。');
+        window.alert(this.$MSG_DEL_TERM);
       }
     },
     transitionTerm(index) {
@@ -232,7 +232,7 @@ export default {
     if(this.btnClickFlag) {
       next()
     } else {
-      let answer = window.confirm("編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
+      let answer = window.confirm(this.$MSG_MOVE_PAGE);
       if (answer) {
         this.$store.commit("delAllInfo");
         next()

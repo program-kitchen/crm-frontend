@@ -87,7 +87,7 @@ export default {
         )
         .then(response => {
           console.log(response);
-          alert("登録が完了しました。");
+          alert(this.$MSG_ACTIVATE_USER);
           this.$router.push("/login");
         })
         .catch(error => {

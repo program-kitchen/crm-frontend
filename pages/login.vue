@@ -43,9 +43,6 @@
       >
         ログイン
       </button>
-      <div class="crm__error-area">
-        {{ errorMessage }}
-      </div>
     </ValidationObserver>
   </div>
 </template>
@@ -80,9 +77,7 @@ export default {
           },
           error => {
             const code = parseInt(error.response && error.response.status);
-            console.log(code);
-            alert("ユーザID、パスワードが一致しません。");
-            this.errorMessage = "ユーザID、パスワードが一致しません。";
+            alert(this.$MSG_LOGIN_ERR);
           }
         );
     }

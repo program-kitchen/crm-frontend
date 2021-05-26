@@ -37,6 +37,7 @@ export default {
     "@/plugins/dragDrop.js",
     "@/plugins/cource.js",
     "~/plugins/const.js",
+    "~/plugins/messages.js",
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

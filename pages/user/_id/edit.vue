@@ -128,7 +128,7 @@ export default {
         })
         .then(response => {
           console.log(response);
-          alert("ユーザを編集しました。");
+          alert(this.$MSG_EDIT_USER);
           this.$router.push("/user");
         })
         .catch(error => {
@@ -136,12 +136,12 @@ export default {
           if (code == 400) {
             alert(error["errorMsg"]);
           } else if (code == 401) {
-            alert("ログインセッションが切れました。");
+            alert(this.$MSG_ERR_UNAUTHORIZED);
             this.$router.push("/login");
           } else if (code == 403) {
             this.$router.push("/");
           } else if (code == 422) {
-            alert("予期せぬエラーが発生しました。");
+            alert(this.$MSG_ERR_UNPROCESSABLE);
             this.$router.push("/");
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
@@ -167,16 +167,16 @@ export default {
           if (code == 400) {
             alert(error["errorMsg"]);
           } else if (code == 401) {
-            alert("アクセストークンが失効しています。");
+            alert(this.$MSG_ERR_UNAUTHORIZED);
           } else if (code == 403) {
-            alert("権限がありません。");
+            alert(this.$MSG_ERR_FORBIDDEN);
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
           }
         });
     },
     confirmSendReset() {
-      if(window.confirm('パスワードリセットメールを送信します。よろしいですか？')) {
+      if(window.confirm(this.$MSG_CONF_PASS_RESET)) {
         this.sendResetMail();
       }
     },
@@ -186,14 +186,14 @@ export default {
         this.$axios
           .post('https://api.coachtech-crm.com/api/user/reset-pass', {"uuid" : this.uuid})
           .then(() => {
-            window.alert('パスワードリセットメールを送信しました。')
+            window.alert(this.$MSG_PASS_RESET)
             this.fetchUserData(); //再度ユーザデータ取得
             this.$nuxt.$loading.finish();
           })
           .catch(() => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -201,9 +201,7 @@ export default {
       if (this.checkChange()) {
         this.$router.push("/user");
       } else if (
-        window.confirm(
-          "編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
-        )
+        window.confirm(this.$MSG_MOVE_PAGE)
       ) {
         this.$router.push("/user");
       }

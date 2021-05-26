@@ -125,7 +125,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -134,7 +134,7 @@ export default {
       this.currentPage = Number(pageNo);
     },
     confirmDelete(courceId) {
-      if(window.confirm('コースを削除します。よろしいですか？')) {
+      if(window.confirm(this.$MSG_CONF_DEL_COURSE)) {
         this.courcesDelete(courceId);
       }
     },
@@ -144,19 +144,19 @@ export default {
         this.$axios
           .post('https://api.coachtech-crm.com/api/course/delete', {"id" : courceId,})
           .then(() => {
-            window.alert('コースを削除しました。')
+            window.alert(this.$MSG_DEL_COURSE)
             this.fetchCourceInfo(); //再度コースデータ取得
             this.$nuxt.$loading.finish();
           })
           .catch(() => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
     confirmSelectedDelete() {
-      if(window.confirm('選択したコースを削除します。よろしいですか？')) {
+      if(window.confirm(this.$MSG_CONF_MULTI_DEL_COURSE)) {
         this.selectedDeleteCources();
       }
     },
@@ -170,14 +170,14 @@ export default {
               "id" : userData
             })
             .then(() => {
-              window.alert('コースを削除しました。');
+              window.alert(this.$MSG_MULTI_DEL_COURSE);
               this.fetchCourceInfo();
               this.$nuxt.$loading.finish();
             })
             .catch(() => {
               const code = parseInt(error.response && error.response.status);
               if(code === 401 ){
-                this.authMessage = "アクセストークンが失効しております。"
+                this.authMessage = this.$MSG_ERR_UNAUTHORIZED
               }
             })
     },

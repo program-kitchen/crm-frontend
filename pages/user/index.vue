@@ -145,7 +145,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -165,7 +165,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -178,14 +178,14 @@ export default {
             "uuid": userId,
           })
           .then(() => {
-            window.alert('ユーザを削除しました。');
+            window.alert(this.$MSG_DEL_USER);
             this.fetchUserData(); //再度ユーザデータ取得
             this.$nuxt.$loading.fisish();
           })
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -194,7 +194,7 @@ export default {
       this.currentPage = Number(pageNo);
     },
     confirmDelete(userId) {
-      if(window.confirm('ユーザを削除します。よろしいですか？')) {
+      if(window.confirm(this.$MSG_CONF_DEL_USER)) {
         this.userDelete(userId); // 削除API処理を実行
       }
     },
@@ -210,7 +210,7 @@ export default {
       } 
     },
     confirmDeleteSelected() {
-      if(window.confirm('選択したユーザを削除します。よろしいですか？')) {
+      if(window.confirm(this.$MSG_CONF_MULTI_DEL_USER)) {
         this.deleteSelectedRow();
       }
     },
@@ -223,7 +223,7 @@ export default {
             "uuid" : userData
           })
           .then(() => {
-            window.alert('ユーザを削除しました。');
+            window.alert(this.$MSG_MULTI_DEL_USER);
             this.fetchUserData(); //再度ユーザデータ取得
           })
           .catch(() => this.$router.push('/error'))

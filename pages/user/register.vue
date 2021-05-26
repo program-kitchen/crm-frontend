@@ -118,6 +118,7 @@ export default {
           }
         )
         .then(response => {
+          window.alert(this.$MSG_REGISTER_USER);
           this.$router.push("/user");
         })
         .catch(error => {
@@ -125,9 +126,9 @@ export default {
           if (code == 400) {
             alert(error["errorMsg"]);
           } else if (code == 401) {
-            alert("アクセストークンが失効しています。");
+            alert(this.$MSG_ERR_UNAUTHORIZED);
           } else if (code == 403) {
-            alert("権限がありません。");
+            alert(this.$MSG_ERR_FORBIDDEN);
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
           }
@@ -137,9 +138,7 @@ export default {
       if (this.email == "" && this.name == "" && this.role == "") {
         this.$router.push("/user");
       } else if (
-        window.confirm(
-          "編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
-        )
+        window.confirm(this.$MSG_MOVE_PAGE)
       ) {
         this.$router.push("/user");
       }

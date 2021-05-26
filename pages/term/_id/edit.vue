@@ -104,7 +104,7 @@ export default {
         period: this.period,
         description: this.description
       });
-      window.alert('タームを編集しました。');
+      window.alert(this.$MSG_EDIT_TERM);
       this.$router.go(-1);
 
     },
@@ -124,7 +124,7 @@ export default {
     if(this.btnClickFlag || sameJudge) {
       next()
     } else {
-      let answer = window.confirm("編集中の情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
+      let answer = window.confirm(this.$MSG_MOVE_PAGE);
       if (answer) {
         next()
       } else {

@@ -32,8 +32,11 @@
   display: block;
   margin: 0 auto;
   padding-top: 3rem;
-  padding-bottom: 5px;
   font-size: 2rem;
+}
+
+.main-cource label:first-child {
+  padding-top: 1rem;
 }
 
 .main-cource__name,

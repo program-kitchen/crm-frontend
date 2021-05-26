@@ -1,3 +1,8 @@
+import {
+  MSG_ERR_UNAUTHORIZED,
+  MSG_ERR_UNPROCESSABLE,
+} from './messages.js';
+
 // レスポンスエラーコード毎の対応処理を追加
 export default function({ $axios, redirect, route }) {
   $axios.onRequest(config => {
@@ -13,14 +18,14 @@ export default function({ $axios, redirect, route }) {
       }
     }
     if (code === 422) {
-      window.alert("予期せぬエラーが発生しました。");
+      window.alert(MSG_ERR_UNPROCESSABLE);
       redirect("/");
     } else if ([404, 405, 500].includes(code)) {
       redirect("/error");
     } else if (code === 403) {
       redirect("/");
     } else {
-      error = "アクセストークンが失効しています。";
+      error = MSG_ERR_UNAUTHORIZED;
     }
   });
 }
