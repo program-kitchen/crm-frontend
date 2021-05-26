@@ -5,7 +5,7 @@ const sumPeriod = (store,term) => {
   const courceTerm = store.map((obj) => Number(obj.term));
   const termSum = 
     courceTerm.reduce( (oldValue, newValue) => oldValue + newValue, 0);
-  return Math.ceil( termSum / 4 );
+  return termSum;
 }
 
 

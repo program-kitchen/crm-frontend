@@ -88,3 +88,5 @@ sw.*
 
 # Vim swap files
 *.swp
+crm-frontend.sublime-project
+crm-frontend.sublime-workspace

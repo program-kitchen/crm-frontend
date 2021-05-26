@@ -2,23 +2,25 @@
   <div class="register">
     <SideBar />
     <ValidationObserver class="crm-modal" v-slot="{ invalid }">
-      <h1 class="register-modal__title">ユーザー情報有効</h1>
+      <h1 class="crm-modal__title">ユーザ情報有効</h1>
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
         rules="required"
       >
-        <label class="register-modal__label">名前 </label>
+        <label class="crm-modal__label">名前 </label>
         <input
           type="text"
           class="register-modal__input crm__input"
           v-bind:value="name"
           disabled
         />
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
       <div class="register-modal__form">
-        <label class="register-modal__label">権限</label>
+        <label class="crm-modal__label">権限</label>
         <input
           type="text"
           class="register-modal__input crm__input"
@@ -31,21 +33,24 @@
         v-slot="{ errors }"
         rules="required|password|password_range"
       >
-        <label for="password" class="register-modal__label">パスワード</label>
+        <label for="password" class="crm-modal__label">パスワード</label>
         <input
           id="password"
           name="password"
           type="password"
           class="register-modal__input crm__input"
           v-model="password"
+          maxlength="32"
         />
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
 
       <button
         @click="submit"
         :disabled="invalid"
-        class="register-modal__button crm-modal__button"
+        class="crm-modal__submit-button crm-modal__button"
       >
         登録
       </button>
@@ -82,7 +87,7 @@ export default {
         )
         .then(response => {
           console.log(response);
-          alert("登録が完了しました");
+          alert(this.$MSG_ACTIVATE_USER);
           this.$router.push("/login");
         })
         .catch(error => {

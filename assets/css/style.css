@@ -29,6 +29,25 @@ html {
   margin: 0 auto;
 }
 
+.crm-modal__title {
+  text-align: center;
+  padding: 2.5rem;
+  font: normal bold 3.2rem/4.8rem Meiryo;
+  letter-spacing: 0rem;
+  font-size: 3.2rem;
+  color: #707070;
+  opacity: 1;
+}
+
+.crm-modal__label {
+  text-align: left;
+  font: normal normal normal 2rem/3rem Meiryo;
+  letter-spacing: 0rem;
+  font-size: 2rem;
+  color: #707070;
+  opacity: 1;
+}
+
 .crm-modal__button {
   height: 7.2rem;
   background: transparent linear-gradient(270deg, #41de9d 0%, #2bb8f8 100%);
@@ -39,6 +58,7 @@ html {
   font: normal normal normal 2.8rem/4.2rem Meiryo;
   text-align: center;
   color: #ffffff;
+  margin: 1rem;
 }
 
 .crm-modal__button:disabled,
@@ -57,9 +77,32 @@ html {
   background: #d3d5d6;
 }
 
+.crm-modal__submit-button {
+  display: block;
+  margin: 3rem auto 1rem;
+  width: 20rem;
+}
+
+.crm-modal__return {
+  text-align: center;
+  font-size: 2rem;
+  margin: 0 auto;
+  color: #567DFF;
+  padding: 0.7rem 0;
+  width: 20%;
+}
+.crm-modal__return:hover {
+  cursor: pointer;
+}
+
 .crm__error {
   color: red;
   font-size: 1.4rem;
+}
+.crm__error-area {
+  color: red;
+  font-size: 1.4rem;
+  height: 1rem;
 }
 
 .contents-error {

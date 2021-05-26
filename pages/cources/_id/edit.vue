@@ -3,10 +3,10 @@
     <SideBar />
     <div class="cource-main">
       <div class="main-cource">
-        <h1 class="main-cource__title">コース編集</h1>
+        <h1 class="crm-modal__title">コース編集</h1>
         <p class="contents-error">{{authMessage}}</p>
         <validation-observer ref="courceForm" v-slot="{invalid}">
-          <label for="name">コース名</label>
+          <label for="name" class="crm-modal__label">コース名</label>
           <validation-provider v-slot="{ errors }" name="コース名" rules="required">
             <input
               id="name"
@@ -14,10 +14,13 @@
               class="main-cource__name crm__input"
               name="name"
               v-model="name"
+              maxlength="32"
             >
-            <span class="crm__error">{{ errors[0] }}</span>
+            <div class="crm__error-area">
+              {{ errors[0] }}
+            </div>
           </validation-provider>
-          <label for="period">期間</label>
+          <label for="period" class="crm-modal__label">期間(週単位)</label>
           <input
             id="period"
             type="text"
@@ -26,13 +29,15 @@
             v-model="sumPeriod"
             disabled="disabled"
           >
-          <label for="description">概要</label>
+          <div class="crm__error-area" />
+          <label for="description" class="crm-modal__label">概要</label>
           <input
             id="description"
             type="text"
             class="main-cource__description crm__input"
             name="description"
             v-model="description"
+            maxlength="256"
           >
           <label class="main-cource__table">ターム</label>
           <table class="main-cource-term__table">
@@ -88,14 +93,14 @@
             </tr>
           </table>
           <button
-            class="main-cource__button-auth crm-modal__button"
+            class="crm-modal__submit-button crm-modal__button"
             @click="editCourceRegist"
             :disabled="invalid"
           >
             編集
           </button>
-          <div class="main-cource__button-return" @click="returnList">
-            <a>戻る</a>
+          <div class="crm-modal__return" @click="returnList">
+            戻る
           </div>
         </validation-observer>
       </div>
@@ -174,7 +179,7 @@ export default {
             "termInfo" : this.terms,
           })
           .then(() => {
-            window.alert('更新しました');
+            window.alert(this.$MSG_EDIT_COURSE);
             this.$store.commit("delAllInfo");
             this.$router.push('/cources');
             this.$nuxt.$loading.finish();
@@ -182,7 +187,7 @@ export default {
           .catch((error) => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -193,12 +198,12 @@ export default {
         period: this.sumPeriod,
         description: this.description
       });
-      this.$router.push({name: "term"})
+      this.$router.push('/term/register')
     },
     removeTerm(index) {
-      if(window.confirm('削除してもよろしいでしょうか？')) {
+      if(window.confirm(this.$MSG_CONF_DEL_TERM)) {
         this.$store.commit("delTermInfo", index);
-        window.alert('タームを削除しました');
+        window.alert(this.$MSG_DEL_TERM);
       }
     },
     transitionTerm(index) {
@@ -227,7 +232,7 @@ export default {
     if(this.btnClickFlag) {
       next()
     } else {
-      let answer = window.confirm("これまでの編集情報がすべて消えてしまいます。このページから移動してもよろしいですか？");
+      let answer = window.confirm(this.$MSG_MOVE_PAGE);
       if (answer) {
         this.$store.commit("delAllInfo");
         next()

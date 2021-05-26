@@ -3,28 +3,33 @@
     <SideBar />
 
     <ValidationObserver class="crm-modal" v-slot="{ invalid }">
-      <h1 class="register-modal__title">ユーザー編集</h1>
-      <validation-provider
-        class="register-modal__form"
-        v-slot="{ errors }"
-        rules="email|required"
-      >
-        <label for="email" class="register-modal__label">メールアドレス</label>
-        <input
-          id="email"
-          name="email"
-          type="text"
-          class="register-modal__input crm__input"
-          v-model="email"
-        />
-        <span class="crm__error">{{ errors[0] }}</span>
-      </validation-provider>
+      <h1 class="crm-modal__title">ユーザ編集</h1>
+
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
         rules="required"
       >
-        <label for="role" class="register-modal__label">権限</label>
+        <label for="name" class="crm-modal__label">名前</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          class="register-modal__input crm__input"
+          v-model="name"
+          maxlength="32"
+        />
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
+      </validation-provider>
+
+      <validation-provider
+        class="register-modal__form"
+        v-slot="{ errors }"
+        rules="required"
+      >
+        <label for="role" class="crm-modal__label">権限</label>
         <select
           id="role"
           name="role"
@@ -39,41 +44,45 @@
             {{ option.name }}
           </option>
         </select>
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
+
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
-        rules="required"
+        rules="email|required"
       >
-        <label for="name" class="register-modal__label">名前</label>
+        <label for="email" class="crm-modal__label">メールアドレス</label>
         <input
-          id="name"
-          name="name"
+          id="email"
+          name="email"
           type="text"
           class="register-modal__input crm__input"
-          v-model="name"
+          v-model="email"
+          maxlength="256"
         />
         <p class="main-edit__mail--reset">
           <span class="main-edit__mail--reset-send" @click="confirmSendReset()">
             リセットメール送信
           </span>
         </p>
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
 
       <button
         @click="submit"
         :disabled="invalid"
-        class="register-modal__button crm-modal__button"
+        class="crm-modal__submit-button crm-modal__button"
       >
         編集
       </button>
-      <p class="register-modal__return">
-        <span class="register-modal__return-inner" @click="back">
-          戻る
-        </span>
-      </p>
+      <div class="crm-modal__return" @click="back">
+        戻る
+      </div>
     </ValidationObserver>
   </div>
 </template>
@@ -119,7 +128,7 @@ export default {
         })
         .then(response => {
           console.log(response);
-          alert("ユーザ編集が完了しました。");
+          alert(this.$MSG_EDIT_USER);
           this.$router.push("/user");
         })
         .catch(error => {
@@ -127,12 +136,12 @@ export default {
           if (code == 400) {
             alert(error["errorMsg"]);
           } else if (code == 401) {
-            alert("ログインセッションが切れました。");
+            alert(this.$MSG_ERR_UNAUTHORIZED);
             this.$router.push("/login");
           } else if (code == 403) {
             this.$router.push("/");
           } else if (code == 422) {
-            alert("予期せぬエラーが発生しました");
+            alert(this.$MSG_ERR_UNPROCESSABLE);
             this.$router.push("/");
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
@@ -158,16 +167,16 @@ export default {
           if (code == 400) {
             alert(error["errorMsg"]);
           } else if (code == 401) {
-            alert("アクセストークンが失効しています");
+            alert(this.$MSG_ERR_UNAUTHORIZED);
           } else if (code == 403) {
-            alert("権限がありません。");
+            alert(this.$MSG_ERR_FORBIDDEN);
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
           }
         });
     },
     confirmSendReset() {
-      if(window.confirm('パスワードリセットメールを送信します。よろしいでしょうか？')) {
+      if(window.confirm(this.$MSG_CONF_PASS_RESET)) {
         this.sendResetMail();
       }
     },
@@ -177,14 +186,14 @@ export default {
         this.$axios
           .post('https://api.coachtech-crm.com/api/user/reset-pass', {"uuid" : this.uuid})
           .then(() => {
-            window.alert('パスワードリセットメールを送信しました。')
+            window.alert(this.$MSG_PASS_RESET)
             this.fetchUserData(); //再度ユーザデータ取得
             this.$nuxt.$loading.finish();
           })
           .catch(() => {
             const code = parseInt(error.response && error.response.status);
             if(code === 401 ){
-              this.authMessage = "アクセストークンが失効しております。"
+              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
             }
           })
     },
@@ -192,9 +201,7 @@ export default {
       if (this.checkChange()) {
         this.$router.push("/user");
       } else if (
-        window.confirm(
-          "今まで入力していた情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
-        )
+        window.confirm(this.$MSG_MOVE_PAGE)
       ) {
         this.$router.push("/user");
       }
@@ -210,31 +217,6 @@ export default {
 };
 </script>
 <style scoped>
-.register-modal__return {
-  text-align: center;
-  font-size: 2rem;
-  padding: 5px 0;
-}
-
-.register-modal__return-inner {
-  transition: 0.5s;
-  color: #567dff;
-}
-
-.register-modal__return-inner:hover {
-  cursor: pointer;
-  color: #042fbb;
-  transition: 0.5s;
-}
-
-.register-modal__return-error {
-  text-align: center;
-  color: #f5172a;
-}
-
-.register-modal__button {
-  width: 20rem;
-}
 
 .main-edit__mail--reset {
   text-align: right;
@@ -251,11 +233,5 @@ export default {
   cursor: pointer;
   color: #042fbb;
   transition: 0.5s;
-}
-
-.main-edit__mail--reset-error {
-  text-align: center;
-  color: #f5172a;
-  font-size: 1.3rem;
 }
 </style>

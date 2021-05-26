@@ -7,15 +7,15 @@
 }
 
 .cource-main {
-  color: #555454;
-  background: #FFFFFF 0% 0% no-repeat padding-box;
-  box-shadow: 0px 16px 54px #89BDBD80;
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50%;
-  height: 92%;
+  color: #555454;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  box-shadow: 0rem 1.6rem 5.4rem #89BDBD80;
+  border-radius: 1rem;
+  width: 60%;
+  height: 85%;
   margin: 0 auto;
   overflow: scroll;
 }
@@ -28,18 +28,15 @@
   margin: 0 auto;
 }
 
-.main-cource__title {
-  padding-top: 3.5rem;
-  text-align: center;
-  color: #707070;
-}
-
 .main-cource label{
   display: block;
   margin: 0 auto;
   padding-top: 3rem;
-  padding-bottom: 5px;
   font-size: 2rem;
+}
+
+.main-cource label:first-child {
+  padding-top: 1rem;
 }
 
 .main-cource__name,

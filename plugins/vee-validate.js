@@ -1,5 +1,12 @@
 import Vue from "vue";
 import {
+  MSG_ERR_REQUIRED,
+  MSG_ERR_EMAIL_FORMAT,
+  MSG_ERR_PASS_FORMAT,
+  MSG_ERR_PASS_LENGTH,
+  MSG_ERR_NO_TERM,
+} from './messages.js';
+import {
   ValidationProvider,
   ValidationObserver,
   extend,
@@ -18,18 +25,18 @@ Object.keys(rules).forEach(rule => {
 //メール形式のルールのメッセージを変更
 extend("email", {
   ...email,
-  message: "メールアドレス形式で入力してください"
+  message: MSG_ERR_EMAIL_FORMAT
 });
 
 //空欄チェックのルールのメッセージを変更
 extend("required", {
   ...required,
-  message: "入力されていません"
+  message: MSG_ERR_REQUIRED
 });
 
 //半角英字、数字、記号を含んでいるかのチェックするルールを作成
 extend("password", {
-  message: "半角英字、数字、記号を1つ以上含んでください",
+  message: MSG_ERR_PASS_FORMAT,
   validate(value) {
     if (
       value.match(
@@ -43,7 +50,7 @@ extend("password", {
 
 //パスワードの文字数をチェックするルールを作成
 extend("password_range", {
-  message: "8文字以上15文字以下で入力してください",
+  message: MSG_ERR_PASS_LENGTH,
   validate(value) {
     if (value.match(/^[a-zA-Z0-9!#%&( )+,-./;<=>?@\[\]^_{|}~]{8,15}$/)) {
       return true;
@@ -55,7 +62,7 @@ extend("password_range", {
 // コース期間のところに独自メッセージを表示
 extend("termCheck", {
   // エラーメッセージを設定する
-  message: "ターム登録は必須です",
+  message: MSG_ERR_NO_TERM,
   validate(value) {
     if (value >= 1) {
       return true;

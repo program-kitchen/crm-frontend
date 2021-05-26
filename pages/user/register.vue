@@ -3,43 +3,31 @@
     <SideBar />
 
     <ValidationObserver class="crm-modal" v-slot="{ invalid }">
-      <h1 class="register-modal__title">ユーザー登録</h1>
-      <validation-provider
-        class="register-modal__form"
-        v-slot="{ errors }"
-        rules="email|required"
-      >
-        <label for="email" class="register-modal__label">メールアドレス</label>
-        <input
-          id="email"
-          name="email"
-          type="text"
-          class="register-modal__input crm__input"
-          v-model="email"
-        />
-        <span class="crm__error">{{ errors[0] }}</span>
-      </validation-provider>
+      <h1 class="crm-modal__title">ユーザ登録</h1>
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
         rules="required"
       >
-        <label for="name" class="register-modal__label">名前</label>
+        <label for="name" class="crm-modal__label">名前</label>
         <input
           id="name"
           name="name"
           type="text"
           class="register-modal__input crm__input"
           v-model="name"
+          maxlength="32"
         />
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
       <validation-provider
         class="register-modal__form"
         v-slot="{ errors }"
         rules="required"
       >
-        <label for="role" class="register-modal__label">権限</label>
+        <label for="role" class="crm-modal__label">権限</label>
         <select
           id="role"
           name="role"
@@ -54,7 +42,27 @@
             {{ option.name }}
           </option>
         </select>
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
+      </validation-provider>
+      <validation-provider
+        class="register-modal__form"
+        v-slot="{ errors }"
+        rules="email|required"
+      >
+        <label for="email" class="crm-modal__label">メールアドレス</label>
+        <input
+          id="email"
+          name="email"
+          type="text"
+          class="register-modal__input crm__input"
+          v-model="email"
+          maxlength="256"
+        />
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
       <button
         @click="submit"
@@ -63,11 +71,9 @@
       >
         認証メールを送信
       </button>
-      <p class="register-modal__return">
-        <span class="register-modal__return-inner" @click="back">
-          戻る
-        </span>
-      </p>
+      <div class="crm-modal__return" @click="back">
+        戻る
+      </div>
     </ValidationObserver>
   </div>
 </template>
@@ -112,6 +118,7 @@ export default {
           }
         )
         .then(response => {
+          window.alert(this.$MSG_REGISTER_USER);
           this.$router.push("/user");
         })
         .catch(error => {
@@ -119,9 +126,9 @@ export default {
           if (code == 400) {
             alert(error["errorMsg"]);
           } else if (code == 401) {
-            alert("アクセストークンが失効しています");
+            alert(this.$MSG_ERR_UNAUTHORIZED);
           } else if (code == 403) {
-            alert("権限がありません。");
+            alert(this.$MSG_ERR_FORBIDDEN);
           } else if ([405, 500].includes(code)) {
             this.$router.push("/error");
           }
@@ -131,9 +138,7 @@ export default {
       if (this.email == "" && this.name == "" && this.role == "") {
         this.$router.push("/user");
       } else if (
-        window.confirm(
-          "今まで入力していた情報がすべて消えてしまいます。このページから移動してもよろしいですか？"
-        )
+        window.confirm(this.$MSG_MOVE_PAGE)
       ) {
         this.$router.push("/user");
       }
@@ -142,27 +147,6 @@ export default {
 };
 </script>
 <style scoped>
-.register-modal__return {
-  text-align: center;
-  font-size: 2rem;
-  padding: 5px 0;
-}
-
-.register-modal__return-inner {
-  transition: 0.5s;
-  color: #567dff;
-}
-
-.register-modal__return-inner:hover {
-  cursor: pointer;
-  color: #042fbb;
-  transition: 0.5s;
-}
-
-.register-modal__return-error {
-  text-align: center;
-  color: #f5172a;
-}
 
 .register-modal__button {
   width: 33rem;

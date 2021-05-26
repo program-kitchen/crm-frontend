@@ -1,34 +1,40 @@
 <template>
   <div class="login">
     <ValidationObserver class="login-modal" v-slot="{ invalid }">
-      <h1 class="login-modal__title">ログイン</h1>
+      <h1 class="crm-modal__title login-modal__title">ログイン</h1>
       <validation-provider
         class="login-modal__form"
         v-slot="{ errors }"
         rules="required"
       >
-        <label for="email" class="login-modal__label">メールアドレス</label>
+        <label for="email" class="crm-modal__label">メールアドレス</label>
         <input
           id="email"
           type="text"
           class="login-modal__input crm__input"
           v-model="email"
+          maxlength="256"
         />
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
       <validation-provider
         class="login-modal__form"
         v-slot="{ errors }"
         rules="required"
       >
-        <label for="password" class="login-modal__label">パスワード</label>
+        <label for="password" class="crm-modal__label">パスワード</label>
         <input
           id="password"
           type="password"
           class="login-modal__input crm__input"
           v-model="password"
+          maxlength="32"
         />
-        <span class="crm__error">{{ errors[0] }}</span>
+        <div class="crm__error-area">
+          {{ errors[0] }}
+        </div>
       </validation-provider>
       <button
         @click="submit"
@@ -37,7 +43,6 @@
       >
         ログイン
       </button>
-      <span class="crm__error">{{ errorMessage }}</span>
     </ValidationObserver>
   </div>
 </template>
@@ -72,9 +77,7 @@ export default {
           },
           error => {
             const code = parseInt(error.response && error.response.status);
-            console.log(code);
-            alert("ユーザーID、パスワードが一致しません");
-            this.errorMessage = "ユーザーID、パスワードが一致しません";
+            alert(this.$MSG_LOGIN_ERR);
           }
         );
     }
@@ -84,14 +87,19 @@ export default {
 
 <style>
 .login {
-  height: 100vh;
+  height: 100%;
+  width: 100%;
 }
 
 .login-modal {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
   width: 94rem;
   height: 67rem;
-  margin: 20.5rem auto 0;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
   background: #ffffff 0% 0% no-repeat padding-box;
@@ -99,29 +107,13 @@ export default {
   border-radius: 10px;
 }
 
-.login-modal__title {
-  margin-top: 11rem;
-  margin-bottom: 8.6rem;
-  font: normal bold 3.2rem/4.8rem Meiryo;
-  font-style: bold;
-  letter-spacing: 0rem;
-  font-size: 3.2rem;
-  color: #707070;
-  opacity: 1;
-}
-
 .login-modal__form {
   width: 61rem;
   margin-bottom: 2.8rem;
 }
 
-.login-modal__label {
-  text-align: left;
-  font: normal normal normal 2rem/3rem Meiryo;
-  letter-spacing: 0px;
-  font-size: 2rem;
-  color: #707070;
-  opacity: 1;
+.login-modal__title {
+  padding: 4rem !important;
 }
 
 .login-modal__input {
