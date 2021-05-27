@@ -5,13 +5,25 @@
       <TitleButton :urlText="sendText"/>
       <p class="contents-error">{{authMessage}}</p>
       <div class="contents-search">
-        <input type="text" placeholder="ユーザ名" v-model="name">
-        <input type="mail" placeholder="メールアドレス" v-model="email">
+        <input type="text"
+          placeholder="ユーザ名"
+          v-model="name"
+          v-bind:maxlength="maxLenName"
+        >
+        <input type="mail"
+          placeholder="メールアドレス"
+          v-model="email"
+          v-bind:maxlength="maxLenEmail"
+        >
         <select v-model="role" class="contents-search__select">
           <option value="">権限選択</option>
-          <option value="3">管理者</option>
-          <option value="2">バックオフィス</option>
-          <option value="1">コーチ</option>
+          <option
+            v-for="auth in userAuth"
+            v-bind:key="auth.name"
+            v-bind:value="auth.code"
+          >
+            {{ auth.name }}
+          </option>
         </select>
         <button class="contents-search__button" @click="userSearch">検索</button>
         <p>検索結果：{{users.length}}件</p>
@@ -43,10 +55,7 @@
               </td>
               <td class="contents-table__header-name">{{user.name}}</td>
               <td class="contents-table__header-email">{{user.email}}</td>
-              <td class="contents-table__header-role" v-if="user.role=='4'">オーナー</td>
-              <td class="contents-table__header-role" v-if="user.role=='3'">管理者</td>
-              <td class="contents-table__header-role" v-if="user.role=='2'">バックオフィス</td>
-              <td class="contents-table__header-role" v-if="user.role=='1'">コーチ</td>
+              <td class="contents-table__header-role">{{ getRoleName(user.role) }}</td>
               <td class="contents-table__record-button">
                 <button
                   class="contents-table__record-button--edit" 
@@ -80,7 +89,7 @@
           </button>
           <button 
             class="contents-buttom__button" 
-            @click="confirmDeleteSelected" v-show="checkNames.length >= 1"
+            @click="confirmDeleteSelected" v-show="checkNames.length > 0"
           >
             チェックしたユーザを削除
           </button>
@@ -92,7 +101,6 @@
         <paginate v-if="(getPageCount > 0)"
           v-model="currentPage"
           :page-count="getPageCount"
-          :page-range="3"
           :click-handler="clickViewPage"
           :prev-text="'＜'"
           :next-text="'＞'"
@@ -140,14 +148,9 @@ export default {
           .then((res) => {
             this.users = res.data;
             this.clickViewPage(1);
-            this.$nuxt.$loading.fisish();
+            this.$nuxt.$loading.finish();
           })
-          .catch((error) => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
-          })
+          .catch(() => this.$router.push('/error'))
     },
     // 検索API
     async userSearch() {
@@ -160,14 +163,9 @@ export default {
           .then((res) => {
             this.users = res.data;
             this.clickViewPage(1);
-            this.$nuxt.$loading.fisish();
+            this.$nuxt.$loading.finish();
           })
-          .catch((error) => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
-          })
+          .catch(() => this.$router.push('/error'))
     },
     // 削除API
     async userDelete(userId) {
@@ -180,14 +178,9 @@ export default {
           .then(() => {
             window.alert(this.$MSG_DEL_USER);
             this.fetchUserData(); //再度ユーザデータ取得
-            this.$nuxt.$loading.fisish();
+            this.$nuxt.$loading.finish();
           })
-          .catch((error) => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
-          })
+          .catch(() => this.$router.push('/error'))
     },
     clickViewPage(pageNo) {
       this.selectAll = false; // 全選択チェックボックスは外す
@@ -198,16 +191,9 @@ export default {
         this.userDelete(userId); // 削除API処理を実行
       }
     },
-    // ログインする権限に応じてボタン表示を変更
-    canEdit(role,userRole) {
-      const roleNo = [4, 3, 2, 1];
-      if(userRole == "4" && roleNo.slice(1).includes(role)) {
-        return true;
-      } else if(userRole == "3" && roleNo.slice(2).includes(role)){
-        return true;
-      } else if(userRole == "2" && roleNo.slice(3).includes(role)) {
-        return true;
-      } 
+    // 編集可能か判定する
+    canEdit(userRole,loginRole) {
+      return loginRole > userRole;
     },
     confirmDeleteSelected() {
       if(window.confirm(this.$MSG_CONF_MULTI_DEL_USER)) {
@@ -227,6 +213,10 @@ export default {
             this.fetchUserData(); //再度ユーザデータ取得
           })
           .catch(() => this.$router.push('/error'))
+    },
+    // 権限名取得
+    getRoleName(role) {
+      return this.$getRoleName(role);
     },
   },
   computed: {
@@ -269,6 +259,16 @@ export default {
         }
         this.checkNames = checkArray;
       }
+    },
+    // 定数取得用算出プロパティ定義
+    maxLenName() {
+      return this.$MAX_LEN_USER_NAME
+    },
+    maxLenEmail() {
+      return this.$MAX_LEN_USER_EMAIL
+    },
+    userAuth() {
+      return this.$USER_ROLE
     },
   }
 }

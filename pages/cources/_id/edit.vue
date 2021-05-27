@@ -14,22 +14,30 @@
               class="main-cource__name crm__input"
               name="name"
               v-model="name"
-              maxlength="32"
+              v-bind:maxlength="maxLenName"
             >
             <div class="crm__error-area">
               {{ errors[0] }}
             </div>
           </validation-provider>
-          <label for="period" class="crm-modal__label">期間(週単位)</label>
-          <input
-            id="period"
-            type="text"
-            class="main-cource__period crm__input"
-            name="period"
-            v-model="sumPeriod"
-            disabled="disabled"
+          <validation-provider v-slot="{ errors }"
+            name="コース期間"
+            immediate
+            :rules="'termCheck|max_value:' + maxPeriod"
           >
-          <div class="crm__error-area" />
+            <label for="period" class="crm-modal__label">コース期間(週単位)</label>
+            <input
+              id="period"
+              type="text"
+              class="main-cource__period crm__input"
+              name="period"
+              v-model="sumPeriod"
+              disabled="disabled"
+            >
+            <div class="crm__error-area">
+              {{ errors[0] }}
+            </div>
+          </validation-provider>
           <label for="description" class="crm-modal__label">概要</label>
           <input
             id="description"
@@ -37,7 +45,7 @@
             class="main-cource__description crm__input"
             name="description"
             v-model="description"
-            maxlength="256"
+            v-bind:maxlength="maxLenSummary"
           >
           <label class="main-cource__table">ターム</label>
           <table class="main-cource-term__table">
@@ -73,7 +81,7 @@
               @dragenter.prevent
             >
               <td class="main-cource-term__table-data--over">{{term.name}}</td>
-              <td class="main-cource-term__table-data--over">{{term.term}}週</td>
+              <td class="main-cource-term__table-data--over">{{term.term}}週間</td>
               <td class="main-cource-term__table-data--over">{{term.summary}}</td>
               <td class="main-cource-term__table-space">
                 <button
@@ -184,12 +192,7 @@ export default {
             this.$router.push('/cources');
             this.$nuxt.$loading.finish();
           })
-          .catch((error) => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
-          })
+          .catch(() => this.$router.push('/error'))
     },
     sendTerm() {
       this.btnClickFlag = true;
@@ -224,6 +227,16 @@ export default {
     sumPeriod() {
       // タームの期間合計処理を入れる処理
       return this.$sumPeriod(this.$store.state.term,this.terms.length);
+    },
+    // 定数取得用算出プロパティ定義
+    maxLenName() {
+      return this.$MAX_LEN_COURSE_NAME
+    },
+    maxLenSummary() {
+      return this.$MAX_LEN_COURSE_SUMMARY
+    },
+    maxPeriod() {
+      return this.$MAX_COURSE_PERIOD
     },
   },
   // ナビゲーションガード

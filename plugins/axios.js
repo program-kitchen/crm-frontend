@@ -1,5 +1,15 @@
 import {
+  HTTP_BAD_REQUEST,
+  HTTP_UNAUTHORIZED,
+  HTTP_FORBIDDEN,
+  HTTP_NOT_FOUND,
+  HTTP_METHOD_NOT_ALLOWED,
+  HTTP_UNPROCESSABLE_ENTITY,
+  HTTP_INTERNAL_SERVER_ERROR,
+} from './const.js';
+import {
   MSG_ERR_UNAUTHORIZED,
+  MSG_ERR_FORBIDDEN,
   MSG_ERR_UNPROCESSABLE,
 } from './messages.js';
 
@@ -13,19 +23,24 @@ export default function({ $axios, redirect, route }) {
     const path = route.path;
     //ログイン時のエラーハンドリング
     if (path.match(/.*(\/login)/)) {
-      if ([401, 422].includes(code)) {
+      if ([
+        HTTP_UNAUTHORIZED,
+        HTTP_UNPROCESSABLE_ENTITY
+      ].includes(code)) {
         return;
       }
     }
-    if (code === 422) {
+    if (code === HTTP_UNPROCESSABLE_ENTITY ||
+        code === HTTP_BAD_REQUEST) {
+      window.alert(error["errorMsg"]);
+    } else if (code === HTTP_FORBIDDEN) {
+      window.alert(MSG_ERR_FORBIDDEN);
+      redirect("/");
+    } else if (code === HTTP_UNAUTHORIZED) {
       window.alert(MSG_ERR_UNPROCESSABLE);
-      redirect("/");
-    } else if ([404, 405, 500].includes(code)) {
-      redirect("/error");
-    } else if (code === 403) {
-      redirect("/");
+      redirect("/login");
     } else {
-      error = MSG_ERR_UNAUTHORIZED;
+      redirect("/error");
     }
   });
 }

@@ -40,7 +40,7 @@
           type="password"
           class="register-modal__input crm__input"
           v-model="password"
-          maxlength="32"
+          v-bind:maxlength="maxLenPass"
         />
         <div class="crm__error-area">
           {{ errors[0] }}
@@ -90,9 +90,7 @@ export default {
           alert(this.$MSG_ACTIVATE_USER);
           this.$router.push("/login");
         })
-        .catch(error => {
-          this.$router.push("/error");
-        });
+        .catch(() => this.$router.push('/error'))
     },
     async fetchUserData() {
       await this.$axios
@@ -114,30 +112,17 @@ export default {
           this.role = data["role"];
           this.uuid = data["uuid"];
         })
-        .catch(({ response }) => {
-          console.log(response["data"]);
-        });
-    }
+        .catch(() => this.$router.push('/error'))
+    },
   },
   computed: {
     displayRole() {
-      switch (this.role) {
-        case 1:
-          return "コーチ";
-          break;
-        case 2:
-          return "バックオフィス";
-          break;
-        case 3:
-          return "管理者";
-          break;
-        case 4:
-          return "オーナー";
-          break;
-        default:
-          return "";
-      }
-    }
+      return this.$getRoleName(this.role)
+    },
+    // 定数取得用算出プロパティ定義
+    maxLenPass() {
+      return this.$MAX_LEN_USER_PASS
+    },
   }
 };
 </script>

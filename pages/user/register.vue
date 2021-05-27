@@ -16,7 +16,7 @@
           type="text"
           class="register-modal__input crm__input"
           v-model="name"
-          maxlength="32"
+          v-bind:maxlength="maxLenName"
         />
         <div class="crm__error-area">
           {{ errors[0] }}
@@ -35,11 +35,12 @@
           v-model="role"
         >
           <option
-            v-for="option in options"
-            v-bind:key="option.name"
-            v-bind:value="option.id"
+            v-for="role in userRole"
+            v-bind:key="role.name"
+            v-bind:value="role.code"
+            v-if="role.code < loginUser.role"
           >
-            {{ option.name }}
+            {{ role.name }}
           </option>
         </select>
         <div class="crm__error-area">
@@ -58,7 +59,7 @@
           type="text"
           class="register-modal__input crm__input"
           v-model="email"
-          maxlength="256"
+          v-bind:maxlength="maxLenEmail"
         />
         <div class="crm__error-area">
           {{ errors[0] }}
@@ -85,20 +86,11 @@ export default {
       email: "",
       name: "",
       role: "",
-      options: [],
       loginUser: {}
     };
   },
   mounted() {
     this.loginUser = this.$auth.user;
-    const options = [
-      { id: 1, name: "コーチ" },
-      { id: 2, name: "バックオフィス " },
-      { id: 3, name: "管理者" }
-    ];
-    for (let i = 0; i < this.loginUser["role"] - 1; i++) {
-      this.options.push(options[i]);
-    }
   },
   methods: {
     submit() {
@@ -121,18 +113,7 @@ export default {
           window.alert(this.$MSG_REGISTER_USER);
           this.$router.push("/user");
         })
-        .catch(error => {
-          const code = parseInt(error.response && error.response.status);
-          if (code == 400) {
-            alert(error["errorMsg"]);
-          } else if (code == 401) {
-            alert(this.$MSG_ERR_UNAUTHORIZED);
-          } else if (code == 403) {
-            alert(this.$MSG_ERR_FORBIDDEN);
-          } else if ([405, 500].includes(code)) {
-            this.$router.push("/error");
-          }
-        });
+        .catch(() => this.$router.push('/error'))
     },
     back() {
       if (this.email == "" && this.name == "" && this.role == "") {
@@ -143,7 +124,19 @@ export default {
         this.$router.push("/user");
       }
     }
-  }
+  },
+  computed: {
+    // 定数取得用算出プロパティ定義
+    maxLenName() {
+      return this.$MAX_LEN_USER_NAME
+    },
+    maxLenEmail() {
+      return this.$MAX_LEN_USER_EMAIL
+    },
+    userRole() {
+      return this.$USER_ROLE
+    },
+  },
 };
 </script>
 <style scoped>

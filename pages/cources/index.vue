@@ -67,7 +67,7 @@
         </button>
         <button 
           class="contents-buttom__button" 
-          @click="confirmSelectedDelete" v-show="this.checkCources.length >= 1"
+          @click="confirmSelectedDelete" v-show="this.checkCources.length > 0"
         >
           チェックしたコースを削除
         </button>
@@ -77,7 +77,6 @@
         <paginate v-if="(getPageCount > 0)"
           v-model="currentPage"
           :page-count="getPageCount"
-          :page-range="3"
           :click-handler="clickViewPage"
           :prev-text="'＜'"
           :next-text="'＞'"
@@ -122,12 +121,7 @@ export default {
             this.clickViewPage(1);
             this.$nuxt.$loading.finish();
           })
-          .catch((error) => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
-          })
+          .catch(() => this.$router.push('/error'))
     },
     clickViewPage(pageNo) {
       this.selectAll = false; // 全選択チェックボックスは外す
@@ -148,12 +142,7 @@ export default {
             this.fetchCourceInfo(); //再度コースデータ取得
             this.$nuxt.$loading.finish();
           })
-          .catch(() => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
-          })
+          .catch(() => this.$router.push('/error'))
     },
     confirmSelectedDelete() {
       if(window.confirm(this.$MSG_CONF_MULTI_DEL_COURSE)) {
@@ -174,17 +163,12 @@ export default {
               this.fetchCourceInfo();
               this.$nuxt.$loading.finish();
             })
-            .catch(() => {
-              const code = parseInt(error.response && error.response.status);
-              if(code === 401 ){
-                this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-              }
-            })
+            .catch(() => this.$router.push('/error'))
     },
     // 期間を表示文字列に変換
     termToString(term) {
-      let month = Math.floor(term / 4);
-      let week = term % 4;
+      let month = Math.floor(term / this.$WEEKS_PER_MONTH);
+      let week = term % this.$WEEKS_PER_MONTH;
       let termStr = '';
       if (month > 0) {
         termStr += month + 'ヶ月';
