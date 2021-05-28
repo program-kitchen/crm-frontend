@@ -121,7 +121,6 @@ export default {
             this.clickViewPage(1);
             this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
     },
     clickViewPage(pageNo) {
       this.selectAll = false; // 全選択チェックボックスは外す
@@ -142,7 +141,6 @@ export default {
             this.fetchCourceInfo(); //再度コースデータ取得
             this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
     },
     confirmSelectedDelete() {
       if(window.confirm(this.$MSG_CONF_MULTI_DEL_COURSE)) {
@@ -163,7 +161,6 @@ export default {
               this.fetchCourceInfo();
               this.$nuxt.$loading.finish();
             })
-            .catch(() => this.$router.push('/error'))
     },
     // 期間を表示文字列に変換
     termToString(term) {

@@ -122,7 +122,6 @@ export default {
           alert(this.$MSG_EDIT_USER);
           this.$router.push("/user");
         })
-        .catch(() => this.$router.push('/error'))
     },
     async fetchUserData() {
       await this.$axios
@@ -138,7 +137,6 @@ export default {
           this.role = user["role"];
           this.uuid = user["uuid"];
         })
-        .catch(() => this.$router.push('/error'))
     },
     confirmSendReset() {
       if(window.confirm(this.$MSG_CONF_PASS_RESET)) {
@@ -155,7 +153,6 @@ export default {
             this.fetchUserData(); //再度ユーザデータ取得
             this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
     },
     back() {
       if (this.checkChange()) {

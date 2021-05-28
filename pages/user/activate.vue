@@ -90,7 +90,6 @@ export default {
           alert(this.$MSG_ACTIVATE_USER);
           this.$router.push("/login");
         })
-        .catch(() => this.$router.push('/error'))
     },
     async fetchUserData() {
       await this.$axios
@@ -112,7 +111,6 @@ export default {
           this.role = data["role"];
           this.uuid = data["uuid"];
         })
-        .catch(() => this.$router.push('/error'))
     },
   },
   computed: {

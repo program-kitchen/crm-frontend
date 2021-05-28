@@ -113,7 +113,6 @@ export default {
           window.alert(this.$MSG_REGISTER_USER);
           this.$router.push("/user");
         })
-        .catch(() => this.$router.push('/error'))
     },
     back() {
       if (this.email == "" && this.name == "" && this.role == "") {

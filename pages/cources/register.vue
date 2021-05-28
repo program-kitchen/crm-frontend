@@ -151,7 +151,6 @@ export default {
             this.$router.push('/cources');
             this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
     },
     sendTerm() {
       this.btnClickFlag = true;

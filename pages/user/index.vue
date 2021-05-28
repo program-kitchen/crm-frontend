@@ -118,6 +118,7 @@
 
 <script>
 export default {
+  middleware: 'userRedirect',
   data() {
     return {
       // 検索用
@@ -150,7 +151,6 @@ export default {
             this.clickViewPage(1);
             this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
     },
     // 検索API
     async userSearch() {
@@ -165,7 +165,6 @@ export default {
             this.clickViewPage(1);
             this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
     },
     // 削除API
     async userDelete(userId) {
@@ -180,7 +179,6 @@ export default {
             this.fetchUserData(); //再度ユーザデータ取得
             this.$nuxt.$loading.finish();
           })
-          .catch(() => this.$router.push('/error'))
     },
     clickViewPage(pageNo) {
       this.selectAll = false; // 全選択チェックボックスは外す
@@ -212,7 +210,6 @@ export default {
             window.alert(this.$MSG_MULTI_DEL_USER);
             this.fetchUserData(); //再度ユーザデータ取得
           })
-          .catch(() => this.$router.push('/error'))
     },
     // 権限名取得
     getRoleName(role) {
