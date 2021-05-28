@@ -14,14 +14,18 @@
               class="main-cource__name crm__input"
               name="name"
               v-model="name"
-              maxlength="32"
+              v-bind:maxlength="maxLenName"
             >
             <div class="crm__error-area">
               {{ errors[0] }}
             </div>
           </validation-provider>
-          <validation-provider v-slot="{ errors }" name="ターム" immediate rules="termCheck|max_value:53">
-            <label for="period" class="crm-modal__label">期間(週単位)</label>
+          <validation-provider v-slot="{ errors }"
+            name="コース期間"
+            immediate
+            :rules="'termCheck|max_value:' + maxPeriod"
+          >
+            <label for="period" class="crm-modal__label">コース期間(週単位)</label>
             <input
               id="period"
               type="text"
@@ -41,7 +45,7 @@
             class="main-cource__description crm__input"
             name="description"
             v-model="description"
-            maxlength="256"
+            v-bind:maxlength="maxLenSummary"
           >
           <label class="main-cource__table">ターム</label>
           <table class="main-cource-term__table">
@@ -147,12 +151,6 @@ export default {
             this.$router.push('/cources');
             this.$nuxt.$loading.finish();
           })
-          .catch((error) => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
-          })
     },
     sendTerm() {
       this.btnClickFlag = true;
@@ -187,6 +185,16 @@ export default {
     sumPeriod() {
       // タームの期間合計処理を入れる処理
       return this.$sumPeriod(this.$store.state.term,this.terms.length);
+    },
+    // 定数取得用算出プロパティ定義
+    maxLenName() {
+      return this.$MAX_LEN_COURSE_NAME
+    },
+    maxLenSummary() {
+      return this.$MAX_LEN_COURSE_SUMMARY
+    },
+    maxPeriod() {
+      return this.$MAX_COURSE_PERIOD
     },
   },
   // ナビゲーションガード

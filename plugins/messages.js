@@ -105,11 +105,9 @@ const MSG_EDIT_TERM = 'タームを更新しました。';
 ////////////////////////////////////////////////
 
 // 401エラー
-const MSG_ERR_UNAUTHORIZED = 'アクセストークンが失効しております。';
+const MSG_ERR_UNAUTHORIZED = 'ログインセッションが切れました。';
 // 403エラー
 const MSG_ERR_FORBIDDEN = '権限がありません。';
-// 422エラー
-const MSG_ERR_UNPROCESSABLE = '予期せぬエラーが発生しました。';
 
 ////////////////////////////////////////////////
 // 入力エラーメッセージ
@@ -125,7 +123,10 @@ const MSG_ERR_PASS_FORMAT = '半角英字、数字、記号を1つ以上含ん�
 const MSG_ERR_PASS_LENGTH = '8文字以上15文字以下で入力してください。';
 // ターム未登録エラー
 const MSG_ERR_NO_TERM = 'ターム登録は必須です。';
-
+// 最小値未満エラー
+const MSG_ERR_MIN = '{min}以上でなければなりません。';
+// 最大値超過エラー
+const MSG_ERR_MAX = '{max}以下でなければなりません。';
 
 // injectを使用してVueコンポーネントで共通化
 export default (context, inject) => {
@@ -175,7 +176,6 @@ export default (context, inject) => {
   // HTTP通信エラーメッセージ
   inject('MSG_ERR_UNAUTHORIZED', MSG_ERR_UNAUTHORIZED)
   inject('MSG_ERR_FORBIDDEN', MSG_ERR_FORBIDDEN)
-  inject('MSG_ERR_UNPROCESSABLE', MSG_ERR_UNPROCESSABLE)
 }
 
 // Vueコンポーネント以外で使用する定数を展開
@@ -183,7 +183,6 @@ export {
   // HTTP通信エラーメッセージ
   MSG_ERR_UNAUTHORIZED,
   MSG_ERR_FORBIDDEN,
-  MSG_ERR_UNPROCESSABLE,
 
   // 入力エラーメッセージ
   MSG_ERR_REQUIRED,
@@ -191,4 +190,6 @@ export {
   MSG_ERR_PASS_FORMAT,
   MSG_ERR_PASS_LENGTH,
   MSG_ERR_NO_TERM,
+  MSG_ERR_MIN,
+  MSG_ERR_MAX,
 }

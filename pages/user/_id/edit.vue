@@ -17,7 +17,7 @@
           type="text"
           class="register-modal__input crm__input"
           v-model="name"
-          maxlength="32"
+          v-bind:maxlength="maxLenName"
         />
         <div class="crm__error-area">
           {{ errors[0] }}
@@ -37,11 +37,12 @@
           v-model="role"
         >
           <option
-            v-for="option in options"
-            v-bind:key="option.name"
-            v-bind:value="option.id"
+            v-for="role in userRole"
+            v-bind:key="role.name"
+            v-bind:value="role.code"
+            v-if="role.code < loginUser.role"
           >
-            {{ option.name }}
+            {{ role.name }}
           </option>
         </select>
         <div class="crm__error-area">
@@ -61,7 +62,7 @@
           type="text"
           class="register-modal__input crm__input"
           v-model="email"
-          maxlength="256"
+          v-bind:maxlength="maxLenEmail"
         />
         <p class="main-edit__mail--reset">
           <span class="main-edit__mail--reset-send" @click="confirmSendReset()">
@@ -98,7 +99,6 @@ export default {
       name: "",
       role: "",
       uuid: "",
-      options: [],
       loginUser: {}
     };
   },
@@ -106,16 +106,7 @@ export default {
     this.fetchUserData();
   },
   mounted() {
-    //プルダウンリストの準備
     this.loginUser = this.$auth.user;
-    const options = [
-      { id: 1, name: "コーチ" },
-      { id: 2, name: "バックオフィス " },
-      { id: 3, name: "管理者" }
-    ];
-    for (let i = 0; i < this.loginUser["role"] - 1; i++) {
-      this.options.push(options[i]);
-    }
   },
   methods: {
     submit() {
@@ -131,22 +122,6 @@ export default {
           alert(this.$MSG_EDIT_USER);
           this.$router.push("/user");
         })
-        .catch(error => {
-          const code = parseInt(error.response && error.response.status);
-          if (code == 400) {
-            alert(error["errorMsg"]);
-          } else if (code == 401) {
-            alert(this.$MSG_ERR_UNAUTHORIZED);
-            this.$router.push("/login");
-          } else if (code == 403) {
-            this.$router.push("/");
-          } else if (code == 422) {
-            alert(this.$MSG_ERR_UNPROCESSABLE);
-            this.$router.push("/");
-          } else if ([405, 500].includes(code)) {
-            this.$router.push("/error");
-          }
-        });
     },
     async fetchUserData() {
       await this.$axios
@@ -162,18 +137,6 @@ export default {
           this.role = user["role"];
           this.uuid = user["uuid"];
         })
-        .catch(error => {
-          const code = parseInt(error.response && error.response.status);
-          if (code == 400) {
-            alert(error["errorMsg"]);
-          } else if (code == 401) {
-            alert(this.$MSG_ERR_UNAUTHORIZED);
-          } else if (code == 403) {
-            alert(this.$MSG_ERR_FORBIDDEN);
-          } else if ([405, 500].includes(code)) {
-            this.$router.push("/error");
-          }
-        });
     },
     confirmSendReset() {
       if(window.confirm(this.$MSG_CONF_PASS_RESET)) {
@@ -189,12 +152,6 @@ export default {
             window.alert(this.$MSG_PASS_RESET)
             this.fetchUserData(); //再度ユーザデータ取得
             this.$nuxt.$loading.finish();
-          })
-          .catch(() => {
-            const code = parseInt(error.response && error.response.status);
-            if(code === 401 ){
-              this.authMessage = this.$MSG_ERR_UNAUTHORIZED
-            }
           })
     },
     back() {
@@ -213,7 +170,19 @@ export default {
         this.initialRole == this.role
       );
     }
-  }
+  },
+  computed: {
+    // 定数取得用算出プロパティ定義
+    maxLenName() {
+      return this.$MAX_LEN_USER_NAME
+    },
+    maxLenEmail() {
+      return this.$MAX_LEN_USER_EMAIL
+    },
+    userRole() {
+      return this.$USER_ROLE
+    },
+  },
 };
 </script>
 <style scoped>

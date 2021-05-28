@@ -26,7 +26,7 @@
               class="main-term__textbox crm__input"
               name="term"
               v-model="term"
-              maxlength="32"
+              v-bind:maxlength="maxLenName"
             >
             <div class="crm__error-area">
               {{ errors[0] }}
@@ -35,13 +35,15 @@
           <label for="period" class="crm-modal__label">
             ターム期間(週単位)
           </label>
-          <validation-provider v-slot="{ errors }" name="ターム期間" rules="required|min_value:1|max_value:26">
+          <validation-provider v-slot="{ errors }" name="ターム期間" rules="required">
             <input
               id="period"
               type="number"
               class="main-term__textbox crm__input"
               name="period"
               v-model="period"
+              :min="minPeriod"
+              :max="maxPeriod"
             >
             <div class="crm__error-area">
               {{ errors[0] }}
@@ -56,7 +58,7 @@
             class="main-term__textbox crm__input"
             name="description"
             v-model="description"
-            maxlength="256"
+            v-bind:maxlength="maxLenSummary"
           >
           <button
             class="crm-modal__submit-button crm-modal__button"
@@ -131,6 +133,21 @@ export default {
         next(false)
       }
     }
+  },
+  computed: {
+    // 定数取得用算出プロパティ定義
+    maxLenName() {
+      return this.$MAX_LEN_TERM_NAME
+    },
+    maxLenSummary() {
+      return this.$MAX_LEN_TERM_SUMMARY
+    },
+    minPeriod() {
+      return this.$MIN_TERM_PERIOD
+    },
+    maxPeriod() {
+      return this.$MAX_TERM_PERIOD
+    },
   },
 }
 </script>

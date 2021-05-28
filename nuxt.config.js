@@ -35,7 +35,7 @@ export default {
     "~/plugins/localStorage.js",
     "@plugins/vee-validate",
     "@/plugins/dragDrop.js",
-    "@/plugins/cource.js",
+    "@/plugins/commonUtillity.js",
     "~/plugins/const.js",
     "~/plugins/messages.js",
   ],

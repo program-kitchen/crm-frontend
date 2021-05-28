@@ -122,6 +122,6 @@ export default {
 
 .login-modal__button {
   width: 24.5rem;
-  margin-top: 6rem;
+  margin: 3rem;
 }
 </style>
