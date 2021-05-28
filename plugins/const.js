@@ -56,11 +56,11 @@ const MAX_LEN_TERM_SUMMARY = 256;
 // コース期間：最小値
 const MIN_COURSE_PERIOD = 1;
 // コース期間：最大値
-const MAX_COURSE_PERIOD = 48;
+const MAX_COURSE_PERIOD = 53;
 // ターム期間：最小値
 const MIN_TERM_PERIOD = 1;
 // ターム期間：最大値
-const MAX_TERM_PERIOD = 24;
+const MAX_TERM_PERIOD = 26;
 
 ////////////////////////////////////////////////
 // HTTPステータスコード
