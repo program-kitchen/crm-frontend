@@ -73,7 +73,7 @@
             </tr>
             <tr
               class="main-cource-term__table-data"
-              v-for="(term ,index) in $store.state.term" :key="index"
+              v-for="(term ,index) in terms" :key="index"
               draggable
               @dragstart="dragTermList($event, index)"
               @drop="dropTermList($event, index)"
@@ -153,7 +153,6 @@ export default {
         .then((res) => {
           this.name = res.data.name;
           this.description = res.data.summary;
-          this.terms = res.data.termInfo;
           this.$store.commit("addCource", {
             name: res.data.name,
             term: res.data.term,
